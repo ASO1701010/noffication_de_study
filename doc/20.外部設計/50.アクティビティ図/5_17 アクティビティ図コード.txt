@@ -1,0 +1,72 @@
+@startuml
+
+partition メインContainer {
+(*) --> "アプリ起動"
+"アプリ起動" --> "モード選択"
+
+If "" then
+  --> "出題"
+  --> "Container(出題)"
+ -left-> "モード選択"
+  
+  else
+  --> "オプション設定"
+  If "" then
+  --> "ログイン"
+  else
+  --> "問題通知設定"
+  else
+  --> "マニュアル出題設定"
+  Endif
+
+else
+  --> "統計情報表示"
+  
+Endif
+}
+@enduml
+
+
+@startuml
+partition 出題Container {
+  
+  (*) --> "出題モード選択"
+    --> "出題選択"
+    --> "出題問題決定"
+  --> "Container(問題)"
+  --> (*)
+}
+@enduml
+
+@startuml
+partition 問題Container {
+ (*)--> ===問題S===
+  --> "問題表示"
+  "問題表示" --> "問題回答"
+  --> "個別回答登録"
+  --> "解答・解説表示"
+  "問題表示" --> "解答・解説表示"
+  --> ===問題E===
+  --> If "未処理問題有無" then
+  --> [あり] ===問題S===
+else
+  --> [なし] "集計"
+Endif
+  --> "Container(結果)"
+  --> (*)
+}
+@enduml
+
+@startuml
+partition 結果Container {
+ (*)--> ===結果S===
+  --> "結果表示"
+  If "ログイン済み" then
+    --> [はい] "回答履歴送信"
+    --> ===結果E===
+  else
+  --> [いいえ] ===結果E===
+  Endif
+  --> (*)
+}
+@enduml
