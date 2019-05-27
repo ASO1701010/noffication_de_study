@@ -8,7 +8,7 @@ class StaticsActivity : AppCompatActivity() {
 
     //定数
     val user_id:Int = 12345678 //ユーザID
-    val my_record //TODO ここから
+//    val my_record //TODO ここから
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
