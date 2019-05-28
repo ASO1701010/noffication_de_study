@@ -5,10 +5,9 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 
 class MainActivity : AppCompatActivity(), ScreenTransition {
-    override fun title_questionOption(user_id: Int) {
-        super.title_questionOption(user_id)
+    override fun title_questionOption() {
+        super.title_questionOption()
         val intent = Intent(this, OptionActivity::class.java)
-        intent.putExtra("user_id", user_id)
         startActivity(intent)
     }
 
