@@ -1,9 +1,9 @@
 package jp.ac.asojuku.st.noffication_de_study
 
 //画面遷移系のクラス
-class ScreenTransition {
+interface ScreenTransition {
 
-    //TODO 画面遷移系：未完成（0%）
+    //TODO 画面遷移系：未完成（100%）
     //タイトル画面>出題オプション
     fun title_questionOption(user_id: Int) {
 
