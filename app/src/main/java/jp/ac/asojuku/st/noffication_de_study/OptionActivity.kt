@@ -1,7 +1,7 @@
 package jp.ac.asojuku.st.noffication_de_study
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 
 //TODO オプション画面:未完成(0%)
 class OptionActivity : AppCompatActivity() {
@@ -9,7 +9,7 @@ class OptionActivity : AppCompatActivity() {
     //TODO 定数の中身はすべて仮の値
     val user_id = 12345678 //ユーザID
     val user_auth = "USER_AUTH" //自動でログインする用の変数
-    val rule_num:Int = 123 //次に追加するruleのid
+    val rule_num: Int = 123 //次に追加するruleのid
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

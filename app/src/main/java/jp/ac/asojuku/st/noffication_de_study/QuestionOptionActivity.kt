@@ -1,7 +1,8 @@
 package jp.ac.asojuku.st.noffication_de_study
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import org.jetbrains.anko.startActivity
 
 //TODO 問題オプション画面：未完成（0%）
 class QuestionOptionActivity : AppCompatActivity() {
@@ -15,6 +16,13 @@ class QuestionOptionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_option)
 
+        QOA_Start_BTN.setOnClickListener {
+            startActivity<AnswerActivity>()
+        }
+
+        QOA_Back_BTN.setOnClickListener {
+            startActivity<TitleActivity>()
+        }
     }
 
     //選択肢を読み込む
