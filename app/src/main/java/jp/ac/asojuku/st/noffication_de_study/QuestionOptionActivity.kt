@@ -12,17 +12,26 @@ class QuestionOptionActivity : AppCompatActivity() {
 //    var question_list 中身が無いと宣言できない
 //    var setting_list 中身が無いと宣言できない
 
+    // 問題数選択時に利用する
+    val quesionNum_spinner: Array<Int> = arrayOf(5,10,15,20,25);
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_option)
 
+        // ローカルに保存されている情報を読み込み、登録されている選択肢を読み込み表示する
+        loadChoice()
+
         QOA_Start_BTN.setOnClickListener {
+            // 設定に応じた問題を出題する。出題・解答画面に遷移
             startActivity<AnswerActivity>()
         }
 
         QOA_Back_BTN.setOnClickListener {
+            // ホーム画面に戻る
             startActivity<TitleActivity>()
         }
+
     }
 
     //選択肢を読み込む
