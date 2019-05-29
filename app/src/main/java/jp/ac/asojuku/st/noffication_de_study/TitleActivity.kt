@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_title.*
+import org.jetbrains.anko.startActivity
 
 
 class TitleActivity : AppCompatActivity() {
@@ -15,6 +16,18 @@ class TitleActivity : AppCompatActivity() {
         //var isUpdate = questionUpdateQuery()
         var isAuthOK = autoAuthentication()
         //TODO autoAuthentication()の戻り値による処理の変化
+
+        TA_Question_BTN.setOnClickListener {
+            startActivity<QuestionOptionActivity>()
+        }
+
+        TA_Statics_BTN.setOnClickListener {
+            startActivity<StaticsActivity>()
+        }
+
+        TA_Option_BTN.setOnClickListener {
+            startActivity<OptionActivity>()
+        }
 
 
         //TA_Question_BTN.setOnClickListener{ ontitle_questionOption(intent)} //「問題を解く」を押したときのメソッド呼び出し
