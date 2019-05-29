@@ -18,7 +18,7 @@ class QuestionOptionActivity : AppCompatActivity() {
     }
 
     //選択肢を読み込む
-    fun loadChoise() {
+    fun loadChoice() {
 
     }
 
@@ -35,7 +35,7 @@ class QuestionOptionActivity : AppCompatActivity() {
 
     //選択設定判定
     //設定されたチェックをすべて検索しsetting_listに登録
-    fun discChoise() {
+    fun discChoice() {
 
     }
 

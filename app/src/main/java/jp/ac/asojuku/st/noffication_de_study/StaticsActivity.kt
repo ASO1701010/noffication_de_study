@@ -6,10 +6,11 @@ import android.os.Bundle
 //TODO 統計情報画面:未完成(0%)
 class StaticsActivity : AppCompatActivity() {
 
-    //定数
+    //定数はすべて仮の値
     val user_id:Int = 12345678 //ユーザID
-//    val my_record //TODO ここから
-
+    var my_record:String = "testRecord" //my記録
+    var correct_rate:String = "999%" //正答率
+    var text_print:String = "testTextPrint" //表示に利用する
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
