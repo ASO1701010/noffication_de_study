@@ -23,7 +23,7 @@ class UserAnswersOpenHelper {
         return rt
     }
 
-    //レコード追加(引数にcolumnデータ
+    //レコード追加(引数にcolumnデータ)
     fun add_record(){
 
     }
