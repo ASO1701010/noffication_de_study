@@ -9,6 +9,7 @@ class ExamData (id:Int, name:String, number:String){
     public var question_list = ArrayList<Int>()
     public var answered_list = ArrayList<Int>()
 
+    public var question_current = 0
     public var question_next = 0
 
     public fun set_list_data(list:ArrayList<Int>){
