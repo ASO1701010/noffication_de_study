@@ -1,31 +1,106 @@
 package jp.ac.asojuku.st.noffication_de_study
 
+import android.content.ContentValues
 import android.content.Context
+import android.database.CursorIndexOutOfBoundsException
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
 
-//TODO:ユーザ回答履歴DB:未完成(0%)
-class UserAnswersOpenHelper {
-    //コンストラクタ
-    fun UserAnswersOpenHelper(context: Context) {
+import org.json.JSONObject
 
+
+class UserAnswersOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "user_answers", null, 1) {
+    // 第１引数 :
+    // 第２引数 : データベースの名称
+    // 第３引数 : null
+    // 第４引数 : データベースのバージョン
+    val tableName:String = "user_answers";
+    override fun onCreate(db: SQLiteDatabase?) {
+        db?.execSQL(
+            "CREATE TABLE " + tableName + " ( " +
+                    "user_answer_id integer not null primary key autoincrement, " +
+                    "question_id integer, " +
+                    "answer_choice integer, " +
+                    "answer_time date " +
+                    ");")
+    }
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
     }
 
-    //全問題解答検索
-    fun find_all_user_answers() :ArrayList<ArrayList<String>>?{
+    fun find_all_user_answers() :ArrayList<ArrayList<String>>? {
+        val thisDB = UserAnswersOpenHelper(mContext)
+        val db = thisDB.readableDatabase
 
-        var rt = ArrayList<ArrayList<String>>()
-        return rt
+        val query = "SELECT * FROM " + tableName
+        val cursor = db.rawQuery(query, null)
+
+        try{
+            cursor.moveToFirst()
+
+            var array = ArrayList<ArrayList<String>>()
+            var bufferlist:ArrayList<String>
+            for (i in 0 until cursor.count) {
+                bufferlist = ArrayList()
+                bufferlist.add(cursor.getString(0).toString())
+                bufferlist.add(cursor.getString(1).toString())
+                bufferlist.add(cursor.getString(2).toString())
+                bufferlist.add(cursor.getString(3).toString())
+                array.add(bufferlist)
+                cursor.moveToNext();
+            }
+            cursor.close()
+            if(array.size==0){
+                return  null
+            }
+            return array
+        }catch (e: CursorIndexOutOfBoundsException){
+            cursor.close()
+            return null
+        }
     }
 
-    //問題解答検索
-    fun find_user_answers(question_id:Int):ArrayList<ArrayList<String>>?{
+    fun find_user_answers(question_id:Int) :ArrayList<ArrayList<String>>? {
+        val thisDB = UserAnswersOpenHelper(mContext)
+        val db = thisDB.readableDatabase
 
-        var rt = ArrayList<ArrayList<String>>()
-        return rt
+        val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
+        val cursor = db.rawQuery(query, null)
+
+        try{
+            cursor.moveToFirst()
+
+            var array = ArrayList<ArrayList<String>>()
+            var bufferlist:ArrayList<String>
+            for (i in 0 until cursor.count) {
+                bufferlist = ArrayList()
+                bufferlist.add(cursor.getString(0).toString())
+                bufferlist.add(cursor.getString(1).toString())
+                bufferlist.add(cursor.getString(2).toString())
+                bufferlist.add(cursor.getString(3).toString())
+                array.add(bufferlist)
+                cursor.moveToNext();
+            }
+            cursor.close()
+            if(array.size==0){
+                return  null
+            }
+            return array
+        }catch (e: CursorIndexOutOfBoundsException){
+            cursor.close()
+            return null
+        }
     }
+    fun add_record(a:Int , b:Int, c:Int, d:Int, db:SQLiteDatabase) {
 
-    //レコード追加(引数にcolumnデータ
-    fun add_record(){
+        val values = ContentValues()
+        values.put("user_answer_id", a)
+        values.put("question_id",b )
+        values.put("answer_choice",c )
+        values.put("answer_time",d )
 
+        db.insertOrThrow(tableName, null, values)
     }
-
 }
+
+
+

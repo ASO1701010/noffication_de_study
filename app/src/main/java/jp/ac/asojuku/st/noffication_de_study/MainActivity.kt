@@ -4,13 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity(), ScreenTransition {
-    override fun title_questionOption() {
-        super.title_questionOption()
-        val intent = Intent(this, OptionActivity::class.java)
-        startActivity(intent)
-    }
-
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
