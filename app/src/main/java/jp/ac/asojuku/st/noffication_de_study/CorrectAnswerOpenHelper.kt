@@ -6,46 +6,38 @@ import android.database.CursorIndexOutOfBoundsException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-import org.json.JSONObject
 
-
-class AnswersOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "answers", null, 1) {
+class CorrectAnswerOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "correct_answer", null, 1) {
     // 第１引数 :
     // 第２引数 : データベースの名称
     // 第３引数 : null
     // 第４引数 : データベースのバージョン
-    val tableName:String = "answers";
+    val tableName:String = "correct_answer";
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(
             "CREATE TABLE " + tableName + " ( " +
                     "question_id integer not null, " +
-                    "answer_number integer, "+
-                    "PRIMARY KEY (question_id,answer_number)"+
+                    "correct_answer_number integer, " +
+                    "PRIMARY KEY (question_id)"+
                     ");")
     }
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
     }
 
-    //問題idを受け取って、対応する答えの選択肢を返す
-    fun find_answers(question_id:Int) :ArrayList<Int>? {
-        val thisDB = AnswersOpenHelper(mContext)
+    fun find_correct_answer(question_id:Int) :Int? {
+        val thisDB = CorrectAnswerOpenHelper(mContext)
         val db = thisDB.readableDatabase
 
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
 
-        try {
+        try{
             cursor.moveToFirst()
-            var array = ArrayList<Int>()
-            array.add(cursor.getInt(0))
-            for (i in 0 until cursor.count) {
-                array.add(cursor.getInt(1))
-                cursor.moveToNext();
-            }
+            var result:Int = cursor.getInt(1)
             cursor.close()
-            return array
+
+            return result
         }catch (e: CursorIndexOutOfBoundsException){
-            cursor.close()
             return null
         }
     }
@@ -53,7 +45,7 @@ class AnswersOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "a
 
         val values = ContentValues()
         values.put("question_id", q_id)
-        values.put("answer_number", a_num)
+        values.put("correct_answer_number", a_num)
 
 
         db.insertOrThrow(tableName, null, values)
