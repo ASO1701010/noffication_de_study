@@ -1,68 +1,72 @@
 package jp.ac.asojuku.st.noffication_de_study
 
 import android.os.AsyncTask
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import okhttp3.FormBody
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
-class APConnectionManager(activity: AppCompatActivity) {
+class APConnectionManager {
     val server = "http://eve.main.jp/noffication-de-study/api/"
 
     fun get(api_name: String, param: HashMap<String, String>) {
+        /*
         val api = server + api_name
         val urlBuilder = HttpUrl.parse(api)!!.newBuilder()
 
         param.forEach { name, value -> urlBuilder.addQueryParameter(name, value) }
         ApiGetTask(urlBuilder.build()).execute()
+        */
+        ApiGetTask(api_name, param).execute()
     }
 
-    fun post(api_name: String, params: HashMap<String, String>) {
+    fun post(api_name: String, param: HashMap<String, String>) {
+        /*
         val api = server + api_name
 
         val formBuilder = FormBody.Builder()
         params.forEach { name, value -> formBuilder.add(name, value) }
         val requestBody = formBuilder.build()
         ApiPostTask(api, requestBody).execute()
+        */
+        ApiPostTask(api_name, param).execute()
     }
 
-    inner class ApiGetTask(private val url: HttpUrl) : AsyncTask<String, String, String>() {
+    inner class ApiGetTask(private val api_name: String, private val param: HashMap<String, String>) : AsyncTask<String, String, String>() {
         override fun doInBackground(vararg params: String?): String {
-            val request = Request.Builder().url(url).build()
+            val api = server + api_name
+            val urlBuilder = HttpUrl.parse(api)!!.newBuilder()
+
+            param.forEach { name, value -> urlBuilder.addQueryParameter(name, value) }
+
+            val request = Request.Builder().url(urlBuilder.toString()).build()
             val okHttpClient = OkHttpClient.Builder().build()
             val call = okHttpClient.newCall(request)
             val response = call.execute()
 
             val data = response.body()!!.string()
             Log.d("TEST", data)
-            return false.toString()
+            return data
         }
     }
 
-    inner class ApiPostTask(private val url: String, private val body: FormBody) : AsyncTask<String, String, String>() {
+    inner class ApiPostTask(private val api_name: String, private val param: HashMap<String, String>) : AsyncTask<String, String, String>() {
         override fun doInBackground(vararg params: String?): String {
-            val request = Request.Builder().url(url).post(body).build()
+            val api = server + api_name
+
+            val formBuilder = FormBody.Builder()
+            param.forEach { name, value -> formBuilder.add(name, value) }
+            val body = formBuilder.build()
+
+            val request = Request.Builder().url(api).post(body).build()
             val okHttpClient = OkHttpClient.Builder().build()
             val call = okHttpClient.newCall(request)
             val response = call.execute()
 
             val data = response.body()!!.string()
             Log.d("TEST", data)
-            return false.toString()
+            return data
         }
     }
-
-    /*
-    //TODO apiへ問い合わせを行いJSONObjectを返す
-    fun apiRequest(URL:String):JSONObject{
-        return JSONObject()
-    }
-
-    //TODO エラー時の処理を記述するオーバライドメソッド
-    fun errorProcessing(str:String){
-        return
-    }
-    */
 }
