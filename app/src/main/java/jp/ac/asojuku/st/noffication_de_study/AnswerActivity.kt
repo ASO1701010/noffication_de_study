@@ -2,6 +2,7 @@ package jp.ac.asojuku.st.noffication_de_study
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_question.*
 import org.jetbrains.anko.startActivity
 
 class AnswerActivity : AppCompatActivity() {
