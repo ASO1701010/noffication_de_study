@@ -7,6 +7,55 @@
         android:layout_height="match_parent"
         tools:context=".QuestionActivity">
 
+    <Button
+            android:text="ア"
+            android:layout_width="60dp"
+            android:layout_height="60dp" android:id="@+id/AA_Answer_0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="28dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="40dp" android:textSize="30sp"/>
+    <Button
+            android:text="イ"
+            android:layout_width="60dp"
+            android:layout_height="60dp" android:id="@+id/AA_Answer_1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="28dp"
+            app:layout_constraintStart_toEndOf="@+id/AA_Answer_0" android:layout_marginStart="28dp"
+            android:textSize="30sp"/>
+    <Button
+            android:text="ウ"
+            android:layout_width="60dp"
+            android:layout_height="60dp" android:id="@+id/AA_Answer_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="28dp"
+            app:layout_constraintStart_toEndOf="@+id/AA_Answer_1" android:layout_marginStart="28dp"
+            android:textSize="30sp"/>
+    <Button
+            android:text="エ"
+            android:layout_width="60dp"
+            android:layout_height="60dp" android:id="@+id/AA_Answer_3"
+            android:layout_marginBottom="28dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="40dp" app:layout_constraintStart_toEndOf="@+id/AA_Answer_2"
+            android:layout_marginStart="28dp" android:textSize="30sp"/>
+    <ImageView
+            android:layout_width="360dp"
+            android:layout_height="560dp" app:srcCompat="@android:drawable/alert_light_frame"
+            android:id="@+id/imageView5" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:scaleType="fitXY"
+            app:layout_constraintHorizontal_bias="0.485" app:layout_constraintVertical_bias="0.0"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="320dp"
+            android:layout_height="520dp" android:id="@+id/textView4"
+            app:layout_constraintTop_toTopOf="@+id/imageView5"
+            app:layout_constraintStart_toStartOf="@+id/imageView5" app:layout_constraintEnd_toEndOf="@+id/imageView5"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+    />
     <ImageView
             android:layout_width="0dp"
             android:layout_height="80dp" app:srcCompat="@android:drawable/editbox_background_normal"
@@ -29,10 +78,9 @@
             android:layout_marginStart="8dp" android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent"/>
     <TextView
-            android:text="TextView"
-            android:layout_width="89dp"
-            android:layout_height="47dp" android:id="@+id/textView3"
+            android:layout_width="200dp"
+            android:layout_height="55dp" android:id="@+id/textView3"
             android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="@+id/imageView4"
             app:layout_constraintStart_toStartOf="@+id/imageView4" app:layout_constraintEnd_toEndOf="@+id/imageView4"
-            android:layout_marginEnd="8dp"/>
+            android:textSize="36sp" android:text="問題" android:textAlignment="center"/>
 </android.support.constraint.ConstraintLayout>
