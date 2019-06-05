@@ -1,7 +1,9 @@
 package jp.ac.asojuku.st.noffication_de_study
 
-import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.TimePicker
+
 
 //TODO オプション画面:未完成(0%)
 class OptionActivity : AppCompatActivity() {
