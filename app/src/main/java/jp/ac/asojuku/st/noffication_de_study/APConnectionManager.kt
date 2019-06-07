@@ -6,9 +6,12 @@ import okhttp3.FormBody
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.json.JSONObject
 
 class APConnectionManager {
     val server = "http://eve.main.jp/noffication-de-study/api/"
+
+    var json = JSONObject()
 
     fun get(api_name: String, param: HashMap<String, String>) {
         /*
@@ -18,7 +21,9 @@ class APConnectionManager {
         param.forEach { name, value -> urlBuilder.addQueryParameter(name, value) }
         ApiGetTask(urlBuilder.build()).execute()
         */
+
         ApiGetTask(api_name, param).execute()
+
     }
 
     fun post(api_name: String, param: HashMap<String, String>) {
@@ -33,8 +38,9 @@ class APConnectionManager {
         ApiPostTask(api_name, param).execute()
     }
 
-    inner class ApiGetTask(private val api_name: String, private val param: HashMap<String, String>) : AsyncTask<String, String, String>() {
-        override fun doInBackground(vararg params: String?): String {
+    inner class ApiGetTask(private val api_name: String, private val param: HashMap<String, String>) :
+        AsyncTask<String, String, String>() {
+        override fun doInBackground(vararg params: String?): String? {
             val api = server + api_name
             val urlBuilder = HttpUrl.parse(api)!!.newBuilder()
 
@@ -46,12 +52,16 @@ class APConnectionManager {
             val response = call.execute()
 
             val data = response.body()!!.string()
-            Log.d("TEST", data)
+            // val jsonObject = JSONObject(data)
+
+            json = JSONObject(data)
+
             return data
         }
     }
 
-    inner class ApiPostTask(private val api_name: String, private val param: HashMap<String, String>) : AsyncTask<String, String, String>() {
+    inner class ApiPostTask(private val api_name: String, private val param: HashMap<String, String>) :
+        AsyncTask<String, String, String>() {
         override fun doInBackground(vararg params: String?): String {
             val api = server + api_name
 
