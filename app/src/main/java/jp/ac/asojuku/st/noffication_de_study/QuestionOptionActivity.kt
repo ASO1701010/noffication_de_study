@@ -16,13 +16,13 @@ class QuestionOptionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_option)
 
-        QOA_Start_BTN.setOnClickListener {
-            startActivity<AnswerActivity>()
-        }
-
-        QOA_Back_BTN.setOnClickListener {
-            startActivity<TitleActivity>()
-        }
+//        QOA_Start_BTN.setOnClickListener {
+//            startActivity<AnswerActivity>()
+//        }
+//
+//        QOA_Back_BTN.setOnClickListener {
+//            startActivity<TitleActivity>()
+//        }
     }
 
     //選択肢を読み込む

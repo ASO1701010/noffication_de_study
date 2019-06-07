@@ -14,8 +14,8 @@ class TitleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_title)
         //TODO questionUpdateQuery()引数の最終更新日
         //var isUpdate = questionUpdateQuery()
-        var isAuthOK = autoAuthentication()
-        //TODO autoAuthentication()の戻り値による処理の変化
+//        var isAuthOK = autoAuthentication()
+//        //TODO autoAuthentication()の戻り値による処理の変化
 
         TA_Question_BTN.setOnClickListener {
             startActivity<QuestionOptionActivity>()

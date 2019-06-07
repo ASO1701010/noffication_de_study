@@ -49,7 +49,7 @@ class AnswersOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "a
             return null
         }
     }
-    fun add_record(q_id:Int , a_num:Int,db:SQLiteDatabase) {
+    fun add_record(q_id:Int, a_num:Int, db:SQLiteDatabase) {
 
         val values = ContentValues()
         values.put("question_id", q_id)
