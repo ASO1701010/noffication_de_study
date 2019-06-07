@@ -2,6 +2,7 @@ package jp.ac.asojuku.st.noffication_de_study
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.CursorIndexOutOfBoundsException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import java.util.*
@@ -60,10 +61,38 @@ class QuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, 
 
         array.add(cursor.getString(0).toString())
         array.add(cursor.getString(3).toString())
-        array.add(cursor.getString(4).toString())
 
         cursor.close()
         return array
+    }
+    fun find_update_date(question_id:Int) :ArrayList<ArrayList<Int>>? {
+        val thisDB = QuestionsOpenHelper(mContext)
+        val db = thisDB.readableDatabase
+
+        val query = "SELECT * FROM "+ tableName +" where question_id = " + question_id
+        val cursor = db.rawQuery(query, null)
+
+        try{
+            cursor.moveToFirst()
+
+            var array = ArrayList<ArrayList<Int>>()
+            var bufferlist:ArrayList<Int>
+            for (i in 0 until cursor.count) {
+                bufferlist = ArrayList()
+                bufferlist.add(cursor.getInt(0))
+                bufferlist.add(cursor.getInt(4))
+                array.add(bufferlist)
+                cursor.moveToNext();
+            }
+            cursor.close()
+            if(array.size==0){
+                return  null
+            }
+            return array
+        }catch (e: CursorIndexOutOfBoundsException){
+            cursor.close()
+            return null
+        }
     }
     fun add_record(a:Int , b:String, c:Boolean, d:String, e:Int, db:SQLiteDatabase) {
 

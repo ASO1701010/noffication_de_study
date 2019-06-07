@@ -41,6 +41,23 @@ class ExamsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "exa
             return null
         }
     }
+    fun find_exam_id(exams_id:Int) :String? {
+        val thisDB = ExamsOpenHelper(mContext)
+        val db = thisDB.readableDatabase
+
+        val query = "SELECT * FROM " + tableName + " where exams_id = " + exams_id
+        val cursor = db.rawQuery(query, null)
+
+        try{
+            cursor.moveToFirst()
+            var result:String = cursor.getString(1)
+
+            cursor.close()
+            return result
+        }catch (e: CursorIndexOutOfBoundsException){
+            return null
+        }
+    }
     fun add_record(q_id:Int , a_num:String,db:SQLiteDatabase) {
 
         val values = ContentValues()

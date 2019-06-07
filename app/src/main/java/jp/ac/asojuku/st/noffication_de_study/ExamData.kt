@@ -1,6 +1,8 @@
 package jp.ac.asojuku.st.noffication_de_study
 
-class ExamData (id:Int, name:String, number:String){
+import java.io.Serializable
+
+class ExamData (id:Int, name:String, number:String):Serializable{
 
     public val exams_id = id
     public val exams_name = name
@@ -12,6 +14,7 @@ class ExamData (id:Int, name:String, number:String){
     public var question_current = 0
     public var question_next = 0
 
+    //list
     public fun set_list_data(list:ArrayList<Int>){
         this.question_list = list
         for(i in 1..question_list.size){
