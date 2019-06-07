@@ -1,11 +1,11 @@
-package jp.ac.asojuku.st.noffication_de_study
+package jp.ac.asojuku.st.noffication_de_study.db
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.CursorIndexOutOfBoundsException
+import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -19,9 +19,9 @@ class QuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(
             "CREATE TABLE " + tableName + " ( " +
-                    "question_id integer not null autoincrement, " +
+                    "question_id integer not null, " +
                     "question varchar, "+
-                    "is_have_image boolean, "+
+                    "is_have_image integer, "+
                     "comment varchar, "+
                     "update_date date, "+
                     "PRIMARY KEY (question_id)"+
@@ -94,7 +94,9 @@ class QuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, 
             return null
         }
     }
-    fun add_record(a:Int , b:String, c:Boolean, d:String, e:Int, db:SQLiteDatabase) {
+    fun add_record(a:Int , b:String, c:Int, d:String, e:String) {
+        val thisDB = QuestionsOpenHelper(mContext)
+        val db = thisDB.readableDatabase
 
         val values = ContentValues()
         values.put("question_id", a)
@@ -103,6 +105,10 @@ class QuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, 
         values.put("comment",d )
         values.put("update_date",e )
 
-        db.insertOrThrow(tableName, null, values)
+        try {
+            db.insertOrThrow(tableName, null, values)
+        }catch (e: SQLiteConstraintException){
+            db.update(tableName,values,"question_id = " + a,null)
+        }
     }
 }

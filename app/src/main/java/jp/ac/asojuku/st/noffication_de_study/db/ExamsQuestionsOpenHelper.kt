@@ -1,11 +1,11 @@
-package jp.ac.asojuku.st.noffication_de_study
+package jp.ac.asojuku.st.noffication_de_study.db
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.CursorIndexOutOfBoundsException
+import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
 
 
 class ExamsQuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "exams_questions", null, 1) {
@@ -31,7 +31,7 @@ class ExamsQuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mCont
         val thisDB = ExamsQuestionsOpenHelper(mContext)
         val db = thisDB.readableDatabase
 
-        val query = "SELECT * FROM " + tableName + " where exams_id = " + exams_id + " and exams_number = " + exams_number
+        val query = "SELECT * FROM " + tableName + " where exams_id = " + exams_id
         val cursor = db.rawQuery(query, null)
 
         try{
@@ -46,7 +46,7 @@ class ExamsQuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mCont
 
             for(i in 0 until  cursor.count){
                 bufferList = ArrayList()
-                bufferList.add(cursor.getInt(2))
+                bufferList.add(cursor.getInt(1))
                 bufferList.add(cursor.getInt(3))
                 array.add(bufferList)
                 cursor.moveToNext()
@@ -57,7 +57,9 @@ class ExamsQuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mCont
             return null
         }
     }
-    fun add_record(q_id:Int , a_num:String,b_num:Int,c_num:Int,db:SQLiteDatabase) {
+    fun add_record(q_id:Int , a_num:String,b_num:Int,c_num:Int) {
+        val thisDB = ExamsQuestionsOpenHelper(mContext)
+        val db = thisDB.readableDatabase
 
         val values = ContentValues()
         values.put("exams_id", q_id)
@@ -65,8 +67,12 @@ class ExamsQuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mCont
         values.put("question_id", b_num)
         values.put("question_number", c_num)
 
-
-        db.insertOrThrow(tableName, null, values)
+//        db.insertOrThrow(tableName, null, values)
+        try {
+            db.insertOrThrow(tableName, null, values)
+        }catch (e: SQLiteConstraintException){
+            db.update(tableName,values,"exams_id = " + q_id +" and exams_number = '"+ a_num+"' and question_id = "+b_num+" and question_number = "+c_num,null)
+        }
     }
 }
 

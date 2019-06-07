@@ -2,7 +2,7 @@ package jp.ac.asojuku.st.noffication_de_study
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import org.jetbrains.anko.startActivity
+import jp.ac.asojuku.st.noffication_de_study.R
 
 //TODO 問題オプション画面：未完成（0%）
 class QuestionOptionActivity : AppCompatActivity() {

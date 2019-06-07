@@ -1,4 +1,4 @@
-package jp.ac.asojuku.st.noffication_de_study
+package jp.ac.asojuku.st.noffication_de_study.db
 
 import android.content.ContentValues
 import android.content.Context

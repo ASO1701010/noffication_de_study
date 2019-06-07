@@ -1,8 +1,9 @@
-package jp.ac.asojuku.st.noffication_de_study
+package jp.ac.asojuku.st.noffication_de_study.db
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.CursorIndexOutOfBoundsException
+import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
@@ -45,14 +46,19 @@ class ExamsNumbersOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContex
             return null
         }
     }
-    fun add_record(q_id:Int , a_num:String,db:SQLiteDatabase) {
+    fun add_record(q_id:Int , a_num:String) {
+        val thisDB = ExamsNumbersOpenHelper(mContext)
+        val db = thisDB.readableDatabase
 
         val values = ContentValues()
         values.put("exams_id", q_id)
         values.put("exams_number", a_num)
 
-
-        db.insertOrThrow(tableName, null, values)
+        try {
+            db.insertOrThrow(tableName, null, values)
+        }catch (e: SQLiteConstraintException){
+            db.update(tableName,values,"exams_id = " + q_id,null)
+        }
     }
 }
 
