@@ -66,55 +66,12 @@
             app:layout_constraintEnd_toStartOf="@+id/textView10"
             app:layout_constraintTop_toTopOf="@+id/textView10"
             app:layout_constraintBottom_toBottomOf="@+id/textView10"/>
-    <RadioGroup
-            android:layout_width="264dp"
-            android:layout_height="45dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView10"
-            app:layout_constraintStart_toStartOf="@+id/imageButton2" android:id="@+id/radioGroup">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
-                      android:orientation="vertical">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="20dp"
-                          android:orientation="horizontal">
-                <RadioButton
-                        android:text="H31春"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/radioButton"/>
-                <RadioButton
-                        android:text="H30秋"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/radioButton2"/>
-                <RadioButton
-                        android:text="H30春"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/radioButton5"/>
-            </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="20dp"
-                          android:orientation="horizontal">
-                <RadioButton
-                        android:text="H29秋"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" android:id="@+id/radioButton4"
-                        tools:layout_editor_absoluteY="32dp" tools:layout_editor_absoluteX="144dp"/>
-                <RadioButton
-                        android:text="H29春"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/radioButton6"/>
-                <RadioButton
-                        android:text="H28秋"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/radioButton7"/>
-            </LinearLayout>
-        </LinearLayout>
-
-    </RadioGroup>
     <TextView
             android:text="ジャンル選択"
             android:layout_width="120dp"
             android:layout_height="25dp" android:id="@+id/textView5"
-            android:layout_marginTop="90dp"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup"
             app:layout_constraintStart_toEndOf="@+id/imageButton2" android:layout_marginStart="4dp"
-            android:textSize="18sp"/>
+            android:textSize="18sp" app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="276dp"/>
     <TextView
             android:text="問題数選択"
             android:layout_width="130dp"
@@ -122,13 +79,6 @@
             android:textSize="18sp" android:layout_marginTop="80dp"
             app:layout_constraintTop_toBottomOf="@+id/textView5"
             app:layout_constraintStart_toStartOf="@+id/textView5"/>
-    <Button
-            android:text="Button"
-            android:layout_width="105dp"
-            android:layout_height="55dp" android:id="@+id/QOA_Question_Amount_SBOX"
-            android:textSize="8sp" app:layout_constraintStart_toEndOf="@+id/textView8"
-            android:layout_marginStart="32dp"
-            app:layout_constraintTop_toTopOf="@+id/textView8" app:layout_constraintBottom_toBottomOf="@+id/textView8"/>
     <TextView
             android:text="出題方法"
             android:layout_width="wrap_content"
@@ -164,4 +114,10 @@
             app:layout_constraintTop_toBottomOf="@+id/QOA_Select_Genres_1"
             app:layout_constraintStart_toStartOf="@+id/QOA_Select_Genres_1"
     />
+    <Spinner
+            android:layout_width="40dp"
+            android:layout_height="25dp" android:id="@+id/QOA_Question_Amount_BOX"
+            app:layout_constraintStart_toEndOf="@+id/textView8" android:layout_marginStart="90dp"
+            app:layout_constraintTop_toTopOf="@+id/textView8" app:layout_constraintBottom_toBottomOf="@+id/textView8"
+            app:layout_constraintVertical_bias="0.0"/>
 </android.support.constraint.ConstraintLayout>
