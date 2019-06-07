@@ -7,7 +7,8 @@ import okhttp3.Request
 
 class ApiPostTask(callback: (String?) -> Unit) : AsyncTask<String, Unit, String>() {
     var callback = callback
-    val server = "http://eve.main.jp/noffication-de-study/api/"
+    val server = "https://main-eve.ssl-lolipop.jp/noffication-de-study/api/"
+    // val server = "http://eve.main.jp/noffication-de-study/api/"
 
     override fun doInBackground(vararg params: String): String {
         val api = server + params[0]
