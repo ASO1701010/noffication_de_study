@@ -9,11 +9,13 @@ import kotlinx.android.synthetic.main.activity_answer.*
 import org.jetbrains.anko.startActivity
 
 class AnswerActivity : AppCompatActivity() {
-    val questionsDB: QuestionsOpenHelper = QuestionsOpenHelper(this)
-    val correctDB: CorrectAnswerOpenHelper = CorrectAnswerOpenHelper(this)
+    val db = SQLiteHelper(this).readableDatabase
+    val questionsDB = QuestionsOpenHelper(db)
+    val correctDB = CorrectAnswerOpenHelper(db)
 
     val user_id:Int = getSharedPreferences("user_data", MODE_PRIVATE).getInt("user_id",999999)
     val exam_data:ExamData = intent.getSerializableExtra("exam_data") as ExamData
+
     val question_id = exam_data.question_current
     var answer_num:Int? = 999999
     var answer_text:String? = ""

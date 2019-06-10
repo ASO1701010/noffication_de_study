@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import jp.ac.asojuku.st.noffication_de_study.db.*
-//import android.util.Log
 import org.json.JSONObject
-import java.text.SimpleDateFormat
-import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,17 +18,28 @@ class MainActivity : AppCompatActivity() {
 //            jsonArrayのキー値を設定して、個別に確認してください。
 //            Log.d("test",JSONObject(it).getJSONObject("data").getJSONArray("questions_db").toString())
             all_update(JSONObject(it))
-        }.execute("db-update.php")
+        }.execute("db-update.php", hashMapOf("last_update_date" to find_last_update()).toString())
     }
 
     //    最終アップデートの日付を、yyyy-MM-dd のフォーマットでStringとして返す。
     fun find_last_update(): String {
         val questions = SQLiteHelper(this)
         val db = questions.readableDatabase
-        val query = "SELECT update_date FROM questions  ORDER BY update_date desc limit 1"
-        var cursor = db.rawQuery(query, null)
-        cursor.moveToFirst()
-        var result = cursor.getString(0).toString()
+        val query = "SELECT update_date FROM questions ORDER BY update_date desc limit 1"
+        var cursor = db.rawQuery("",null)
+        var result = "2019-05-06"
+        try {
+            cursor = db.rawQuery(query, null)
+            cursor.moveToFirst()
+            result = cursor.getString(0).toString()
+            cursor.close()
+            db.close()
+        }catch (e:Exception){
+            cursor.close()
+            db.close()
+//            Log.d("error",e.toString())
+            return result
+        }
         cursor.close()
         db.close()
         return result
@@ -39,12 +48,12 @@ class MainActivity : AppCompatActivity() {
     //    受け取った全ての値をDBに登録する。
     fun all_update(callback: JSONObject): Boolean {
         var json = callback
-        Log.d("TEST", "Nya-n1")
+//        Log.d("TEST", "Nya-n1")
         if (json.getString("status") != "S00") {
-            Log.d("TEST", json.toString())
+//            Log.d("TEST", json.toString())
             return false
         }
-        Log.d("TEST", "Nya-n2")
+//        Log.d("TEST", "Nya-n2")
         json = json.getJSONObject("data")
 
         val db = SQLiteHelper(this).writableDatabase

@@ -14,7 +14,7 @@ class ExamsNumbersOpenHelper (var db:SQLiteDatabase){
 
     fun find_exams_numbers(exams_id:Int) :ArrayList<String>? {
 
-        val query = "SELECT * FROM " + tableName + " where exams_id = " + exams_id
+        val query = "SELECT * FROM " + tableName + " where exam_id = " + exams_id
         val cursor = db.rawQuery(query, null)
 
             try{
@@ -34,13 +34,13 @@ class ExamsNumbersOpenHelper (var db:SQLiteDatabase){
     fun add_record(q_id:Int , a_num:String) {
 
         val values = ContentValues()
-        values.put("exams_id", q_id)
+        values.put("exam_id", q_id)
         values.put("exams_number", a_num)
 
         try {
             db.insertOrThrow(tableName, null, values)
         }catch (e: SQLiteConstraintException){
-            db.update(tableName,values,"exams_id = " + q_id,null)
+            db.update(tableName,values,"exam_id = " + q_id +" and exams_number = '"+a_num+"'",null)
         }
     }
 }
