@@ -1,35 +1,19 @@
-package jp.ac.asojuku.st.noffication_de_study
+package jp.ac.asojuku.st.noffication_de_study.db
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.CursorIndexOutOfBoundsException
+import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
-
-import org.json.JSONObject
 
 
-class AnswersOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "answers", null, 1) {
-    // 第１引数 :
-    // 第２引数 : データベースの名称
-    // 第３引数 : null
-    // 第４引数 : データベースのバージョン
+class AnswersOpenHelper (var db:SQLiteDatabase) {
+
     val tableName:String = "answers";
-    override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL(
-            "CREATE TABLE " + tableName + " ( " +
-                    "question_id integer not null, " +
-                    "answer_number integer, "+
-                    "PRIMARY KEY (question_id,answer_number)"+
-                    ");")
-    }
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-    }
+
 
     //問題idを受け取って、対応する答えの選択肢を返す
     fun find_answers(question_id:Int) :ArrayList<Int>? {
-        val thisDB = AnswersOpenHelper(mContext)
-        val db = thisDB.readableDatabase
 
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
@@ -49,14 +33,17 @@ class AnswersOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "a
             return null
         }
     }
-    fun add_record(q_id:Int , a_num:Int,db:SQLiteDatabase) {
+    fun add_record(q_id:Int, a_num:Int) {
 
         val values = ContentValues()
         values.put("question_id", q_id)
         values.put("answer_number", a_num)
 
-
-        db.insertOrThrow(tableName, null, values)
+        try {
+            db.insertOrThrow(tableName, null, values)
+        }catch (e: SQLiteConstraintException){
+            db.update(tableName,values,"question_id = " + q_id +" and answer_number = "+ a_num,null)
+        }
     }
 }
 

@@ -1,12 +1,11 @@
-package jp.ac.asojuku.st.noffication_de_study
+package jp.ac.asojuku.st.noffication_de_study.db
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.CursorIndexOutOfBoundsException
+import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-
-import org.json.JSONObject
 
 
 class UserAnswersOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "user_answers", null, 1) {
@@ -18,7 +17,7 @@ class UserAnswersOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(
             "CREATE TABLE " + tableName + " ( " +
-                    "user_answer_id integer not null primary key autoincrement, " +
+                    "user_answer_id integer not null primary key, " +
                     "question_id integer, " +
                     "answer_choice integer, " +
                     "answer_time date " +
@@ -98,7 +97,11 @@ class UserAnswersOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext
         values.put("answer_choice",c )
         values.put("answer_time",d )
 
-        db.insertOrThrow(tableName, null, values)
+        try {
+            db.insertOrThrow(tableName, null, values)
+        }catch (e: SQLiteConstraintException){
+            db.update(tableName,values,"user_answer_id = " + a,null)
+        }
     }
 }
 
