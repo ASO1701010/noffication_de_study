@@ -13,17 +13,30 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Log.d("123",find_last_update())
 
         ApiGetTask{
-            Log.d("test",it.toString())
-            all_update(Date(),JSONObject(it))
-        }.execute("db-update.php", hashMapOf("last_update_date" to "2019-05-26").toString())
+//            itの値チェック用ですが、itのデータが大きすぎて全ての表示ができません。
+//            jsonArrayのキー値を設定して、個別に確認してください。
+//            Log.d("test",JSONObject(it).getJSONObject("data").getJSONArray("questions_db").toString())
+            all_update(JSONObject(it))
+        }.execute("db-update.php", hashMapOf("last_update_date" to find_last_update()).toString())
     }
 
-    fun all_update(yyyyMMdd: Date,callback:JSONObject):Boolean{
-        var format = SimpleDateFormat("yyyy-mm-dd")
-//        System.out.println(format.format(Date()));
-//        val data = get("db-update.php", hashMapOf("last_update_date" to format.format(yyyyMMdd)))
+//    最終アップデートの日付を、yyyy-MM-dd のフォーマットでStringとして返す。
+    fun find_last_update():String{
+        val questions = QuestionsOpenHelper(this)
+        val db = questions.readableDatabase
+        val query = "SELECT update_date FROM questions  ORDER BY update_date desc limit 1"
+        var cursor = db.rawQuery(query,null)
+        cursor.moveToFirst()
+        var result = cursor.getString(0).toString()
+        cursor.close()
+        return result
+    }
+
+//    受け取った全ての値をDBに登録する。
+    fun all_update(callback:JSONObject):Boolean{
         var json = callback
         if(json.getString("status")!="S00"){
             return false
@@ -128,25 +141,21 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
-
-
-
-
-        Log.d("tete1",answers.find_answers(1).toString())
-        Log.d("tete2",answers_rate.find_all_rate().toString())
-        Log.d("tete3",exams_numbers.find_exams_numbers(1).toString())
-        Log.d("tete4",exams_questions.find_all_questions(1,"FE2019S").toString())
-        Log.d("tete5",genres.find_genre(1).toString())
-        Log.d("tete6",image.find_image(1).toString())
-        Log.d("tete7",questions.find_question(1).toString())
-        Log.d("tete8",questions.find_comment(1).toString())
-        Log.d("tete9",questions_genres.find_question_genres(1).toString())
-        Log.d("tete0",questions_genres.find_genre_questions(1).toString())
-        Log.d("tete10",correct_answer.find_correct_answer(1).toString())
+//        テーブル内データ確認用
+//        Log.d("tete1",answers.find_answers(1).toString())
+//        Log.d("tete2",answers_rate.find_all_rate().toString())
+//        Log.d("tete3",exams_numbers.find_exams_numbers(1).toString())
+//        Log.d("tete4",exams_questions.find_all_questions(1,"FE2019S").toString())
+//        Log.d("tete5",genres.find_genre(1).toString())
+//        Log.d("tete6",image.find_image(1).toString())
+//        Log.d("tete7",questions.find_question(1).toString())
+//        Log.d("tete8",questions.find_comment(1).toString())
+//        Log.d("tete9",questions_genres.find_question_genres(1).toString())
+//        Log.d("tete0",questions_genres.find_genre_questions(1).toString())
+//        Log.d("tete10",correct_answer.find_correct_answer(1).toString())
 
         return true
     }
-
 
     fun get_user_id(token:String){
 

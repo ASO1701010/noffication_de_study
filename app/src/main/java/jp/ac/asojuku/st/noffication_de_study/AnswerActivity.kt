@@ -3,12 +3,14 @@ package jp.ac.asojuku.st.noffication_de_study
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import jp.ac.asojuku.st.noffication_de_study.db.CorrectAnswerOpenHelper
+import jp.ac.asojuku.st.noffication_de_study.db.QuestionsOpenHelper
 import kotlinx.android.synthetic.main.activity_answer.*
 import org.jetbrains.anko.startActivity
 
 class AnswerActivity : AppCompatActivity() {
-    val questionsDB:QuestionsOpenHelper = QuestionsOpenHelper(this)
-    val correctDB:CorrectAnswerOpenHelper = CorrectAnswerOpenHelper(this)
+    val questionsDB: QuestionsOpenHelper = QuestionsOpenHelper(this)
+    val correctDB: CorrectAnswerOpenHelper = CorrectAnswerOpenHelper(this)
 
     val user_id:Int = getSharedPreferences("user_data", MODE_PRIVATE).getInt("user_id",999999)
     val exam_data:ExamData = intent.getSerializableExtra("exam_data") as ExamData
