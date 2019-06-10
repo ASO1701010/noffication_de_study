@@ -1,10 +1,11 @@
-package jp.ac.asojuku.st.noffication_de_study
+package jp.ac.asojuku.st.noffication_de_study.db
 
 
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.CursorIndexOutOfBoundsException
+import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
@@ -18,7 +19,7 @@ class GenresOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "ge
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(
             "CREATE TABLE " + tableName + " ( " +
-                    "genre_id integer not null primary key autoincrement, " +
+                    "genre_id integer not null primary key, " +
                     "genre_name varchar" +
                     ");")
     }
@@ -43,12 +44,19 @@ class GenresOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "ge
             return null
         }
     }
-    fun add_record( a_num:String,db:SQLiteDatabase) {
+    fun add_record(q_num:Int, a_num:String) {
+        val thisDB = GenresOpenHelper(mContext)
+        val db = thisDB.readableDatabase
 
         val values = ContentValues()
+        values.put("genre_id",q_num)
         values.put("genre_name", a_num)
 
-        db.insertOrThrow(tableName, null, values)
+        try {
+            db.insertOrThrow(tableName, null, values)
+        }catch (e: SQLiteConstraintException){
+            db.update(tableName,values,"genre_id = "+q_num,null)
+        }
     }
 }
 

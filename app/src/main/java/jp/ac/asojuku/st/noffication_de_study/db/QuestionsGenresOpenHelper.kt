@@ -1,9 +1,10 @@
-package jp.ac.asojuku.st.noffication_de_study
+package jp.ac.asojuku.st.noffication_de_study.db
 
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.CursorIndexOutOfBoundsException
+import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
@@ -69,13 +70,19 @@ class QuestionsGenresOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mCon
             return null
         }
     }
-    fun add_record(q_id:Int , a_num:Int,db:SQLiteDatabase) {
+    fun add_record(q_id:Int , a_num:Int) {
+        val questions_genresDB = QuestionsGenresOpenHelper(mContext)
+        val db = questions_genresDB.readableDatabase
 
         val values = ContentValues()
         values.put("question_id", q_id)
         values.put("genre_id", a_num)
 
-        db.insertOrThrow(tableName, null, values)
+        try {
+            db.insertOrThrow(tableName, null, values)
+        }catch (e: SQLiteConstraintException){
+            db.update(tableName,values,"question_id = " + q_id +" and genre_id = "+ a_num,null)
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-package jp.ac.asojuku.st.noffication_de_study
+package jp.ac.asojuku.st.noffication_de_study.db
 
 import android.content.ContentValues
 import android.content.Context
@@ -25,6 +25,23 @@ class ExamsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "exa
     }
 
     fun find_exam_name(exams_id:Int) :String? {
+        val thisDB = ExamsOpenHelper(mContext)
+        val db = thisDB.readableDatabase
+
+        val query = "SELECT * FROM " + tableName + " where exams_id = " + exams_id
+        val cursor = db.rawQuery(query, null)
+
+        try{
+            cursor.moveToFirst()
+            var result:String = cursor.getString(1)
+
+            cursor.close()
+            return result
+        }catch (e: CursorIndexOutOfBoundsException){
+            return null
+        }
+    }
+    fun find_exam_id(exams_id:Int) :String? {
         val thisDB = ExamsOpenHelper(mContext)
         val db = thisDB.readableDatabase
 

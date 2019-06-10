@@ -1,8 +1,9 @@
-package jp.ac.asojuku.st.noffication_de_study
+package jp.ac.asojuku.st.noffication_de_study.db
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.CursorIndexOutOfBoundsException
+import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
@@ -66,16 +67,24 @@ class AnswersRateOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext
             return array
         }catch (e: CursorIndexOutOfBoundsException){
             return null
+        }catch (e:IndexOutOfBoundsException){
+            return null
         }
     }
-    fun add_record(q_id:Int , a_num:Double,db:SQLiteDatabase) {
+    fun add_record(q_id:Int , a_num:Double) {
+        val answerDB = AnswersRateOpenHelper(mContext)
+        val db = answerDB.readableDatabase
 
         val values = ContentValues()
         values.put("question_id", q_id)
         values.put("answer_rate", a_num)
 
 
-        db.insertOrThrow(tableName, null, values)
+        try {
+            db.insertOrThrow(tableName, null, values)
+        }catch (e: SQLiteConstraintException){
+            db.update(tableName,values,"question_id = " + q_id,null)
+        }
     }
 }
 

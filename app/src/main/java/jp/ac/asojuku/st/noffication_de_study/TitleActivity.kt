@@ -1,6 +1,5 @@
 package jp.ac.asojuku.st.noffication_de_study
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_title.*
@@ -14,8 +13,8 @@ class TitleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_title)
         //TODO questionUpdateQuery()引数の最終更新日
         //var isUpdate = questionUpdateQuery()
-        var isAuthOK = autoAuthentication()
-        //TODO autoAuthentication()の戻り値による処理の変化
+//        var isAuthOK = autoAuthentication()
+//        //TODO autoAuthentication()の戻り値による処理の変化
 
         TA_Question_BTN.setOnClickListener {
             startActivity<QuestionOptionActivity>()

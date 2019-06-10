@@ -1,12 +1,11 @@
-package jp.ac.asojuku.st.noffication_de_study
+package jp.ac.asojuku.st.noffication_de_study.db
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.CursorIndexOutOfBoundsException
+import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-
-import org.json.JSONObject
 
 
 class ImageOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "image", null, 1) {
@@ -48,13 +47,20 @@ class ImageOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "ima
             return null
         }
     }
-    fun add_record(q_id:Int , a_num:String,db:SQLiteDatabase) {
+    fun add_record(q_id:Int , a_num:String) {
+        val thisDB = ImageOpenHelper(mContext)
+        val db = thisDB.readableDatabase
 
         val values = ContentValues()
         values.put("question_id", q_id)
         values.put("file_name", a_num)
 
-        db.insertOrThrow(tableName, null, values)
+        try {
+            db.insertOrThrow(tableName, null, values)
+        }catch (e: SQLiteConstraintException){
+            db.update(tableName,values,"question_id = " + q_id,null)
+        }
+
     }
 }
 
