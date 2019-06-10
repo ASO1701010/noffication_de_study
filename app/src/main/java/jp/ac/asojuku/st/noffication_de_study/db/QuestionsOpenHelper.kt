@@ -9,31 +9,12 @@ import android.database.sqlite.SQLiteOpenHelper
 import kotlin.collections.ArrayList
 
 
-class QuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "questions", null, 1) {
-    // 第１引数 :
-    // 第２引数 : データベースの名称
-    // 第３引数 : null
-    // 第４引数 : データベースのバージョン
-    val tableName:String = "questions";
+class QuestionsOpenHelper (var db:SQLiteDatabase) {
 
-    override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL(
-            "CREATE TABLE " + tableName + " ( " +
-                    "question_id integer not null, " +
-                    "question varchar, "+
-                    "is_have_image integer, "+
-                    "comment varchar, "+
-                    "update_date date, "+
-                    "PRIMARY KEY (question_id)"+
-                    ");")
-    }
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-    }
+    val tableName:String = "questions";
 
     //問題idを渡して、
     fun find_question(question_id:Int) :ArrayList<String>? {
-        val thisDB = QuestionsOpenHelper(mContext)
-        val db = thisDB.readableDatabase
 
         val query = "SELECT * FROM "+ tableName +" where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
@@ -50,8 +31,6 @@ class QuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, 
     }
 
     fun find_comment(question_id:Int) :ArrayList<String>? {
-        val thisDB = QuestionsOpenHelper(mContext)
-        val db = thisDB.readableDatabase
 
         val query = "SELECT * FROM "+ tableName +" where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
@@ -66,8 +45,6 @@ class QuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, 
         return array
     }
     fun find_update_date(question_id:Int) :ArrayList<ArrayList<Int>>? {
-        val thisDB = QuestionsOpenHelper(mContext)
-        val db = thisDB.readableDatabase
 
         val query = "SELECT * FROM "+ tableName +" where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
@@ -95,8 +72,6 @@ class QuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, 
         }
     }
     fun add_record(a:Int , b:String, c:Int, d:String, e:String) {
-        val thisDB = QuestionsOpenHelper(mContext)
-        val db = thisDB.readableDatabase
 
         val values = ContentValues()
         values.put("question_id", a)

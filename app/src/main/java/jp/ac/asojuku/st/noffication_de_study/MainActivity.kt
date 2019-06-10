@@ -13,50 +13,56 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.d("123",find_last_update())
+        Log.d("123", find_last_update())
 
-        ApiGetTask{
-//            itの値チェック用ですが、itのデータが大きすぎて全ての表示ができません。
+        ApiGetTask {
+            //            itの値チェック用ですが、itのデータが大きすぎて全ての表示ができません。
 //            jsonArrayのキー値を設定して、個別に確認してください。
 //            Log.d("test",JSONObject(it).getJSONObject("data").getJSONArray("questions_db").toString())
             all_update(JSONObject(it))
-        }.execute("db-update.php", hashMapOf("last_update_date" to find_last_update()).toString())
+        }.execute("db-update.php")
     }
 
-//    最終アップデートの日付を、yyyy-MM-dd のフォーマットでStringとして返す。
-    fun find_last_update():String{
-        val questions = QuestionsOpenHelper(this)
+    //    最終アップデートの日付を、yyyy-MM-dd のフォーマットでStringとして返す。
+    fun find_last_update(): String {
+        val questions = SQLiteHelper(this)
         val db = questions.readableDatabase
         val query = "SELECT update_date FROM questions  ORDER BY update_date desc limit 1"
-        var cursor = db.rawQuery(query,null)
+        var cursor = db.rawQuery(query, null)
         cursor.moveToFirst()
         var result = cursor.getString(0).toString()
         cursor.close()
+        db.close()
         return result
     }
 
-//    受け取った全ての値をDBに登録する。
-    fun all_update(callback:JSONObject):Boolean{
+    //    受け取った全ての値をDBに登録する。
+    fun all_update(callback: JSONObject): Boolean {
         var json = callback
-        if(json.getString("status")!="S00"){
+        Log.d("TEST", "Nya-n1")
+        if (json.getString("status") != "S00") {
+            Log.d("TEST", json.toString())
             return false
         }
+        Log.d("TEST", "Nya-n2")
         json = json.getJSONObject("data")
 
-        val answers = AnswersOpenHelper(this)
-        val answers_rate = AnswersRateOpenHelper(this)
-        val correct_answer = CorrectAnswerOpenHelper(this)
-        val exams_numbers = ExamsNumbersOpenHelper(this)
-        val exams_questions = ExamsQuestionsOpenHelper(this)
-        val genres = GenresOpenHelper(this)
-        val image = ImageOpenHelper(this)
-        val questions = QuestionsOpenHelper(this)
-        val questions_genres = QuestionsGenresOpenHelper(this)
+        val db = SQLiteHelper(this).writableDatabase
+
+        val answers = AnswersOpenHelper(db)
+        val answers_rate = AnswersRateOpenHelper(db)
+        val correct_answer = CorrectAnswerOpenHelper(db)
+        val exams_numbers = ExamsNumbersOpenHelper(db)
+        val exams_questions = ExamsQuestionsOpenHelper(db)
+        val genres = GenresOpenHelper(db)
+        val image = ImageOpenHelper(db)
+        val questions = QuestionsOpenHelper(db)
+        val questions_genres = QuestionsGenresOpenHelper(db)
 //        val user_answers = UserAnswersOpenHelper(ac)
 
 
         var jArray = json.getJSONArray("answer_db")
-        if(jArray != {}) {
+        if (jArray != {}) {
             for (i in 0..jArray.length() - 1) {
                 answers.add_record(
                     jArray.getInt(0),
@@ -65,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         jArray = json.getJSONArray("answers_rate_db")
-        if(jArray != {}) {
+        if (jArray != {}) {
             for (i in 0..jArray.length() - 1) {
                 answers_rate.add_record(
                     jArray.getInt(0),
@@ -74,16 +80,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
         jArray = json.getJSONArray("exams_numbers_db")
-        if(jArray != {}) {
+        if (jArray != {}) {
             for (i in 0..jArray.length() - 1) {
                 exams_numbers.add_record(
                     jArray.getJSONObject(i).getInt("exam_id")
-                    ,jArray.getJSONObject(i).getString("exams_number")
+                    , jArray.getJSONObject(i).getString("exams_number")
                 )
             }
         }
         jArray = json.getJSONArray("exams_questions_db")
-        if(jArray != {}) {
+        if (jArray != {}) {
             for (i in 0..jArray.length() - 1) {
                 exams_questions.add_record(
                     jArray.getJSONObject(i).getInt("exam_id"),
@@ -94,7 +100,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         jArray = json.getJSONArray("genres_db")
-        if(jArray != {}) {
+        if (jArray != {}) {
             for (i in 0..jArray.length() - 1) {
                 genres.add_record(
                     jArray.getJSONObject(i).getInt("genre_id"),
@@ -103,7 +109,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         jArray = json.getJSONArray("image_db")
-        if(jArray != {}) {
+        if (jArray != {}) {
             for (i in 0..jArray.length() - 1) {
                 image.add_record(
                     jArray.getJSONObject(i).getInt("question_id"),
@@ -112,7 +118,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         jArray = json.getJSONArray("questions_db")
-        if(jArray != {}) {
+        if (jArray != {}) {
             for (i in 0..jArray.length() - 1) {
                 questions.add_record(
                     jArray.getJSONObject(i).getInt("question_id"),
@@ -124,7 +130,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         jArray = json.getJSONArray("questions_genres_db")
-        if(jArray != {}) {
+        if (jArray != {}) {
             for (i in 0..jArray.length() - 1) {
                 questions_genres.add_record(
                     jArray.getJSONObject(i).getInt("question_id"),
@@ -133,7 +139,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         jArray = json.getJSONArray("correct_answer_db")
-        if(jArray != {}) {
+        if (jArray != {}) {
             for (i in 0..jArray.length() - 1) {
                 correct_answer.add_record(
                     jArray.getJSONObject(i).getInt("question_id"),
@@ -153,11 +159,11 @@ class MainActivity : AppCompatActivity() {
 //        Log.d("tete9",questions_genres.find_question_genres(1).toString())
 //        Log.d("tete0",questions_genres.find_genre_questions(1).toString())
 //        Log.d("tete10",correct_answer.find_correct_answer(1).toString())
-
+        db.close()
         return true
     }
 
-    fun get_user_id(token:String){
+    fun get_user_id(token: String) {
 
     }
 }
