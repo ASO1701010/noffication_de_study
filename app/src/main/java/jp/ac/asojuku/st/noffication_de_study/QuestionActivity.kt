@@ -3,6 +3,8 @@ package jp.ac.asojuku.st.noffication_de_study
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import jp.ac.asojuku.st.noffication_de_study.db.QuestionsOpenHelper
+import kotlinx.android.synthetic.main.activity_question.*
 import java.lang.Exception
 
 class QuestionActivity : AppCompatActivity() {
@@ -39,6 +41,18 @@ class QuestionActivity : AppCompatActivity() {
 
     //問題表示
     fun printQuestion() {
+        val questions = SQLiteHelper(this)
+        val db = questions.readableDatabase
+        val QOH = QuestionsOpenHelper(db)
+        var question_arr:ArrayList<String>? = QOH.find_question(examData.question_current)
+        var question_str:String
+        if (question_arr == null) {
+            question_str = "問題文がありません"
+        } else {
+            question_str = question_arr[0]
+        }
+
+        textView4.setText(question_str)
 
     }
 
