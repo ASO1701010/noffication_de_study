@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         var result = "2019-05-06"
         try {
-            var cursor = db.rawQuery(query, null)
+            cursor = db.rawQuery(query, null)
             cursor.moveToFirst()
             result = cursor.getString(0).toString()
             cursor.close()
