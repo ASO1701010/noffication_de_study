@@ -1,5 +1,6 @@
 package jp.ac.asojuku.st.noffication_de_study
 
+import android.database.Cursor
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -26,22 +27,20 @@ class MainActivity : AppCompatActivity() {
         val questions = SQLiteHelper(this)
         val db = questions.readableDatabase
         val query = "SELECT update_date FROM questions ORDER BY update_date desc limit 1"
-        var cursor = db.rawQuery("",null)
+        var cursor:Cursor
+
         var result = "2019-05-06"
         try {
-            cursor = db.rawQuery(query, null)
+            var cursor = db.rawQuery(query, null)
             cursor.moveToFirst()
             result = cursor.getString(0).toString()
             cursor.close()
             db.close()
         }catch (e:Exception){
-            cursor.close()
             db.close()
 //            Log.d("error",e.toString())
             return result
         }
-        cursor.close()
-        db.close()
         return result
     }
 
@@ -72,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
         var jArray = json.getJSONArray("answer_db")
         if (jArray != {}) {
-            for (i in 0..jArray.length() - 1) {
+            for (i in 0 until jArray.length()) {
                 answers.add_record(
                     jArray.getInt(0),
                     jArray.getInt(1)
@@ -81,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         }
         jArray = json.getJSONArray("answers_rate_db")
         if (jArray != {}) {
-            for (i in 0..jArray.length() - 1) {
+            for (i in 0 until jArray.length()) {
                 answers_rate.add_record(
                     jArray.getInt(0),
                     jArray.getDouble(1)
@@ -90,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         }
         jArray = json.getJSONArray("exams_numbers_db")
         if (jArray != {}) {
-            for (i in 0..jArray.length() - 1) {
+            for (i in 0 until jArray.length()) {
                 exams_numbers.add_record(
                     jArray.getJSONObject(i).getInt("exam_id")
                     , jArray.getJSONObject(i).getString("exams_number")
@@ -99,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         }
         jArray = json.getJSONArray("exams_questions_db")
         if (jArray != {}) {
-            for (i in 0..jArray.length() - 1) {
+            for (i in 0 until jArray.length()) {
                 exams_questions.add_record(
                     jArray.getJSONObject(i).getInt("exam_id"),
                     jArray.getJSONObject(i).getString("exams_number"),
@@ -110,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         }
         jArray = json.getJSONArray("genres_db")
         if (jArray != {}) {
-            for (i in 0..jArray.length() - 1) {
+            for (i in 0 until jArray.length()) {
                 genres.add_record(
                     jArray.getJSONObject(i).getInt("genre_id"),
                     jArray.getJSONObject(i).getString("genre_name")
@@ -119,7 +118,7 @@ class MainActivity : AppCompatActivity() {
         }
         jArray = json.getJSONArray("image_db")
         if (jArray != {}) {
-            for (i in 0..jArray.length() - 1) {
+            for (i in 0 until jArray.length()) {
                 image.add_record(
                     jArray.getJSONObject(i).getInt("question_id"),
                     jArray.getJSONObject(i).getString("file_name")
@@ -128,7 +127,7 @@ class MainActivity : AppCompatActivity() {
         }
         jArray = json.getJSONArray("questions_db")
         if (jArray != {}) {
-            for (i in 0..jArray.length() - 1) {
+            for (i in 0 until jArray.length()) {
                 questions.add_record(
                     jArray.getJSONObject(i).getInt("question_id"),
                     jArray.getJSONObject(i).getString("question"),
