@@ -7,90 +7,117 @@
         android:layout_height="match_parent"
         tools:context=".QuestionOptionActivity">
 
-    <ImageView
-            android:layout_width="360dp"
-            android:layout_height="560dp" app:srcCompat="@android:drawable/alert_light_frame"
-            android:id="@+id/imageView7"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent" android:scaleType="fitXY"
-            app:layout_constraintHorizontal_bias="0.485" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/imageView6" app:layout_constraintVertical_bias="0.106"/>
-    <ImageButton
+    <CheckBox
+            android:text="H29秋"
             android:layout_width="wrap_content"
-            android:layout_height="30dp" app:srcCompat="@android:drawable/arrow_down_float"
-            android:id="@+id/imageButton"
-            app:layout_constraintEnd_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toTopOf="@+id/textView5" app:layout_constraintBottom_toBottomOf="@+id/textView5"/>
-    <ImageView
-            android:layout_width="0dp"
-            android:layout_height="80dp" app:srcCompat="@android:drawable/editbox_background_normal"
-            android:id="@+id/imageView6"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/H29F" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="28dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="504dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.93"/>
+    <CheckBox
+            android:text="H29春"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/H29S"
+            app:layout_constraintStart_toStartOf="@+id/H30F" android:layout_marginTop="22dp"
+            app:layout_constraintTop_toBottomOf="@+id/H30S"/>
+    <CheckBox
+            android:text="H30春"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/H30S" android:layout_marginTop="128dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" android:scaleType="fitXY"
-            app:layout_constraintHorizontal_bias="0.0"/>
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="73dp" app:layout_constraintStart_toEndOf="@+id/H30F"
+            android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.46"/>
+    <CheckBox
+            android:text="H30秋"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/H30F"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/H29S"
+            app:layout_constraintVertical_bias="0.895"
+            app:layout_constraintEnd_toStartOf="@+id/H28F" android:layout_marginEnd="31dp"
+    />
+    <CheckBox
+            android:text="H31春"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/H31S" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="24dp" android:layout_marginTop="128dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toStartOf="@+id/H30F"
+            android:layout_marginEnd="8dp" app:layout_constraintHorizontal_bias="0.125"/>
     <ImageButton
-            android:layout_width="55dp"
-            android:layout_height="55dp" app:srcCompat="@android:drawable/ic_menu_revert"
+            android:layout_width="0dp"
+            android:layout_height="0dp" app:srcCompat="@android:drawable/ic_menu_revert"
             android:id="@+id/QOA_Back_BTN"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/textView7" android:layout_marginBottom="17dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
-            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"/>
+            app:layout_constraintBottom_toBottomOf="@+id/textView7" android:layout_marginEnd="43dp"
+    />
     <TextView
-            android:layout_width="200dp"
-            android:layout_height="55dp" android:id="@+id/textView7"
+            android:layout_width="0dp"
+            android:layout_height="39dp" android:id="@+id/textView7"
             android:textSize="18sp" android:text="出題オプション" android:textAlignment="center"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toTopOf="@+id/imageView6"
-            app:layout_constraintStart_toStartOf="@+id/imageView6"
-            app:layout_constraintEnd_toEndOf="@+id/imageView6"/>
+            app:layout_constraintStart_toEndOf="@+id/QOA_Back_BTN" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="16dp" app:layout_constraintBottom_toTopOf="@+id/textView10"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginEnd="104dp"
+    />
     <Button
             android:text="出題開始"
             android:layout_width="120dp"
-            android:layout_height="60dp" android:id="@+id/QOA_Start_BTN"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+            android:layout_height="77dp" android:id="@+id/QOA_Start_BTN"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="7dp"/>
     <TextView
             android:text="試験回選択"
-            android:layout_width="100dp"
-            android:layout_height="25dp" android:id="@+id/textView10"
-            android:textSize="18sp" app:layout_constraintStart_toStartOf="@+id/imageView7"
-            android:layout_marginStart="64dp" android:layout_marginTop="20dp"
-            app:layout_constraintTop_toTopOf="@+id/imageView7"/>
-    <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="30dp" app:srcCompat="@android:drawable/arrow_down_float"
-            android:id="@+id/imageButton2"
-            app:layout_constraintEnd_toStartOf="@+id/textView10"
-            app:layout_constraintTop_toTopOf="@+id/textView10"
-            app:layout_constraintBottom_toBottomOf="@+id/textView10"/>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" android:id="@+id/textView10"
+            android:textSize="18sp"
+            android:layout_marginTop="71dp"
+            app:layout_constraintEnd_toStartOf="@+id/H29S" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/QOA_Back_BTN"
+            android:layout_marginStart="20dp" android:layout_marginEnd="18dp"/>
     <TextView
             android:text="ジャンル選択"
-            android:layout_width="120dp"
-            android:layout_height="25dp" android:id="@+id/textView5"
-            app:layout_constraintStart_toEndOf="@+id/imageButton2" android:layout_marginStart="4dp"
-            android:textSize="18sp" app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="276dp"/>
+            android:layout_width="0dp"
+            android:layout_height="30dp" android:id="@+id/textView5"
+            android:textSize="18sp"
+            android:layout_marginTop="72dp"
+            android:layout_marginBottom="69dp" app:layout_constraintEnd_toEndOf="@+id/H29S"
+            app:layout_constraintTop_toTopOf="@+id/H28F" app:layout_constraintStart_toStartOf="@+id/QOA_Select_Genres_1"
+            app:layout_constraintBottom_toBottomOf="@+id/QOA_Select_Genres_1" android:layout_marginEnd="2dp"
+    />
     <TextView
             android:text="問題数選択"
-            android:layout_width="130dp"
-            android:layout_height="25dp" android:id="@+id/textView8"
-            android:textSize="18sp" android:layout_marginTop="80dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView5"
-            app:layout_constraintStart_toStartOf="@+id/textView5"/>
+            android:layout_width="93dp"
+            android:layout_height="30dp" android:id="@+id/textView8"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="@+id/QOA_Select_Genres_2" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="40dp"
+            app:layout_constraintBottom_toBottomOf="@+id/QOA_Question_Amount_BOX" android:layout_marginStart="93dp"
+            android:layout_marginBottom="41dp"/>
     <TextView
             android:text="出題方法"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/textView9"
-            android:layout_marginTop="70dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" app:layout_constraintStart_toStartOf="@+id/imageView7"
-            android:layout_marginStart="70dp" android:textSize="18sp"/>
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/radioGroup" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="195dp"/>
     <RadioGroup
             android:layout_width="211dp"
-            android:layout_height="91dp" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" app:layout_constraintStart_toStartOf="@+id/textView9"
-    >
+            android:layout_height="wrap_content"
+            android:id="@+id/radioGroup"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView9" app:layout_constraintEnd_toEndOf="parent">
         <RadioButton
                 android:text="順番に出題"
                 android:layout_width="wrap_content"
@@ -104,20 +131,27 @@
             android:text="CheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/QOA_Select_Genres_1"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" app:layout_constraintStart_toStartOf="@+id/textView5"
-    />
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="@+id/textView8"
+            android:layout_marginTop="310dp" android:layout_marginStart="3dp"/>
     <CheckBox
             android:text="CheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/QOA_Select_Genres_2"
-            app:layout_constraintTop_toBottomOf="@+id/QOA_Select_Genres_1"
             app:layout_constraintStart_toStartOf="@+id/QOA_Select_Genres_1"
-    />
+            app:layout_constraintTop_toBottomOf="@+id/QOA_Select_Genres_1"/>
     <Spinner
-            android:layout_width="40dp"
-            android:layout_height="25dp" android:id="@+id/QOA_Question_Amount_BOX"
-            app:layout_constraintStart_toEndOf="@+id/textView8" android:layout_marginStart="90dp"
-            app:layout_constraintTop_toTopOf="@+id/textView8" app:layout_constraintBottom_toBottomOf="@+id/textView8"
-            app:layout_constraintVertical_bias="0.0"/>
+            android:layout_width="93dp"
+            android:layout_height="39dp" android:id="@+id/QOA_Question_Amount_BOX"
+            android:entries="@array/Question_Amount_list"
+            android:layout_marginTop="193dp"
+            app:layout_constraintTop_toBottomOf="@+id/H29S" android:layout_marginBottom="194dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toTopOf="@+id/QOA_Start_BTN"
+            android:layout_marginEnd="57dp"/>
+    <CheckBox
+            android:text="H28秋"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/H28F"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="100dp" app:layout_constraintBaseline_toBaselineOf="@+id/H29S"/>
 </android.support.constraint.ConstraintLayout>

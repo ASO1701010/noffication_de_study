@@ -8,4 +8,17 @@
         <item>25分</item>
         <item>30分</item>
     </string-array>
+    <!--QuestionOptionActivityの問題数選択用スピナーの値ー-->
+    <string-array name="Question_Amount_list">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+    </string-array>
 </resources>
