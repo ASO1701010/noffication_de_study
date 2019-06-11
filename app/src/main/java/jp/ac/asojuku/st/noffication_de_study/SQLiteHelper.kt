@@ -15,9 +15,9 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, 
         db.execSQL("CREATE TABLE exams_questions ( exams_id INTEGER, exams_number TEXT, question_id INTEGER, question_number INTEGER, primary key (exams_id, exams_number, question_id, question_number) )")
         db.execSQL("CREATE TABLE genres ( genre_id INTEGER PRIMARY KEY, genre_name TEXT )")
         db.execSQL("CREATE TABLE image ( question_id INTEGER primary key, file_name TEXT )")
-        db.execSQL("CREATE TABLE questions ( question_id INTEGER PRIMARY KEY, question TEXT, is_have_image BOOLEAN )")
+        db.execSQL("CREATE TABLE questions ( question_id INTEGER PRIMARY KEY, question TEXT, is_have_image BOOLEAN, comment TEXT ,update_date TEXT)")
         db.execSQL("CREATE TABLE questions_genres ( question_id INTEGER, genre_id INTEGER, primary key (question_id, genre_id) )")
-        db.execSQL("CREATE TABLE user_answers ( user_answer_id INTEGER primary key, question_id INTEGER, answer_choice INTEGER, answer_time DATETIME )")
+        db.execSQL("CREATE TABLE user_answers ( user_answer_id INTEGER primary key, question_id INTEGER, answer_choice INTEGER, answer_time TEXT )")
     }
 
     // データベースをバージョンアップした時に実行される処理
