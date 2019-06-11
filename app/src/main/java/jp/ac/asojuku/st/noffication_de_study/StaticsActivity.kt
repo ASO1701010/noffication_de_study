@@ -2,7 +2,6 @@ package jp.ac.asojuku.st.noffication_de_study
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_statics.*
 import org.jetbrains.anko.startActivity
 
 //TODO 統計情報画面:未完成(0%)
@@ -18,17 +17,17 @@ class StaticsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statics)
 
-        SA_Back_BTN.setOnClickListener {
-            startActivity<TitleActivity>()
-        }
-
-        SA_My_Statics_BTN.setOnClickListener {
-
-        }
-
-        SA_Question_Statics_BTN.setOnClickListener {
-
-        }
+//        SA_Back_BTN.setOnClickListener {
+//            startActivity<TitleActivity>()
+//        }
+//
+//        SA_My_Statics_BTN.setOnClickListener {
+//
+//        }
+//
+//        SA_Question_Statics_BTN.setOnClickListener {
+//
+//        }
     }
 
     //my記録表示
