@@ -18,6 +18,9 @@ class QuestionOptionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_question_option)
 
         QOA_Start_BTN.setOnClickListener {
+            // 開始ボタンが押された際に、選択を読みこむ
+//            loadChoice()
+
             startActivity<AnswerActivity>()
         }
 
@@ -28,47 +31,46 @@ class QuestionOptionActivity : AppCompatActivity() {
 
     //選択肢を読み込む
     fun loadChoice() {
-        var Temp_list = ArrayList<ArrayList<ArrayList<Int>>?>()
+        // ランダム出題するかどうか
+        // ランダム出題の場合、randomBooleanの中身がtrueに
+        val randomBoolean = QOA_Select_Method_Random_RBTN.isChecked
 
         val questions = SQLiteHelper(this)
         val db = questions.readableDatabase
         // 数値はすべて仮数
 
-        // 問題の読み込み
+        // 出題年度ごとの問題の読み込み
         val EQOH = ExamsQuestionsOpenHelper(db)
+        var TempYear_list = ArrayList<ArrayList<ArrayList<Int>>?>()
         // 問題検索
         // 出題IDはFEだけなので1?
-        if(QOA_Select_Exam_Number_H31S_RBTN.isChecked) {
-            Temp_list.add(EQOH.find_all_questions(1, "FE2019S"))
+        if (QOA_Select_Exam_Number_H31S_RBTN.isChecked) {
+            TempYear_list.add(EQOH.find_all_questions(1, "FE2019S"))
         }
-        if(QOA_Select_Exam_Number_H30F_RBTN.isChecked) {
-            Temp_list.add(EQOH.find_all_questions(1, "FE2018F"))
+        if (QOA_Select_Exam_Number_H30F_RBTN.isChecked) {
+            TempYear_list.add(EQOH.find_all_questions(1, "FE2018F"))
         }
-        if(QOA_Select_Exam_Number_H30S_RBTN.isChecked) {
-            Temp_list.add(EQOH.find_all_questions(1, "FE2018S"))
+        if (QOA_Select_Exam_Number_H30S_RBTN.isChecked) {
+            TempYear_list.add(EQOH.find_all_questions(1, "FE2018S"))
         }
-        if(QOA_Select_Exam_Number_H29F_RBTN.isChecked) {
-            Temp_list.add(EQOH.find_all_questions(1, "FE2017F"))
+        if (QOA_Select_Exam_Number_H29F_RBTN.isChecked) {
+            TempYear_list.add(EQOH.find_all_questions(1, "FE2017F"))
         }
-        if(QOA_Select_Exam_Number_H29S_RBTN.isChecked) {
-            Temp_list.add(EQOH.find_all_questions(1, "FE2017S"))
+        if (QOA_Select_Exam_Number_H29S_RBTN.isChecked) {
+            TempYear_list.add(EQOH.find_all_questions(1, "FE2017S"))
         }
-        if(QOA_Select_Exam_Number_H28F_RBTN.isChecked) {
-            Temp_list.add(EQOH.find_all_questions(1, "FE2016F"))
+        if (QOA_Select_Exam_Number_H28F_RBTN.isChecked) {
+            TempYear_list.add(EQOH.find_all_questions(1, "FE2016F"))
         }
-
-
-        // 出題年度の読み込み
-
 
 
         // ジャンルの読み込み
         val GOH = QuestionsGenresOpenHelper(db)
         // ジャンル検索
-        if(QOA_Select_Genres_1.isChecked) {
+        if (QOA_Select_Genres_1.isChecked) {
             val genre1_Questions = GOH.find_genre_questions(1)
         }
-        if(QOA_Select_Genres_2.isChecked) {
+        if (QOA_Select_Genres_2.isChecked) {
             val genre2_Questions = GOH.find_genre_questions(2)
         }
 
