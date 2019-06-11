@@ -121,12 +121,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="118dp">
                 <CheckBox
-                        android:text="CheckBox"
+                        android:text="ジャンル1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/QOA_Select_Genres_1"
                 />
                 <CheckBox
-                        android:text="CheckBox"
+                        android:text="ジャンル2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/QOA_Select_Genres_2"
                 />
