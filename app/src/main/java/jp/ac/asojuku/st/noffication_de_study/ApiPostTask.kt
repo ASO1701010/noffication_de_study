@@ -22,11 +22,11 @@ class ApiPostTask(var callback: (String?) -> Unit) : AsyncTask<String, Unit, Str
                 val param: HashMap<String, String> = HashMap()
                 for (pair in keyValuePairs) {
                     val entry = pair.split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                    param.put(entry[0].trim { it <= ' ' }, entry[1].trim { it <= ' ' })
+                    param[entry[0].trim { it <= ' ' }] = entry[1].trim { it <= ' ' }
                 }
 
                 val formBuilder = FormBody.Builder()
-                param.forEach { name, value -> formBuilder.add(name, value) }
+                param.forEach { (name, value) -> formBuilder.add(name, value) }
                 val body: FormBody = formBuilder.build()
                 request = Request.Builder().url(api).post(body).build()
             } else {

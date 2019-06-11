@@ -22,13 +22,13 @@ class ApiGetTask(var callback: (String?) -> Unit) : AsyncTask<String, Unit, Stri
                 val param: HashMap<String, String> = HashMap()
                 for (pair in keyValuePairs) {
                     val entry = pair.split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                    param.put(entry[0].trim { it <= ' ' }, entry[1].trim { it <= ' ' })
+                    param[entry[0].trim { it <= ' ' }] = entry[1].trim { it <= ' ' }
                 }
 
                 val api = server + api_name
                 urlBuilder = HttpUrl.parse(api)!!.newBuilder()
 
-                param.forEach { name, value -> urlBuilder.addQueryParameter(name, value) }
+                param.forEach { (name, value) -> urlBuilder.addQueryParameter(name, value) }
             } else {
                 val api = server + api_name
                 urlBuilder = HttpUrl.parse(api)!!.newBuilder()
