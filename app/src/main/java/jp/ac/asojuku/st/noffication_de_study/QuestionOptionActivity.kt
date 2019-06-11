@@ -13,6 +13,7 @@ class QuestionOptionActivity : AppCompatActivity() {
     //TODO 定数の値はすべて仮の値
     val user_id = 12345678
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_option)
@@ -95,5 +96,4 @@ class QuestionOptionActivity : AppCompatActivity() {
     fun decideQuestion() {
 
     }
-
 }
