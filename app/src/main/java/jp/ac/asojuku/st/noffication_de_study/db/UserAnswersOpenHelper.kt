@@ -8,27 +8,12 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 
-class UserAnswersOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "user_answers", null, 1) {
-    // 第１引数 :
-    // 第２引数 : データベースの名称
-    // 第３引数 : null
-    // 第４引数 : データベースのバージョン
+class UserAnswersOpenHelper (var db:SQLiteDatabase) {
+
     val tableName:String = "user_answers";
-    override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL(
-            "CREATE TABLE " + tableName + " ( " +
-                    "user_answer_id integer not null primary key, " +
-                    "question_id integer, " +
-                    "answer_choice integer, " +
-                    "answer_time date " +
-                    ");")
-    }
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-    }
+
 
     fun find_all_user_answers() :ArrayList<ArrayList<String>>? {
-        val thisDB = UserAnswersOpenHelper(mContext)
-        val db = thisDB.readableDatabase
 
         val query = "SELECT * FROM " + tableName
         val cursor = db.rawQuery(query, null)
@@ -59,8 +44,6 @@ class UserAnswersOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext
     }
 
     fun find_user_answers(question_id:Int) :ArrayList<ArrayList<String>>? {
-        val thisDB = UserAnswersOpenHelper(mContext)
-        val db = thisDB.readableDatabase
 
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
@@ -93,14 +76,14 @@ class UserAnswersOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext
 
         val values = ContentValues()
         values.put("user_answer_id", a)
-        values.put("question_id",b )
-        values.put("answer_choice",c )
-        values.put("answer_time",d )
+        values.put("question_id", b)
+        values.put("answer_choice", c)
+        values.put("answer_time", d)
 
         try {
             db.insertOrThrow(tableName, null, values)
-        }catch (e: SQLiteConstraintException){
-            db.update(tableName,values,"user_answer_id = " + a,null)
+        } catch (e: SQLiteConstraintException) {
+            db.update(tableName, values, "user_answer_id = " + a, null)
         }
     }
 }

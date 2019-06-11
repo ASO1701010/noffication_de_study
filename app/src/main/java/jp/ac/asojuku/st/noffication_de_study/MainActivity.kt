@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         ApiGetTask {
-            //            itの値チェック用ですが、itのデータが大きすぎて全ての表示ができません。
+//            itの値チェック用ですが、itのデータが大きすぎて全ての表示ができません。
 //            jsonArrayのキー値を設定して、個別に確認してください。
 //            Log.d("test",JSONObject(it).getJSONObject("data").getJSONArray("questions_db").toString())
             if (!it.isNullOrEmpty()) {
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "APIの通信に失敗しました(´･ω･`)", Toast.LENGTH_SHORT).show()
             }
-//            Log.d("tetetete",getSharedPreferences("user_data", MODE_PRIVATE).getString("user_id","999999"))
+
 
             startActivity<TitleActivity>()
             finish()
@@ -59,12 +59,10 @@ class MainActivity : AppCompatActivity() {
     //    受け取った全ての値をDBに登録する。
     fun all_update(callback: JSONObject): Boolean {
         var json = callback
-//        Log.d("TEST", "Nya-n1")
         if (json.getString("status") != "S00") {
 //            Log.d("TEST", json.toString())
             return false
         }
-//        Log.d("TEST", "Nya-n2")
         json = json.getJSONObject("data")
 
         val db = SQLiteHelper(this).writableDatabase
@@ -191,6 +189,7 @@ class MainActivity : AppCompatActivity() {
             if(JSONObject(it).getString("status") != "E00"){
                 val e : SharedPreferences.Editor = getSharedPreferences("user_data", AppCompatActivity.MODE_PRIVATE).edit()
                 e.putString("user_id",JSONObject(it).getJSONObject("data").getString("user_id")).apply()
+
             }else{
                 result = false
             }
