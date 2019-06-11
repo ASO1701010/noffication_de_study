@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">noffication_de_study</string>
+    <string-array name="OA_Noffication_Interval_list">
+        <item>5分</item>
+        <item>10分</item>
+        <item>15分</item>
+        <item>20分</item>
+        <item>25分</item>
+        <item>30分</item>
+    </string-array>
+    <string-array name="QOA_Question_Amount_BOX_list">
+        <item>5問</item>
+        <item>10問</item>
+        <item>15問</item>
+        <item>20問</item>
+        <item>25問</item>
+        <item>30問</item>
+        <item>35問</item>
+        <item>40問</item>
+        <item>45問</item>
+        <item>50問</item>
+    </string-array>
 </resources>
