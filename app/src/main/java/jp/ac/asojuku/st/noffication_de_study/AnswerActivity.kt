@@ -13,7 +13,7 @@ class AnswerActivity : AppCompatActivity() {
     val questionsDB = QuestionsOpenHelper(db)
     val correctDB = CorrectAnswerOpenHelper(db)
 
-    val user_id:Int = getSharedPreferences("user_data", MODE_PRIVATE).getInt("user_id",999999)
+    val user_id:String = getSharedPreferences("user_data", MODE_PRIVATE).getString("user_id","999999")
     val exam_data:ExamData = intent.getSerializableExtra("exam_data") as ExamData
 
     val question_id = exam_data.question_current
@@ -37,7 +37,7 @@ class AnswerActivity : AppCompatActivity() {
 
     }
     fun at_first(){
-        if(user_id == 999999){
+        if(user_id == "999999"){
             Log.d("user_id が受け取れていません","/")
         }
         answer_text = questionsDB.find_comment(question_id)?.get(1)

@@ -1,10 +1,14 @@
 package jp.ac.asojuku.st.noffication_de_study
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.widget.Toast
 import jp.ac.asojuku.st.noffication_de_study.db.*
+import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 
 
@@ -12,13 +16,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.d("123", find_last_update())
 
         ApiGetTask {
             //            itの値チェック用ですが、itのデータが大きすぎて全ての表示ができません。
 //            jsonArrayのキー値を設定して、個別に確認してください。
 //            Log.d("test",JSONObject(it).getJSONObject("data").getJSONArray("questions_db").toString())
-            all_update(JSONObject(it))
+            if (!it.isNullOrEmpty()) {
+                all_update(JSONObject(it))
+                get_user_id("aaoshfiasdg")
+            } else {
+                Toast.makeText(this, "APIの通信に失敗しました(´･ω･`)", Toast.LENGTH_SHORT).show()
+            }
+//            Log.d("tetetete",getSharedPreferences("user_data", MODE_PRIVATE).getString("user_id","999999"))
+
+            startActivity<TitleActivity>()
+            finish()
         }.execute("db-update.php", hashMapOf("last_update_date" to find_last_update()).toString())
     }
 
@@ -171,7 +183,18 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    fun get_user_id(token: String) {
-
+    //端末に登録されているトークンをAPIサーバに送信し、ユーザーIDを受け取る
+    fun get_user_id(token: String):Boolean {
+        var result:Boolean = true
+        ApiPostTask {
+            Log.d("tetes",it)
+            if(JSONObject(it).getString("status") != "E00"){
+                val e : SharedPreferences.Editor = getSharedPreferences("user_data", AppCompatActivity.MODE_PRIVATE).edit()
+                e.putString("user_id",JSONObject(it).getJSONObject("data").getString("user_id")).apply()
+            }else{
+                result = false
+            }
+        }.execute("add-user.php", hashMapOf("token" to token).toString())
+        return result
     }
 }
