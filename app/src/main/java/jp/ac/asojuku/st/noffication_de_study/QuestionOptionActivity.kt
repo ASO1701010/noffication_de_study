@@ -6,32 +6,31 @@ import jp.ac.asojuku.st.noffication_de_study.db.ExamsQuestionsOpenHelper
 import jp.ac.asojuku.st.noffication_de_study.db.QuestionsGenresOpenHelper
 import kotlinx.android.synthetic.main.activity_question_option.*
 import org.jetbrains.anko.startActivity
+import jp.ac.asojuku.st.noffication_de_study.R
 
 //TODO 問題オプション画面：未完成（0%）
 class QuestionOptionActivity : AppCompatActivity() {
 
     //TODO 定数の値はすべて仮の値
     val user_id = 12345678
-
+//    var question_list 中身が無いと宣言できない
+//    var setting_list 中身が無いと宣言できない
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_option)
 
-        QOA_Start_BTN.setOnClickListener {
-            // 開始ボタンが押された際に、選択を読みこむ
-//            loadChoice()
-
-            startActivity<AnswerActivity>()
-        }
-
-        QOA_Back_BTN.setOnClickListener {
-            startActivity<TitleActivity>()
-        }
+//        QOA_Start_BTN.setOnClickListener {
+//            startActivity<AnswerActivity>()
+//        }
+//
+//        QOA_Back_BTN.setOnClickListener {
+//            startActivity<TitleActivity>()
+//        }
     }
 
     //選択肢を読み込む
-    fun loadChoice() {
+   fun loadChoice() {
         // ランダム出題するかどうか
         // ランダム出題の場合、randomBooleanの中身がtrueに
         val randomBoolean = QOA_Select_Method_Random_RBTN.isChecked
@@ -74,9 +73,8 @@ class QuestionOptionActivity : AppCompatActivity() {
         if (QOA_Select_Genres_2.isChecked) {
             val genre2_Questions = GOH.find_genre_questions(2)
         }
+   }
 
-
-    }
 
     //読み込んだ選択肢を各セレクトボックスやスピナーにセットする
     //object型を引数には設定できない
@@ -89,6 +87,11 @@ class QuestionOptionActivity : AppCompatActivity() {
 
     }
 
+    //選択設定判定
+    //設定されたチェックをすべて検索しsetting_listに登録
+    fun discChoice() {
+
+    }
 
     //出題問題決定
     //出題する問題を決定し問題IDを配列で返す。未設定時はランダムに20問
@@ -96,4 +99,5 @@ class QuestionOptionActivity : AppCompatActivity() {
     fun decideQuestion() {
 
     }
+
 }
