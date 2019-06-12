@@ -20,9 +20,13 @@ class QuestionOptionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_option)
 
-//        QOA_Start_BTN.setOnClickListener {
-//            startActivity<AnswerActivity>()
-//        }
+        QOA_Start_BTN.setOnClickListener {
+            //デバック用データ
+            var exam_data = ExamData(1,"name1","number2")
+            exam_data.set_list_data(arrayListOf(1,2,3,4))
+
+            startActivity<QuestionActivity>("exam_data" to exam_data)
+        }
 //
 //        QOA_Back_BTN.setOnClickListener {
 //            startActivity<TitleActivity>()
