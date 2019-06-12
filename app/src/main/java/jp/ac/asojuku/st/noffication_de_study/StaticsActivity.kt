@@ -32,7 +32,7 @@ class StaticsActivity : AppCompatActivity() {
         }
 
         SA_Question_Statics_BTN.setOnClickListener {
-
+            get_statics()
         }
     }
 
@@ -64,15 +64,12 @@ class StaticsActivity : AppCompatActivity() {
             if (!it.isNullOrEmpty()) {
                 Log.d("it",it)
                 json = JSONObject(it)
-                if(json.getString("status") == "E00") {
-                    Toast.makeText(this, "おきのどくですが、とうけいのしょは、きえてしまいました(´・∀・｀)", Toast.LENGTH_SHORT).show()
-                    result_flg = false
-                }
+
             } else {
                 Toast.makeText(this, "APIの通信に失敗しました(´･ω･`)", Toast.LENGTH_SHORT).show()
                 result_flg = false
             }
-        }.execute("db-update.php")
+        }.execute("get-statistics-info.php")
 
         if(result_flg==true){
             jsondata = json
