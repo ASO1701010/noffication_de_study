@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 //            Log.d("test",JSONObject(it).getJSONObject("data").getJSONArray("questions_db").toString())
             if (!it.isNullOrEmpty()) {
                 all_update(JSONObject(it))
-                get_user_id("aaoshfiasdg")
             } else {
                 Toast.makeText(this, "APIの通信に失敗しました(´･ω･`)", Toast.LENGTH_SHORT).show()
             }
@@ -83,8 +82,8 @@ class MainActivity : AppCompatActivity() {
         if (jArray != {}) {
             for (i in 0 until jArray.length()) {
                 answers.add_record(
-                    jArray.getInt(0),
-                    jArray.getInt(1)
+                    jArray.getJSONObject(i).getInt("question_id"),
+                    jArray.getJSONObject(i).getInt("answer_number")
                 )
             }
         }
@@ -181,6 +180,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    //あとでオプション画面に移動します
     //端末に登録されているトークンをAPIサーバに送信し、ユーザーIDを受け取る
     fun get_user_id(token: String):Boolean {
         var result:Boolean = true
