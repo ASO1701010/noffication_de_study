@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.activity_statics.*
 import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 
-//TODO 統計情報画面:未完成(0%)
+//TODO 統計情報画面:未完成(20%)
 class StaticsActivity : AppCompatActivity() {
 
     //定数はすべて仮の値
@@ -17,7 +17,7 @@ class StaticsActivity : AppCompatActivity() {
     var correct_rate:String = "999%" //正答率
     var text_print:String = "testTextPrint" //表示に利用する
 
-    var jsondata = JSONObject()
+    var jsondata = JSONObject() // get_statics() の戻り値を格納。 統計情報が入っております。
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ class StaticsActivity : AppCompatActivity() {
         }
 
         SA_Question_Statics_BTN.setOnClickListener {
-            get_statics()
+
         }
     }
 
@@ -58,18 +58,24 @@ class StaticsActivity : AppCompatActivity() {
 
     //統計情報取得
     fun get_statics(){
+        var result_flg = true
+        var json = JSONObject()
         ApiGetTask {
             if (!it.isNullOrEmpty()) {
                 Log.d("it",it)
-                var json = JSONObject(it)
+                json = JSONObject(it)
                 if(json.getString("status") == "E00") {
                     Toast.makeText(this, "おきのどくですが、とうけいのしょは、きえてしまいました(´・∀・｀)", Toast.LENGTH_SHORT).show()
+                    result_flg = false
                 }
-                jsondata = json
             } else {
                 Toast.makeText(this, "APIの通信に失敗しました(´･ω･`)", Toast.LENGTH_SHORT).show()
+                result_flg = false
             }
         }.execute("db-update.php")
-    }
 
+        if(result_flg==true){
+            jsondata = json
+        }
+    }
 }
