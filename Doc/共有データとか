@@ -4,8 +4,10 @@
         ・Intent系 (キー値:型(Activity->Activity) : 内容)
             exam_data:ExamData (QuestionActivity->AnswerActivity) : ExamDataクラスのインスタンス。出題リストと回答リストを渡す
 
+
         ・共有プリファレンス (キー値:型 -> 内容)
             user_id:String -> ユーザーID。　OptionActivity で端末とAPサーバに登録し、以降は MainActivity で読み込む
+
 
 
 
