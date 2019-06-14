@@ -14,7 +14,7 @@ class ExamsQuestionsOpenHelper (var db:SQLiteDatabase){
 
     fun find_all_questions(exams_id:Int,exams_number:String) :ArrayList<ArrayList<Int>>? {
 
-        val query = "SELECT * FROM " + tableName + " where exams_id = " + exams_id
+        val query = "SELECT * FROM " + tableName + " where exams_id = " + exams_id +" and exams_number = '"+exams_number + "'"
         val cursor = db.rawQuery(query, null)
 
         try{
@@ -23,13 +23,9 @@ class ExamsQuestionsOpenHelper (var db:SQLiteDatabase){
             var array = ArrayList<ArrayList<Int>>()
             var bufferList:ArrayList<Int>
 
-            bufferList = ArrayList()
-            bufferList.add(cursor.getInt(0))
-            array.add(bufferList)
-
             for(i in 0 until  cursor.count){
                 bufferList = ArrayList()
-                bufferList.add(cursor.getInt(1))
+                bufferList.add(cursor.getInt(2))
                 bufferList.add(cursor.getInt(3))
                 array.add(bufferList)
                 cursor.moveToNext()

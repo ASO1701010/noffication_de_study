@@ -2,6 +2,7 @@ package jp.ac.asojuku.st.noffication_de_study
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -10,10 +11,15 @@ import jp.ac.asojuku.st.noffication_de_study.db.QuestionsOpenHelper
 import jp.ac.asojuku.st.noffication_de_study.db.UserAnswersOpenHelper
 import kotlinx.android.synthetic.main.activity_question.*
 import java.lang.Exception
+import android.text.format.DateFormat
+import android.util.Log
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_question.*
+import org.json.JSONObject
+import java.util.*
 
 class QuestionActivity : AppCompatActivity() {
 
-    var user_id: Int = 12345678 //テスト用
     var examData: ExamData = intent.getSerializableExtra("ExamData") as ExamData
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,14 +117,6 @@ class QuestionActivity : AppCompatActivity() {
 //
 //    }
 
-    //結果登録
-    fun regResult() {
-        val userAnswers = SQLiteHelper(this)
-        val db = userAnswers.readableDatabase
-// 解答の登録
-//        val UA = UserAnswersOpenHelper(db)
-//        var question_arr:ArrayList<String>? = UA.add_record()
-    }
 
     //結果表示
     fun printResult() {
@@ -171,9 +169,32 @@ class QuestionActivity : AppCompatActivity() {
                     finish()
                 }.show()
         }
+    }
 
+    fun regResult() {
+        val date: Date = Date()
+        val test1: String = DateFormat.format("yyyy-MM-dd", date).toString()
+//        Log.d("tetes",hashMapOf(
+//            "question_id" to exam_data.question_current,
+//            "answer_choice" to exam_data.answered_list.get(exam_data.question_current),
+//            "answer_time" to test1).toString())
+        ApiPostTask {
+            Log.d("tetes", it)
+            if (JSONObject(it).getString("status") != "E00") {
+                Toast.makeText(this, "APIの通信に成功しました(｀・ω・´)", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "APIの通信に失敗しました(´･ω･`)", Toast.LENGTH_SHORT).show()
+            }
+        }.execute(
+            "add-answer.php", hashMapOf(
+                "question_id" to examData.question_current,
+                "answer_choice" to examData.answered_list.get(examData.question_current),
+                "answer_time" to test1
+            ).toString()
+        )
 
     }
+
 
 }
 
