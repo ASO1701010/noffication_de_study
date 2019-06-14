@@ -91,8 +91,8 @@ class MainActivity : AppCompatActivity() {
         if (jArray != {}) {
             for (i in 0 until jArray.length()) {
                 answers_rate.add_record(
-                    jArray.getInt(0),
-                    jArray.getDouble(1)
+                    jArray.getJSONObject(i).getInt("question_id"),
+                    jArray.getJSONObject(i).getDouble("answer_rate")
                 )
             }
         }
