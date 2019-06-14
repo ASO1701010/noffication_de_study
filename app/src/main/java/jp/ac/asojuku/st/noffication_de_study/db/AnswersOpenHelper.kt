@@ -1,19 +1,15 @@
 package jp.ac.asojuku.st.noffication_de_study.db
 
 import android.content.ContentValues
-import android.content.Context
 import android.database.CursorIndexOutOfBoundsException
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 
-
-class AnswersOpenHelper (var db:SQLiteDatabase) {
-
-    val tableName:String = "answers";
-
+class AnswersOpenHelper(var db: SQLiteDatabase) {
+    val tableName: String = "answers";
 
     //問題idを受け取って、対応する答えの選択肢を返す
-    fun find_answers(question_id:Int) :ArrayList<Int>? {
+    fun find_answers(question_id: Int): ArrayList<Int>? {
 
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
@@ -28,21 +24,21 @@ class AnswersOpenHelper (var db:SQLiteDatabase) {
             }
             cursor.close()
             return array
-        }catch (e: CursorIndexOutOfBoundsException){
+        } catch (e: CursorIndexOutOfBoundsException) {
             cursor.close()
             return null
         }
     }
-    fun add_record(q_id:Int, a_num:Int) {
 
+    fun add_record(q_id: Int, a_num: Int) {
         val values = ContentValues()
         values.put("question_id", q_id)
         values.put("answer_number", a_num)
 
         try {
             db.insertOrThrow(tableName, null, values)
-        }catch (e: SQLiteConstraintException){
-            db.update(tableName,values,"question_id = " + q_id +" and answer_number = "+ a_num,null)
+        } catch (e: SQLiteConstraintException) {
+            db.update(tableName, values, "question_id = " + q_id + " and answer_number = " + a_num, null)
         }
     }
 }

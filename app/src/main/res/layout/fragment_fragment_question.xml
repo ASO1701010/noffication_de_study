@@ -4,10 +4,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context=".FragmentQuestion">
-
-    <TextView
+    <ListView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="問題ごと"/>
-
+            android:layout_height="match_parent" android:id="@+id/listView"/>
 </FrameLayout>

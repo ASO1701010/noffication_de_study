@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import android.widget.Toast
 import jp.ac.asojuku.st.noffication_de_study.db.AnswersRateOpenHelper
 import kotlinx.android.synthetic.main.activity_statics.*
 import org.json.JSONObject
@@ -41,8 +39,7 @@ class StaticsActivity : AppCompatActivity(), FragmentMyRecord.OnFragmentInteract
                         fragment.arguments = Bundle().apply {
                             val dbHelper = AnswersRateOpenHelper(SQLiteHelper(this@StaticsActivity).readableDatabase)
                             val data = dbHelper.find_all_rate()
-                            Log.d("TEST", data.toString())
-                            putString("DATA", data.toString())
+                            putStringArrayList("DATA", data)
                         }
                         return fragment
                     }

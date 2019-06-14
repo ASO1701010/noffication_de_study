@@ -1,28 +1,22 @@
 package jp.ac.asojuku.st.noffication_de_study.db
 
 import android.content.ContentValues
-import android.content.Context
 import android.database.CursorIndexOutOfBoundsException
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
 
+class UserAnswersOpenHelper(var db: SQLiteDatabase) {
+    val tableName: String = "user_answers";
 
-class UserAnswersOpenHelper (var db:SQLiteDatabase) {
-
-    val tableName:String = "user_answers";
-
-
-    fun find_all_user_answers() :ArrayList<ArrayList<String>>? {
-
+    fun find_all_user_answers(): ArrayList<ArrayList<String>>? {
         val query = "SELECT * FROM " + tableName
         val cursor = db.rawQuery(query, null)
 
-        try{
+        try {
             cursor.moveToFirst()
 
             var array = ArrayList<ArrayList<String>>()
-            var bufferlist:ArrayList<String>
+            var bufferlist: ArrayList<String>
             for (i in 0 until cursor.count) {
                 bufferlist = ArrayList()
                 bufferlist.add(cursor.getString(0).toString())
@@ -33,26 +27,25 @@ class UserAnswersOpenHelper (var db:SQLiteDatabase) {
                 cursor.moveToNext();
             }
             cursor.close()
-            if(array.size==0){
-                return  null
+            if (array.size == 0) {
+                return null
             }
             return array
-        }catch (e: CursorIndexOutOfBoundsException){
+        } catch (e: CursorIndexOutOfBoundsException) {
             cursor.close()
             return null
         }
     }
 
-    fun find_user_answers(question_id:Int) :ArrayList<ArrayList<String>>? {
-
+    fun find_user_answers(question_id: Int): ArrayList<ArrayList<String>>? {
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
 
-        try{
+        try {
             cursor.moveToFirst()
 
             var array = ArrayList<ArrayList<String>>()
-            var bufferlist:ArrayList<String>
+            var bufferlist: ArrayList<String>
             for (i in 0 until cursor.count) {
                 bufferlist = ArrayList()
                 bufferlist.add(cursor.getString(0).toString())
@@ -63,17 +56,17 @@ class UserAnswersOpenHelper (var db:SQLiteDatabase) {
                 cursor.moveToNext();
             }
             cursor.close()
-            if(array.size==0){
-                return  null
+            if (array.size == 0) {
+                return null
             }
             return array
-        }catch (e: CursorIndexOutOfBoundsException){
+        } catch (e: CursorIndexOutOfBoundsException) {
             cursor.close()
             return null
         }
     }
-    fun add_record(a:Int , b:Int, c:Int, d:Int, db:SQLiteDatabase) {
 
+    fun add_record(a: Int, b: Int, c: Int, d: Int, db: SQLiteDatabase) {
         val values = ContentValues()
         values.put("user_answer_id", a)
         values.put("question_id", b)

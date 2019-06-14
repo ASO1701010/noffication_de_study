@@ -1,33 +1,21 @@
 package jp.ac.asojuku.st.noffication_de_study
 
 import android.content.Context
-import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import jp.ac.asojuku.st.noffication_de_study.db.AnswersRateOpenHelper
+import android.widget.ListView
+import android.widget.Toast
+import jp.ac.asojuku.st.noffication_de_study.db.QuestionsOpenHelper
+import kotlinx.android.synthetic.main.fragment_fragment_question.*
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [FragmentQuestion.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [FragmentQuestion.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class FragmentQuestion : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
@@ -38,19 +26,60 @@ class FragmentQuestion : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-//        val data = arguments?.getString("DATA")
-//        Log.d("TEST", data)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val data = arguments?.getStringArrayList("DATA")
+        if (data != null) {
+            // Stringを配列に変換する
+            var i = 0
+            val array = ArrayList<ArrayList<String>>()
+            var bufferList: ArrayList<String>
+            while (i < data.size) {
+                bufferList = ArrayList()
+                val l1 = data[i]
+                i++
+                val l2 = data[i]
+                i++
+                bufferList.add(l1)
+                bufferList.add(l2)
+                array.add(bufferList)
+            }
+            // ListViewに表示する
+            val listView = listView as ListView
+            val list = ArrayList<QuestionStatisticsItem>()
+            val qsAdapter = activity?.let { QuestionStatisticsAdapter(it) }
+            val questionHelper = activity?.let { SQLiteHelper(it).readableDatabase }?.let { QuestionsOpenHelper(it) }
+
+            for (data in array) {
+                val item = QuestionStatisticsItem()
+                item.setId(data[0].toLong())
+                item.setTitle(questionHelper!!.find_question(data[0].toInt())!!.get(1))
+                item.setRate((data[1].toDouble() * 100).toString() + " %")
+                list.add(item)
+            }
+
+            qsAdapter!!.setFoodList(list)
+            qsAdapter.notifyDataSetChanged()
+
+            listView.adapter = qsAdapter
+
+            listView.setOnItemClickListener { parent, _, position, id ->
+                val item = parent.getItemAtPosition(position) as QuestionStatisticsItem
+                Toast.makeText(activity, item.getId().toString(), Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragment_question, container, false)
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
     }
@@ -60,7 +89,7 @@ class FragmentQuestion : Fragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 
@@ -69,32 +98,11 @@ class FragmentQuestion : Fragment() {
         listener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentQuestion.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             FragmentQuestion().apply {
