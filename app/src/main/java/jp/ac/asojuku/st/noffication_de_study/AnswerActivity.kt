@@ -48,9 +48,9 @@ class AnswerActivity : AppCompatActivity() {
     //テスト用データが入ってます
     //本番用は上のコメントアウトされてる部分です。
     fun print_answer(){
-//        answer_examNumber_text.setText(exam_data.exams_number)
-//        answer_questionNumber_text.setText("問 "+ exam_data.exams_number)
-//        answer_question_correct_text.setText("正解 : " + exam_data)
+//        answer_examNumber_text.setText(exam_data.number)
+//        answer_questionNumber_text.setText("問 "+ exam_data.question_current)
+//        answer_question_correct_text.setText("正解 : " + "正解を持ってくる")
 //        answer_answerText_text.setText(questionsDB.find_comment(question_id)?.get(1))
         answer_examNumber_text.setText("問題number")
         answer_questionNumber_text.setText("問 1")
