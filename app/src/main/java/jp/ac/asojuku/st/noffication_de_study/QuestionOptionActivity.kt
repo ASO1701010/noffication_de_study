@@ -22,9 +22,14 @@ class QuestionOptionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_question_option)
 
         QOA_Start_BTN.setOnClickListener {
+            // loadChoiceの実行
+            val ld = loadChoice()
+            val QuestionsArrayList = ld.first
+            val ExamName = ld.second
+
             //デバック用データ
-            var exam_data = ExamData(1, "name1", "number2")
-            exam_data.set_list_data(arrayListOf(1, 2, 3, 4))
+            var exam_data = ExamData(1, "FE", ExamName)
+            exam_data.set_list_data(QuestionsArrayList)
 
             startActivity<QuestionActivity>("exam_data" to exam_data)
         }
@@ -34,7 +39,7 @@ class QuestionOptionActivity : AppCompatActivity() {
     }
 
     //選択肢を読み込む
-    fun loadChoice() {
+    fun loadChoice() :Pair<ArrayList<Int>, String> {
         // ランダム出題するかどうか
         // ランダム出題の場合、randomBooleanの中身がtrueに
         val randomBoolean = QOA_Select_Method_Random_RBTN.isChecked
@@ -167,15 +172,17 @@ class QuestionOptionActivity : AppCompatActivity() {
         }
 
         // 問題数に応じて問題を選択する
-        var TempQuestions2 = ArrayList<Int>()
+        var QuestionsArrayList = ArrayList<Int>()
         for (i in 0..SpinnerNum - 1) {
-            TempQuestions2.add(TempQuestions.get(i))
+            QuestionsArrayList.add(TempQuestions.get(i))
         }
 
+        // 問題ArrayList<Int>であるQuestionsArrayとStringを返す
+        return Pair(QuestionsArrayList, ExamName)
 
-        // TempQuestionsに保存した問題を次のページに受け渡す
-        val ED = ExamData(1, "FE", ExamName)
-        ED.set_list_data(TempQuestions2)
+//        // TempQuestionsに保存した問題を次のページに受け渡す
+//        val ED = ExamData(1, "FE", ExamName)
+//        ED.set_list_data(TempQuestions2)
 
     }
 
