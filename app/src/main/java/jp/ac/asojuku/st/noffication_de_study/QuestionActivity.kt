@@ -35,6 +35,8 @@ class QuestionActivity : AppCompatActivity() {
         AA_Answer_1.setOnClickListener { choiceAnswer(1) }
         AA_Answer_2.setOnClickListener { choiceAnswer(2) }
         AA_Answer_3.setOnClickListener { choiceAnswer(3) }
+        AA_End_BTN.setOnClickListener { printResult() }
+        AA_Next_BTN.setOnClickListener { skipQuestion() }
 
     }
 
