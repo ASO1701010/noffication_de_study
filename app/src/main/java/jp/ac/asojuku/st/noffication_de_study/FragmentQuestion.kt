@@ -1,12 +1,15 @@
 package jp.ac.asojuku.st.noffication_de_study
 
 import android.content.Context
+import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import jp.ac.asojuku.st.noffication_de_study.db.AnswersRateOpenHelper
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -35,6 +38,8 @@ class FragmentQuestion : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+//        val data = arguments?.getString("DATA")
+//        Log.d("TEST", data)
     }
 
     override fun onCreateView(

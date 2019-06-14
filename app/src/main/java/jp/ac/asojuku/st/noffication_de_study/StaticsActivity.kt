@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
+import jp.ac.asojuku.st.noffication_de_study.db.AnswersRateOpenHelper
 import kotlinx.android.synthetic.main.activity_statics.*
 import org.json.JSONObject
 
@@ -18,10 +19,10 @@ class StaticsActivity : AppCompatActivity(), FragmentMyRecord.OnFragmentInteract
     }
 
     //定数はすべて仮の値
-    val user_id: Int = 12345678 //ユーザID
-    var my_record: String = "testRecord" //my記録
-    var correct_rate: String = "999%" //正答率
-    var text_print: String = "testTextPrint" //表示に利用する
+//    val user_id: Int = 12345678 //ユーザID
+//    var my_record: String = "testRecord" //my記録
+//    var correct_rate: String = "999%" //正答率
+//    var text_print: String = "testTextPrint" //表示に利用する
 
     var jsondata = JSONObject() // get_statics() の戻り値を格納。 統計情報が入っております。
 
@@ -35,7 +36,16 @@ class StaticsActivity : AppCompatActivity(), FragmentMyRecord.OnFragmentInteract
             override fun getItem(position: Int): Fragment? {
                 return when (position) {
                     0 -> FragmentMyRecord()
-                    1 -> FragmentQuestion()
+                    1 -> {
+                        val fragment = FragmentQuestion()
+                        fragment.arguments = Bundle().apply {
+                            val dbHelper = AnswersRateOpenHelper(SQLiteHelper(this@StaticsActivity).readableDatabase)
+                            val data = dbHelper.find_all_rate()
+                            Log.d("TEST", data.toString())
+                            putString("DATA", data.toString())
+                        }
+                        return fragment
+                    }
                     else -> null
                 }
             }
@@ -50,7 +60,7 @@ class StaticsActivity : AppCompatActivity(), FragmentMyRecord.OnFragmentInteract
         }
 
         val viewPager = viewPager
-        viewPager.offscreenPageLimit = 2
+        viewPager.offscreenPageLimit = tabTitle.size
         viewPager.adapter = adapter
         val tabLayout = tabLayout
         tabLayout.setupWithViewPager(viewPager)
@@ -61,6 +71,7 @@ class StaticsActivity : AppCompatActivity(), FragmentMyRecord.OnFragmentInteract
     }
 
     //統計情報取得
+    /*
     fun get_statics() {
         var result_flg = true
         var json = JSONObject()
@@ -78,4 +89,5 @@ class StaticsActivity : AppCompatActivity(), FragmentMyRecord.OnFragmentInteract
             jsondata = json
         }
     }
+    */
 }

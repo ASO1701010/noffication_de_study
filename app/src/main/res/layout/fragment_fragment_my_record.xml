@@ -4,10 +4,23 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context=".FragmentMyRecord">
-
-    <TextView
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="my記録"/>
-
+            android:layout_height="match_parent">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <TextView
+                    android:text="回答数："
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/textView11"/>
+            <TextView
+                    android:text="正解数："
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/textView12"/>
+            <TextView
+                    android:text="未回答数："
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/textView13"/>
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>
