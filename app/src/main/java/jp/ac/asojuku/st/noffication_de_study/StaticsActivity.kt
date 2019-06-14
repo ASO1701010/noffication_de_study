@@ -45,6 +45,7 @@ class StaticsActivity : AppCompatActivity(), FragmentMyRecord.OnFragmentInteract
             }
 
             override fun getCount(): Int {
+                // return tabTitle.length
                 return tabTitle.size
             }
         }
@@ -58,23 +59,54 @@ class StaticsActivity : AppCompatActivity(), FragmentMyRecord.OnFragmentInteract
         SA_Back_BTN.setOnClickListener {
             finish()
         }
+
+        /*
+        SA_My_Statics_BTN.setOnClickListener {
+
+        }
+
+        SA_Question_Statics_BTN.setOnClickListener {
+            get_statics()
+        }
+        */
     }
 
+//    //my記録表示
+//    fun printMyRecord() {
+//
+//    }
+//
+//    //問題正答率表示
+//    fun printCorrectRate() {
+//
+//    }
+//
+//    //表示切り替え
+//    fun changeTab() {
+//
+//    }
+//
+//    //表示文字列生成
+//    fun createStrToPrint() {
+//
+//    }
+
     //統計情報取得
-    fun get_statics() {
+    fun get_statics(){
         var result_flg = true
         var json = JSONObject()
         ApiGetTask {
             if (!it.isNullOrEmpty()) {
-                Log.d("it", it)
+                Log.d("it",it)
                 json = JSONObject(it)
+
             } else {
                 Toast.makeText(this, "APIの通信に失敗しました(´･ω･`)", Toast.LENGTH_SHORT).show()
                 result_flg = false
             }
         }.execute("get-statistics-info.php")
 
-        if (result_flg) {
+        if(result_flg==true){
             jsondata = json
         }
     }
