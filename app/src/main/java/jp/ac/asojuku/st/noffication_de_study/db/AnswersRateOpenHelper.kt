@@ -26,19 +26,19 @@ class AnswersRateOpenHelper (var db:SQLiteDatabase) {
             return null
         }
     }
-    fun find_all_rate() :ArrayList<ArrayList<Double>>? {
+    fun find_all_rate() :ArrayList<ArrayList<String>>? {
 
         val query = "SELECT * FROM " + tableName
         val cursor = db.rawQuery(query, null)
 
         try{
             cursor.moveToFirst()
-            var array = ArrayList<ArrayList<Double>>()
-            var bufferList = ArrayList<Double>()
+            var array = ArrayList<ArrayList<String>>()
+            var bufferList = ArrayList<String>()
 
             for(i in 0 until  cursor.count){
-                bufferList.add(cursor.getDouble(0))
-                bufferList.add(cursor.getDouble(1))
+                bufferList.add(cursor.getString(0))
+                bufferList.add(cursor.getString(1))
                 array.add(bufferList)
                 bufferList.clear()
                 cursor.moveToNext()

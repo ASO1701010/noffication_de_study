@@ -9,7 +9,7 @@ import org.jetbrains.anko.startActivity
 import java.util.*
 import kotlin.collections.ArrayList
 
-//TODO 問題オプション画面：未完成（0%）
+//TODO 問題オプション画面：おおよそ完成（90%）
 class QuestionOptionActivity : AppCompatActivity() {
 
     //TODO 定数の値はすべて仮の値
@@ -39,7 +39,7 @@ class QuestionOptionActivity : AppCompatActivity() {
     }
 
     //選択肢を読み込む
-    fun loadChoice() :Pair<ArrayList<Int>, String> {
+    fun loadChoice(): Pair<ArrayList<Int>, String> {
         // ランダム出題するかどうか
         // ランダム出題の場合、randomBooleanの中身がtrueに
         val randomBoolean = QOA_Select_Method_Random_RBTN.isChecked
@@ -79,10 +79,12 @@ class QuestionOptionActivity : AppCompatActivity() {
         // 出題年度ごとの問題の読み込み
         val EQOH = ExamsQuestionsOpenHelper(db)
         var TempYear: ArrayList<ArrayList<Int>>?
-        lateinit var TempYear_list: ArrayList<ArrayList<ArrayList<Int>>?>
+        var TempYear_list: ArrayList<ArrayList<ArrayList<Int>>?> = ArrayList(ArrayList(ArrayList()))
 
-        // 出題年度が選択されなかった場合、「"empty"」のままになる
+        // 出題年度が選択されなかった場合、「"empty"」のままに、年度が1つしか選ばれなかった場合、ExamNameFlgは1になる
+        // 複数選択された場合、ExamNameFlgは2以外になる
         var ExamName = "empty"
+        var ExamNameFlg = 0
 
         // 試験回選択
         // 出題IDはFEだけなので、exams_idは1?
@@ -90,31 +92,37 @@ class QuestionOptionActivity : AppCompatActivity() {
             TempYear = EQOH.find_all_questions(1, "FE2019S")
             TempYear_list.add(TempYear)
             ExamName = "FE2019S"
+            ExamNameFlg++
         }
         if (QOA_Select_Exam_Number_H30F_RBTN.isChecked) {
             TempYear = EQOH.find_all_questions(1, "FE2018F")
             TempYear_list.add(TempYear)
             ExamName = "FE2018F"
+            ExamNameFlg++
         }
         if (QOA_Select_Exam_Number_H30S_RBTN.isChecked) {
             TempYear = EQOH.find_all_questions(1, "FE2018S")
             TempYear_list.add(TempYear)
             ExamName = "FE2018S"
+            ExamNameFlg++
         }
         if (QOA_Select_Exam_Number_H29F_RBTN.isChecked) {
             TempYear = EQOH.find_all_questions(1, "FE2017F")
             TempYear_list.add(TempYear)
             ExamName = "FE2017F"
+            ExamNameFlg++
         }
         if (QOA_Select_Exam_Number_H29S_RBTN.isChecked) {
             TempYear = EQOH.find_all_questions(1, "FE2017S")
             TempYear_list.add(TempYear)
             ExamName = "FE2017S"
+            ExamNameFlg++
         }
         if (QOA_Select_Exam_Number_H28F_RBTN.isChecked) {
             TempYear = EQOH.find_all_questions(1, "FE2016F")
             TempYear_list.add(TempYear)
             ExamName = "FE2016F"
+            ExamNameFlg++
         }
 
         // 出題年度が選択されなかった場合(ExamData)が「""」だった場合
@@ -126,6 +134,12 @@ class QuestionOptionActivity : AppCompatActivity() {
             TempYear_list.add(EQOH.find_all_questions(1, "FE2017S"))
             TempYear_list.add(EQOH.find_all_questions(1, "FE2016F"))
         }
+
+        // ExamNameFlgが2以上の場合(年度が複数選択された場合)
+        if(ExamNameFlg >= 2 ){
+           ExamName = "random"
+        }
+
         // ジャンルの読み込み
         val GOH = QuestionsGenresOpenHelper(db)
         var genre1_Questions: ArrayList<Int>? = null
@@ -173,9 +187,10 @@ class QuestionOptionActivity : AppCompatActivity() {
 
         // 問題数に応じて問題を選択する
         var QuestionsArrayList = ArrayList<Int>()
-        for (i in 0..SpinnerNum - 1) {
-            QuestionsArrayList.add(TempQuestions.get(i))
-        }
+        for (tq in TempQuestions)
+            for (i in 0..SpinnerNum - 1) {
+                QuestionsArrayList.add(tq)
+            }
 
         // 問題ArrayList<Int>であるQuestionsArrayとStringを返す
         return Pair(QuestionsArrayList, ExamName)
