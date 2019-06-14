@@ -8,8 +8,9 @@ class ExamData (id:Int, name:String, number:String):Serializable{
     public val exams_name = name
     public val exams_number = number
 
-    public var question_list = ArrayList<Int>()
-    public var answered_list = ArrayList<Int>()
+    public var question_list = ArrayList<Int>() //question_idが入るリスト
+    public var answered_list = ArrayList<Int>() //question_listに対応するユーザの解答が入るリスト
+    public var isCorrect_list = ArrayList<Boolean>() //question_listに対応するユーザの解答が正解だったかが入るリスト
 
     public var question_current = 0
     public var question_next = 0
