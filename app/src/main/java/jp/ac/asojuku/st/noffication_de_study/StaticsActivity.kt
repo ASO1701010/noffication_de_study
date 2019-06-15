@@ -7,22 +7,10 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
 import jp.ac.asojuku.st.noffication_de_study.db.AnswersRateOpenHelper
 import kotlinx.android.synthetic.main.activity_statics.*
-import org.json.JSONObject
 
-//TODO 統計情報画面:未完成(20%)
 class StaticsActivity : AppCompatActivity(), FragmentMyRecord.OnFragmentInteractionListener,
     FragmentQuestion.OnFragmentInteractionListener {
-    override fun onFragmentInteraction(uri: Uri) {
-
-    }
-
-    //定数はすべて仮の値
-//    val user_id: Int = 12345678 //ユーザID
-//    var my_record: String = "testRecord" //my記録
-//    var correct_rate: String = "999%" //正答率
-//    var text_print: String = "testTextPrint" //表示に利用する
-
-    var jsondata = JSONObject() // get_statics() の戻り値を格納。 統計情報が入っております。
+    override fun onFragmentInteraction(uri: Uri) {}
 
     private val tabTitle = arrayOf<CharSequence>("my記録", "問題ごと")
 
@@ -66,25 +54,4 @@ class StaticsActivity : AppCompatActivity(), FragmentMyRecord.OnFragmentInteract
             finish()
         }
     }
-
-    //統計情報取得
-    /*
-    fun get_statics() {
-        var result_flg = true
-        var json = JSONObject()
-        ApiGetTask {
-            if (!it.isNullOrEmpty()) {
-                Log.d("it", it)
-                json = JSONObject(it)
-            } else {
-                Toast.makeText(this, "APIの通信に失敗しました(´･ω･`)", Toast.LENGTH_SHORT).show()
-                result_flg = false
-            }
-        }.execute("get-statistics-info.php")
-
-        if (result_flg) {
-            jsondata = json
-        }
-    }
-    */
 }

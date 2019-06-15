@@ -1,6 +1,7 @@
 package jp.ac.asojuku.st.noffication_de_study
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -56,7 +57,7 @@ class FragmentQuestion : Fragment() {
             for (data in array) {
                 val item = QuestionStatisticsItem()
                 item.setId(data[0].toLong())
-                item.setTitle(questionHelper!!.find_question(data[0].toInt())!!.get(1))
+                item.setTitle(questionHelper!!.find_question(data[0].toInt())!![1])
                 item.setRate((data[1].toDouble() * 100).toString() + " %")
                 list.add(item)
             }
@@ -66,9 +67,14 @@ class FragmentQuestion : Fragment() {
 
             listView.adapter = qsAdapter
 
-            listView.setOnItemClickListener { parent, _, position, id ->
+            listView.setOnItemClickListener { parent, _, position, _ ->
                 val item = parent.getItemAtPosition(position) as QuestionStatisticsItem
-                Toast.makeText(activity, item.getId().toString(), Toast.LENGTH_LONG).show()
+                val questionId = item.getId()
+                Toast.makeText(activity, questionId.toString(), Toast.LENGTH_LONG).show()
+                /* クリックすると問題画面へ遷移する
+                val intent = Intent(activity, OptionActivity::class.java)
+                startActivity(intent)
+                */
             }
         }
     }
