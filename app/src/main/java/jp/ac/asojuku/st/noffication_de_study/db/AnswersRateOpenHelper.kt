@@ -12,14 +12,14 @@ class AnswersRateOpenHelper(var db: SQLiteDatabase) {
     fun find_rate(question_id: Int): Double? {
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
-        try {
+        return try {
             cursor.moveToFirst()
-            var result: Double
-            result = cursor.getDouble(1)
+            var result: Double = cursor.getDouble(1)
             cursor.close()
-            return result
+            result
         } catch (e: CursorIndexOutOfBoundsException) {
-            return null
+            cursor.close()
+            null
         }
     }
 
@@ -27,7 +27,7 @@ class AnswersRateOpenHelper(var db: SQLiteDatabase) {
         val query = "SELECT * FROM " + tableName
         val cursor = db.rawQuery(query, null)
 
-        try {
+        return try {
             cursor.moveToFirst()
             var array = ArrayList<String>()
             var bufferList = ArrayList<String>()
@@ -41,11 +41,13 @@ class AnswersRateOpenHelper(var db: SQLiteDatabase) {
             if (array.size == 0) {
                 return null
             }
-            return array
+            array
         } catch (e: CursorIndexOutOfBoundsException) {
-            return null
+            cursor.close()
+            null
         } catch (e: IndexOutOfBoundsException) {
-            return null
+            cursor.close()
+            null
         }
     }
 
