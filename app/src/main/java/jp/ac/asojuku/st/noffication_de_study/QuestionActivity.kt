@@ -20,12 +20,17 @@ import java.util.*
 
 class QuestionActivity : AppCompatActivity() {
 
-    var examData: ExamData = intent.getSerializableExtra("ExamData") as ExamData
+    lateinit var examData: ExamData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question)
         examData = intent.getSerializableExtra("exam_data") as ExamData
+        /////////////////デバッグ用///////////////////////////
+//        examData.question_list[0]
+        /////////////////デバッグ用///////////////////////////
+
+        choiceNextQuestion()
         printQuestion()
 
 
@@ -51,7 +56,14 @@ class QuestionActivity : AppCompatActivity() {
 
     //次の問題設定
     fun choiceNextQuestion() {
-        examData.question_current = examData.question_next
+        if (examData.question_current == 0) {
+            examData.question_current = examData.question_list[0]
+            examData.question_next = examData.question_list[1]
+        } else {
+            examData.question_current = examData.question_next
+        }
+
+
         try {
             //次の問題が存在するなら次の問題番号を入れる
             examData.question_list.get(examData.question_next + 1)
@@ -71,11 +83,12 @@ class QuestionActivity : AppCompatActivity() {
         val db = questions.readableDatabase
         val QOH = QuestionsOpenHelper(db)
         var question_arr: ArrayList<String>? = QOH.find_question(examData.question_current)
+//        var question_arr: ArrayList<String>? = QOH.find_question(0)
         var question_str: String
         if (question_arr == null) {
             question_str = "問題文がありません"
         } else {
-            question_str = question_arr[0]
+            question_str = question_arr[1]
         }
 
         textView4.setText(question_str)

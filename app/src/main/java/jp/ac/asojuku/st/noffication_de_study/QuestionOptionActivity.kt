@@ -133,14 +133,15 @@ class QuestionOptionActivity : AppCompatActivity() {
         }
 
         // ExamNameFlgが2以上の場合(年度が複数選択された場合)
-        if(ExamNameFlg >= 2 ){
-           ExamName = "random"
+        if (ExamNameFlg >= 2) {
+            ExamName = "random"
         }
 
         // ジャンルの読み込み
         val GOH = QuestionsGenresOpenHelper(db)
         var genre1_Questions: ArrayList<Int>? = null
         var genre2_Questions: ArrayList<Int>? = null
+
         // ジャンル検索
         if (QOA_Select_Genres_1.isChecked) {
             genre1_Questions = GOH.find_genre_questions(1)
@@ -153,26 +154,34 @@ class QuestionOptionActivity : AppCompatActivity() {
         // ArrayListのTempQuestionsに出題する問題を格納する
         var TempQuestions = ArrayList<Int>()
 
-        if (genre1_Questions != null) {
-            for (ty in TempYear_list) {
-                for (i in 0..ty!!.size) {
-                    for (j in 1..genre1_Questions.size) {
-                        if (genre1_Questions.get(i) == ty.get(j).get(2)) {
-                            TempQuestions.add(genre1_Questions.get(i))
+        if (genre1_Questions != null || genre2_Questions != null) {
+            if (genre1_Questions != null) {
+                for (ty in TempYear_list) {
+                    for (i in 0..ty!!.size) {
+                        for (j in 0..genre1_Questions.size) {
+                            if (genre1_Questions.get(i) == ty.get(j).get(2)) {
+                                TempQuestions.add(genre1_Questions.get(i))
+                            }
                         }
                     }
                 }
             }
-        }
 
-        if (genre2_Questions != null) {
-            for (ty in TempYear_list) {
-                for (i in 0..ty!!.size) {
-                    for (j in 1..genre2_Questions.size) {
-                        if (genre2_Questions.get(i) == ty.get(j).get(2)) {
-                            TempQuestions.add(genre2_Questions.get(i))
+            if (genre2_Questions != null) {
+                for (ty in TempYear_list) {
+                    for (i in 0..ty!!.size) {
+                        for (j in 0..genre2_Questions.size) {
+                            if (genre2_Questions.get(i) == ty.get(j).get(2)) {
+                                TempQuestions.add(genre2_Questions.get(i))
+                            }
                         }
                     }
+                }
+            }
+        } else {
+            for (ty in TempYear_list) {
+                for (i in 0..ty!!.size-1) {
+                        TempQuestions.add(ty[i].get(0))
                 }
             }
         }
@@ -184,10 +193,15 @@ class QuestionOptionActivity : AppCompatActivity() {
 
         // 問題数に応じて問題を選択する
         var QuestionsArrayList = ArrayList<Int>()
-        for (tq in TempQuestions)
-            for (i in 0..SpinnerNum - 1) {
-                QuestionsArrayList.add(tq)
-            }
+//        for (tq in TempQuestions) {
+//            for (i in 0..SpinnerNum - 1) {
+//                QuestionsArrayList.add(tq)
+//            }
+//        }
+        for (i in 0..SpinnerNum - 1) {
+            QuestionsArrayList.add(TempQuestions[i])
+        }
+
 
         // 問題ArrayList<Int>であるQuestionsArrayとStringを返す
         return Pair(QuestionsArrayList, ExamName)
