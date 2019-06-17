@@ -14,8 +14,6 @@ class QuestionOptionActivity : AppCompatActivity() {
 
     //TODO 定数の値はすべて仮の値
     val user_id = 12345678
-//    var question_list 中身が無いと宣言できない
-//    var setting_list 中身が無いと宣言できない
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +25,6 @@ class QuestionOptionActivity : AppCompatActivity() {
             val QuestionsArrayList = ld.first
             val ExamName = ld.second
 
-            //デバック用データ
             var exam_data = ExamData(1, "FE", ExamName)
             exam_data.set_list_data(QuestionsArrayList)
 
@@ -194,34 +191,5 @@ class QuestionOptionActivity : AppCompatActivity() {
 
         // 問題ArrayList<Int>であるQuestionsArrayとStringを返す
         return Pair(QuestionsArrayList, ExamName)
-
-//        // TempQuestionsに保存した問題を次のページに受け渡す
-//        val ED = ExamData(1, "FE", ExamName)
-//        ED.set_list_data(TempQuestions2)
-
-    }
-
-//読み込んだ選択肢を各セレクトボックスやスピナーにセットする
-//object型を引数には設定できない
-//    fun setChoise(target_list : object) {
-//
-//    }
-
-    //設定完了時の処理。出題する問題を決定し配列に格納、画面遷移を行う
-    fun decideSetting() {
-
-    }
-
-    //選択設定判定
-//設定されたチェックをすべて検索しsetting_listに登録
-    fun discChoice() {
-
-    }
-
-    //出題問題決定
-// 出題する問題を決定し問題IDを配列で返す。未設定時はランダムに20問
-//TODO このメソッドは戻り値にArray<Int>を戻り値にする？
-    fun decideQuestion() {
-
     }
 }
