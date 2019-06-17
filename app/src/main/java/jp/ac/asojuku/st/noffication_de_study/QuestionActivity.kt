@@ -25,7 +25,7 @@ class QuestionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question)
-        var examData: ExamData = intent.getSerializableExtra("exam_data") as ExamData
+        examData = intent.getSerializableExtra("exam_data") as ExamData
         printQuestion()
 
 
