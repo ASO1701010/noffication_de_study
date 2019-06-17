@@ -15,6 +15,8 @@ class ExamData (id:Int, name:String, number:String):Serializable{
     //回答番号リスト　未回答:999
     var answered_list = ArrayList<Int>()
 
+    public var isCorrect_list = ArrayList<Boolean>() //question_listに対応するユーザの解答が正解だったかが入るリスト
+
     //今の問題番号　AnswerActivityで解いた問題を識別するために使用。　QuestionActivityの起動時処理でquestion_nextの値を代入
     var question_current = 0
 
