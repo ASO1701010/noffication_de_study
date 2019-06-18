@@ -158,9 +158,9 @@ class QuestionOptionActivity : AppCompatActivity() {
             if (genre1_Questions != null) {
                 for (ty in TempYear_list) {
                     for (i in 0..ty!!.size) {
-                        for (j in 0..genre1_Questions.size) {
-                            if (genre1_Questions.get(i) == ty.get(j).get(2)) {
-                                TempQuestions.add(genre1_Questions.get(i))
+                        for (j in 0..genre1_Questions.size - 1) {
+                            if (genre1_Questions.get(j) == ty.get(i).get(0)) {
+                                TempQuestions.add(genre1_Questions.get(j))
                             }
                         }
                     }
@@ -169,10 +169,10 @@ class QuestionOptionActivity : AppCompatActivity() {
 
             if (genre2_Questions != null) {
                 for (ty in TempYear_list) {
-                    for (i in 0..ty!!.size) {
-                        for (j in 0..genre2_Questions.size) {
-                            if (genre2_Questions.get(i) == ty.get(j).get(2)) {
-                                TempQuestions.add(genre2_Questions.get(i))
+                    for (i in 0..ty!!.size - 1) {
+                        for (j in 0..genre2_Questions.size - 1) {
+                            if (genre2_Questions.get(j) == ty.get(i).get(0)) {
+                                TempQuestions.add(genre2_Questions.get(j))
                             }
                         }
                     }
@@ -180,8 +180,8 @@ class QuestionOptionActivity : AppCompatActivity() {
             }
         } else {
             for (ty in TempYear_list) {
-                for (i in 0..ty!!.size-1) {
-                        TempQuestions.add(ty[i].get(0))
+                for (i in 0..ty!!.size - 1) {
+                    TempQuestions.add(ty.get(i).get(0))
                 }
             }
         }
