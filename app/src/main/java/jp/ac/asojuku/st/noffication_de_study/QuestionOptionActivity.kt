@@ -134,7 +134,7 @@ class QuestionOptionActivity : AppCompatActivity() {
 
         // ExamNameFlgが2以上の場合(年度が複数選択された場合)
         if (ExamNameFlg >= 2) {
-            ExamName = "random"
+            ExamName = "multi"
         }
 
         // ジャンルの読み込み
@@ -187,7 +187,7 @@ class QuestionOptionActivity : AppCompatActivity() {
         }
 
         // ランダム出題するか、そうじゃないかで問題順を並び替える
-        if (randomBoolean == true) {
+        if (QOA_Select_Method_Random_RBTN.isChecked) {
             Collections.shuffle(TempQuestions)
         }
 

@@ -9,9 +9,11 @@ import kotlinx.android.synthetic.main.activity_answer.*
 import org.jetbrains.anko.startActivity
 
 class AnswerActivity : AppCompatActivity() {
-    val db = SQLiteHelper(this).readableDatabase
-    val questionsDB = QuestionsOpenHelper(db)
-    val correctDB = CorrectAnswerOpenHelper(db)
+//    val questions = SQLiteHelper(this)
+//    val db = questions.readableDatabase
+//    val questionsDB = QuestionsOpenHelper(db)
+//    val correctDB = CorrectAnswerOpenHelper(db)
+
 
     val user_id:String = getSharedPreferences("user_data", MODE_PRIVATE).getString("user_id","999999")
     val exam_data:ExamData = intent.getSerializableExtra("exam_data") as ExamData
@@ -37,6 +39,12 @@ class AnswerActivity : AppCompatActivity() {
 
     }
     fun at_first(){
+
+        val questions = SQLiteHelper(this)
+        val db = questions.readableDatabase
+        val questionsDB = QuestionsOpenHelper(db)
+        val correctDB = CorrectAnswerOpenHelper(db)
+
         if(user_id == "999999"){
             Log.d("user_id が受け取れていません","/")
         }

@@ -15,6 +15,7 @@ import android.text.format.DateFormat
 import android.util.Log
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_question.*
+import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 import java.util.*
 
@@ -61,18 +62,19 @@ class QuestionActivity : AppCompatActivity() {
             examData.question_next = examData.question_list[1]
         } else {
             examData.question_current = examData.question_next
+
+            try {
+                //次の問題IDを取得
+                examData.question_next = examData.question_list[examData.answered_list.size+2]
+
+            } catch (e: ArrayIndexOutOfBoundsException) {
+                //次の問題が存在しない場合は次に999を設定する
+                examData.question_next = 999
+            }
         }
 
 
-        try {
-            //次の問題が存在するなら次の問題番号を入れる
-            examData.question_list.get(examData.question_next + 1)
-            examData.question_next++
 
-        } catch (e: ArrayIndexOutOfBoundsException) {
-            //次の問題が存在しない場合は次に999を設定する
-            examData.question_next = 999
-        }
 
 
     }
@@ -100,16 +102,17 @@ class QuestionActivity : AppCompatActivity() {
         //登録処理
         regAnswer(choice_number)
         //画面遷移
-        val intent = Intent(this, AnswerActivity::class.java)
-        startActivity(intent)
+//        val intent = Intent(this, AnswerActivity::class.java)
+        startActivity<AnswerActivity>("exam_data" to examData)
+
     }
 
     //スキップ
     fun skipQuestion() {
         //DBにスキップしたとして999を登録して次の問題画面に画面遷移
         regAnswer(999)
-        val intent = Intent(this, QuestionActivity::class.java)
-        startActivity(intent)
+//        val intent = Intent(this, QuestionActivity::class.java)
+        startActivity<QuestionActivity>("exam_data" to examData)
     }
 
     //解答登録
