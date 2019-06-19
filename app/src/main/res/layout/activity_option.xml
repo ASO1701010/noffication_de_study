@@ -61,7 +61,7 @@
             <TextView
                     android:text="通知で画面を出題し、解答します。"
                     android:layout_width="411dp"
-                    android:layout_height="wrap_content" android:id="@+id/NDS_INFO"
+                    android:layout_height="58dp" android:id="@+id/NDS_INFO"
                     android:textAlignment="center" android:textSize="20sp"/>
             <CheckBox
                     android:text="画面点灯de勉強モード"
@@ -71,43 +71,58 @@
             <TextView
                     android:text="画面点灯したときに問題の通知を行います。"
                     android:layout_width="411dp"
-                    android:layout_height="54dp" android:id="@+id/SDS_INFO"
+                    android:layout_height="58dp" android:id="@+id/SDS_INFO"
                     android:textAlignment="center" android:textSize="20sp"
             />
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
                 <TextView
                         android:text="通知を行う時間の範囲"
-                        android:layout_width="290dp"
-                        android:layout_height="40dp" android:id="@+id/option_title2"
-                        android:textSize="24sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="27dp" android:id="@+id/option_title2"
+                        android:textSize="20sp"
                         android:textAlignment="viewStart"
                         android:textAllCaps="false"
                 />
-                <Spinner
-                        android:layout_width="120dp"
-                        android:layout_height="40dp" android:id="@+id/OA_Noffication_Time_Between"
-                        android:spinnerMode="dialog"/>
+                <TextView
+                        android:text="Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/OA_Noffication_Time_Between1"
+                        android:textSize="20sp"/>
+                <TextView
+                        android:text="～"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/textView17" android:textSize="20sp"/>
+                <TextView
+                        android:text="Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/OA_Noffication_Time_Between2"
+                        android:textSize="20sp"/>
             </LinearLayout>
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
                 <TextView
                         android:text="通知を行う間隔"
                         android:layout_width="290dp"
                         android:layout_height="40dp" android:id="@+id/option_title4"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textAlignment="viewStart"
                         android:textAllCaps="false"
                 />
                 <Spinner
-                        android:layout_width="120dp"
-                        android:layout_height="40dp" android:id="@+id/OA_Noffication_Interval"
+                        android:layout_width="96dp"
+                        android:layout_height="match_parent" android:id="@+id/OA_Noffication_Interval"
                         android:entries="@array/OA_Noffication_Interval_list"
                 />
+                <TextView
+                        android:text="分"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/textView14"
+                        android:textSize="20sp"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

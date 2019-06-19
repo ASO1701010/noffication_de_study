@@ -1,89 +1,63 @@
 package jp.ac.asojuku.st.noffication_de_study.db
 
 import android.content.ContentValues
-import android.content.Context
 import android.database.CursorIndexOutOfBoundsException
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
 
+class AnswersRateOpenHelper(var db: SQLiteDatabase) {
 
-class AnswersRateOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "answers_rate", null, 1) {
-    // 第１引数 :
-    // 第２引数 : データベースの名称
-    // 第３引数 : null
-    // 第４引数 : データベースのバージョン
-    val tableName:String = "answers_rate";
-    override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL(
-            "CREATE TABLE " + tableName + " ( " +
-                    "question_id integer not null, " +
-                    "answer_rate double, " +
-                    "PRIMARY KEY (question_id)"+
-                    ");")
-    }
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-    }
+    val tableName: String = "answers_rate";
 
-    fun find_rate(question_id:Int) :Double? {
-        val thisDB = AnswersRateOpenHelper(mContext)
-        val db = thisDB.readableDatabase
-
+    fun find_rate(question_id: Int): Double? {
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
-        try{
+        try {
             cursor.moveToFirst()
-            var result:Double
+            var result: Double
             result = cursor.getDouble(1)
             cursor.close()
             return result
-        }catch (e: CursorIndexOutOfBoundsException){
+        } catch (e: CursorIndexOutOfBoundsException) {
             return null
         }
     }
-    fun find_all_rate() :ArrayList<ArrayList<Double>>? {
-        val answerDB = AnswersRateOpenHelper(mContext)
-        val db = answerDB.readableDatabase
 
+    fun find_all_rate(): ArrayList<String>? {
         val query = "SELECT * FROM " + tableName
         val cursor = db.rawQuery(query, null)
 
-        try{
+        try {
             cursor.moveToFirst()
-            var array = ArrayList<ArrayList<Double>>()
-            var bufferList = ArrayList<Double>()
+            var array = ArrayList<String>()
+            var bufferList = ArrayList<String>()
 
-            for(i in 0 until  cursor.count){
-                bufferList.add(cursor.getDouble(0))
-                bufferList.add(cursor.getDouble(1))
-                array.add(bufferList)
-                bufferList.clear()
+            for (i in 0 until cursor.count) {
+                array.add(cursor.getString(0))
+                array.add(cursor.getString(1))
                 cursor.moveToNext()
             }
             cursor.close()
-            if(array.get(0).size==0){
+            if (array.size == 0) {
                 return null
             }
             return array
-        }catch (e: CursorIndexOutOfBoundsException){
+        } catch (e: CursorIndexOutOfBoundsException) {
             return null
-        }catch (e:IndexOutOfBoundsException){
+        } catch (e: IndexOutOfBoundsException) {
             return null
         }
     }
-    fun add_record(q_id:Int , a_num:Double) {
-        val answerDB = AnswersRateOpenHelper(mContext)
-        val db = answerDB.readableDatabase
 
+    fun add_record(q_id: Int, a_num: Double) {
         val values = ContentValues()
         values.put("question_id", q_id)
         values.put("answer_rate", a_num)
 
-
         try {
             db.insertOrThrow(tableName, null, values)
-        }catch (e: SQLiteConstraintException){
-            db.update(tableName,values,"question_id = " + q_id,null)
+        } catch (e: SQLiteConstraintException) {
+            db.update(tableName, values, "question_id = " + q_id, null)
         }
     }
 }

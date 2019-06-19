@@ -1,41 +1,17 @@
 package jp.ac.asojuku.st.noffication_de_study.db
 
 import android.content.ContentValues
-import android.content.Context
 import android.database.CursorIndexOutOfBoundsException
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
-import kotlin.collections.ArrayList
 
-
-class QuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, "questions", null, 1) {
-    // 第１引数 :
-    // 第２引数 : データベースの名称
-    // 第３引数 : null
-    // 第４引数 : データベースのバージョン
-    val tableName:String = "questions";
-
-    override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL(
-            "CREATE TABLE " + tableName + " ( " +
-                    "question_id integer not null, " +
-                    "question varchar, "+
-                    "is_have_image integer, "+
-                    "comment varchar, "+
-                    "update_date date, "+
-                    "PRIMARY KEY (question_id)"+
-                    ");")
-    }
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-    }
+class QuestionsOpenHelper(var db: SQLiteDatabase) {
+    val tableName: String = "questions";
 
     //問題idを渡して、
-    fun find_question(question_id:Int) :ArrayList<String>? {
-        val thisDB = QuestionsOpenHelper(mContext)
-        val db = thisDB.readableDatabase
+    fun find_question(question_id: Int): ArrayList<String>? {
 
-        val query = "SELECT * FROM "+ tableName +" where question_id = " + question_id
+        val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
 
         cursor.moveToFirst()
@@ -49,11 +25,8 @@ class QuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, 
         return array
     }
 
-    fun find_comment(question_id:Int) :ArrayList<String>? {
-        val thisDB = QuestionsOpenHelper(mContext)
-        val db = thisDB.readableDatabase
-
-        val query = "SELECT * FROM "+ tableName +" where question_id = " + question_id
+    fun find_comment(question_id: Int): ArrayList<String>? {
+        val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
 
         cursor.moveToFirst()
@@ -65,18 +38,16 @@ class QuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, 
         cursor.close()
         return array
     }
-    fun find_update_date(question_id:Int) :ArrayList<ArrayList<Int>>? {
-        val thisDB = QuestionsOpenHelper(mContext)
-        val db = thisDB.readableDatabase
 
-        val query = "SELECT * FROM "+ tableName +" where question_id = " + question_id
+    fun find_update_date(question_id: Int): ArrayList<ArrayList<Int>>? {
+        val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
 
-        try{
+        try {
             cursor.moveToFirst()
 
             var array = ArrayList<ArrayList<Int>>()
-            var bufferlist:ArrayList<Int>
+            var bufferlist: ArrayList<Int>
             for (i in 0 until cursor.count) {
                 bufferlist = ArrayList()
                 bufferlist.add(cursor.getInt(0))
@@ -85,30 +56,28 @@ class QuestionsOpenHelper (var mContext: Context?) : SQLiteOpenHelper(mContext, 
                 cursor.moveToNext();
             }
             cursor.close()
-            if(array.size==0){
-                return  null
+            if (array.size == 0) {
+                return null
             }
             return array
-        }catch (e: CursorIndexOutOfBoundsException){
+        } catch (e: CursorIndexOutOfBoundsException) {
             cursor.close()
             return null
         }
     }
-    fun add_record(a:Int , b:String, c:Int, d:String, e:String) {
-        val thisDB = QuestionsOpenHelper(mContext)
-        val db = thisDB.readableDatabase
 
+    fun add_record(a: Int, b: String, c: Int, d: String, e: String) {
         val values = ContentValues()
         values.put("question_id", a)
-        values.put("question",b )
-        values.put("is_have_image",c )
-        values.put("comment",d )
-        values.put("update_date",e )
+        values.put("question", b)
+        values.put("is_have_image", c)
+        values.put("comment", d)
+        values.put("update_date", e)
 
         try {
             db.insertOrThrow(tableName, null, values)
-        }catch (e: SQLiteConstraintException){
-            db.update(tableName,values,"question_id = " + a,null)
+        } catch (e: SQLiteConstraintException) {
+            db.update(tableName, values, "question_id = " + a, null)
         }
     }
 }
