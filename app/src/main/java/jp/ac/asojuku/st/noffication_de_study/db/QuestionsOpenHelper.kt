@@ -32,10 +32,15 @@ class QuestionsOpenHelper(var db: SQLiteDatabase) {
         cursor.moveToFirst()
         var array = ArrayList<String>()
 
-        array.add(cursor.getString(0).toString())
-        array.add(cursor.getString(3).toString())
+        try {
+            array.add(cursor.getString(0).toString())
+            array.add(cursor.getString(3).toString())
+            cursor.close()
+        } catch (e: CursorIndexOutOfBoundsException) {
+            cursor.close()
+            return null
+        }
 
-        cursor.close()
         return array
     }
 

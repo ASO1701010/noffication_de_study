@@ -37,18 +37,17 @@ class QuestionActivity : AppCompatActivity() {
 
         if (examData.question_current == 9999) { //表示する問題がないとき終了する
             printResult()
-            finish()
+        }else {
+            printQuestion() //問題文の表示
+
+            //ボタンの設定
+            AA_Answer_0.setOnClickListener { choiceAnswer(0) }
+            AA_Answer_1.setOnClickListener { choiceAnswer(1) }
+            AA_Answer_2.setOnClickListener { choiceAnswer(2) }
+            AA_Answer_3.setOnClickListener { choiceAnswer(3) }
+            AA_End_BTN.setOnClickListener { printResult() }
+            AA_Next_BTN.setOnClickListener { skipQuestion() }
         }
-
-        printQuestion() //問題文の表示
-
-        //ボタンの設定
-        AA_Answer_0.setOnClickListener { choiceAnswer(0) }
-        AA_Answer_1.setOnClickListener { choiceAnswer(1) }
-        AA_Answer_2.setOnClickListener { choiceAnswer(2) }
-        AA_Answer_3.setOnClickListener { choiceAnswer(3) }
-        AA_End_BTN.setOnClickListener { printResult() }
-        AA_Next_BTN.setOnClickListener { skipQuestion() }
 
     }
 
@@ -67,7 +66,7 @@ class QuestionActivity : AppCompatActivity() {
 
             try {
                 //次の問題IDを取得
-                examData.question_next = examData.question_list[examData.isCorrect_list.size+2]
+                examData.question_next = examData.question_list[examData.isCorrect_list.size+1]
 
             } catch (e: IndexOutOfBoundsException) {
                 //次の問題が存在しない場合は次に9999を設定する
@@ -107,6 +106,7 @@ class QuestionActivity : AppCompatActivity() {
 //        val intent = Intent(this, AnswerActivity::class.java)
         startActivity<AnswerActivity>("exam_data" to examData)
 
+
     }
 
     //スキップ
@@ -115,6 +115,7 @@ class QuestionActivity : AppCompatActivity() {
         regAnswer(9999)
 //        val intent = Intent(this, QuestionActivity::class.java)
         startActivity<QuestionActivity>("exam_data" to examData)
+        finish()
     }
 
     //解答登録
@@ -167,8 +168,9 @@ class QuestionActivity : AppCompatActivity() {
                             examData.question_list.add(tempQuestionList.get(i)) //間違ったquestion_idを詰め込んでいく
                         }
                     }
-                    val intent = Intent(this, AnswerActivity::class.java)
-                    startActivity(intent)
+//                    val intent = Intent(this, AnswerActivity::class.java)
+////                    startActivity(intent)
+                    startActivity<AnswerActivity>("exam_data" to examData)
                     finish()
 
                 }

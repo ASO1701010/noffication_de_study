@@ -4,10 +4,12 @@ import java.io.Serializable
 
 class ExamData (id:Int, name:String, number:String):Serializable{
     ///出題id ?? よく分からん。なんでつけたんだっけか・・・
+    //多分他でも使ってないので後で消してテストしよう
     val id = id
     //試験名 FEとか
     val name = name
-    //試験番号　FE2019Sとか
+    //試験番号 FE2019Sとか
+
     val number = number
 
     //問題番号リスト
