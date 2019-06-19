@@ -11,7 +11,6 @@ import jp.ac.asojuku.st.noffication_de_study.db.*
 import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 
-
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +25,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "APIの通信に失敗しました(´･ω･`)", Toast.LENGTH_SHORT).show()
             }
-
 
             startActivity<TitleActivity>()
             finish()

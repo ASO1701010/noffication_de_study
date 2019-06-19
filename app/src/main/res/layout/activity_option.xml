@@ -39,22 +39,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp" android:id="@+id/option_title1"
                     android:textSize="36sp"
-                    android:textAlignment="viewStart"
+                    android:textAlignment="viewStart"/>
+            <com.google.android.gms.common.SignInButton
+                    android:id="@+id/sign_in_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
             />
-            <Button
-                    android:text="Googleでログイン"
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp" android:id="@+id/OA_Google_Login_BTN"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:gravity="center"/>
             <TextView
                     android:text="通知"
                     android:layout_width="411dp"
                     android:layout_height="wrap_content" android:id="@+id/option_title"
                     android:textSize="36sp"
-                    android:textAlignment="viewStart"
-            />
+                    android:textAlignment="viewStart"/>
             <CheckBox
                     android:text="通知de勉強モード"
                     android:layout_width="match_parent"

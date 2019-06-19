@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "180787620359",
+    "firebase_url": "https://noffication-de-study.firebaseio.com",
+    "project_id": "noffication-de-study",
+    "storage_bucket": "noffication-de-study.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180787620359:android:917e9f0e771108de",
+        "android_client_info": {
+          "package_name": "jp.ac.asojuku.st.noffication_de_study"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "180787620359-b80daoals47bvqv8v7f33efl6iatatgf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "jp.ac.asojuku.st.noffication_de_study",
+            "certificate_hash": "194947986bd5e0b759aad2d485599051a2601774"
+          }
+        },
+        {
+          "client_id": "180787620359-gaslqjan4jstdvfqfb2komjqc9c33g0g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxmbRkg7cFDdMjwMOOX2Cc4b3IU9I_80M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180787620359-gaslqjan4jstdvfqfb2komjqc9c33g0g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
