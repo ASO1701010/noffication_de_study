@@ -9,7 +9,6 @@ class ExamData (id:Int, name:String, number:String):Serializable{
     //試験名 FEとか
     val name = name
     //試験番号 FE2019Sとか
-
     val number = number
 
     //問題番号リスト
