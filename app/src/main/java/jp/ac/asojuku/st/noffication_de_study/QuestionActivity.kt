@@ -31,14 +31,16 @@ class QuestionActivity : AppCompatActivity() {
 //        examData.question_list[0]
         /////////////////デバッグ用///////////////////////////
 
-        choiceNextQuestion()
-        printQuestion()
 
 
-//        atFirst()
-        if (examData.question_current == 999) {
+        choiceNextQuestion() //次の問題を読み込んでおく
+
+        if (examData.question_current == 9999) { //表示する問題がないとき終了する
             printResult()
+            finish()
         }
+
+        printQuestion() //問題文の表示
 
         //ボタンの設定
         AA_Answer_0.setOnClickListener { choiceAnswer(0) }
@@ -65,11 +67,11 @@ class QuestionActivity : AppCompatActivity() {
 
             try {
                 //次の問題IDを取得
-                examData.question_next = examData.question_list[examData.answered_list.size+2]
+                examData.question_next = examData.question_list[examData.isCorrect_list.size+2]
 
-            } catch (e: ArrayIndexOutOfBoundsException) {
-                //次の問題が存在しない場合は次に999を設定する
-                examData.question_next = 999
+            } catch (e: IndexOutOfBoundsException) {
+                //次の問題が存在しない場合は次に9999を設定する
+                examData.question_next = 9999
             }
         }
 
@@ -110,7 +112,7 @@ class QuestionActivity : AppCompatActivity() {
     //スキップ
     fun skipQuestion() {
         //DBにスキップしたとして999を登録して次の問題画面に画面遷移
-        regAnswer(999)
+        regAnswer(9999)
 //        val intent = Intent(this, QuestionActivity::class.java)
         startActivity<QuestionActivity>("exam_data" to examData)
     }

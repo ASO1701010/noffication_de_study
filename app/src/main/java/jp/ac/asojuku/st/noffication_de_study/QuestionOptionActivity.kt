@@ -198,6 +198,7 @@ class QuestionOptionActivity : AppCompatActivity() {
 //                QuestionsArrayList.add(tq)
 //            }
 //        }
+
         for (i in 0..SpinnerNum - 1) {
             QuestionsArrayList.add(TempQuestions[i])
         }
