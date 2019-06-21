@@ -17,18 +17,18 @@ class AnswerActivity : AppCompatActivity() {
 //    val correctDB = CorrectAnswerOpenHelper(db)
 
 
-    lateinit var user_id:String
-    lateinit var exam_data:ExamData
+    lateinit var user_id: String
+    lateinit var exam_data: ExamData
 
     var question_id = -1
-    var answer_num:Int? = 999999
-    var answer_text:String? = ""
+    var answer_num: Int? = 999999
+    var answer_text: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_answer)
 
-        user_id = getSharedPreferences("user_data", MODE_PRIVATE).getString("user_id","999999")
+        user_id = getSharedPreferences("user_data", MODE_PRIVATE).getString("user_id", "999999")
         exam_data = intent.getSerializableExtra("exam_data") as ExamData
 
         at_first()
@@ -49,15 +49,16 @@ class AnswerActivity : AppCompatActivity() {
 
 
     }
-    fun at_first(){
+
+    fun at_first() {
 
         val questions = SQLiteHelper(this)
         val db = questions.readableDatabase
         val questionsDB = QuestionsOpenHelper(db)
         val correctDB = CorrectAnswerOpenHelper(db)
 
-        if(user_id == "999999"){
-            Log.d("user_id が受け取れていません","/")
+        if (user_id == "999999") {
+            Log.d("user_id が受け取れていません", "/")
         }
         answer_text = questionsDB.find_comment(question_id)?.get(1)
         answer_num = correctDB.find_correct_answer(question_id)
@@ -66,7 +67,7 @@ class AnswerActivity : AppCompatActivity() {
 
     //テスト用データが入ってます
     //本番用は上のコメントアウトされてる部分です。
-    fun print_answer(){
+    fun print_answer() {
         val questions = SQLiteHelper(this)
         val db = questions.readableDatabase
         val questionsDB = QuestionsOpenHelper(db)
@@ -74,25 +75,33 @@ class AnswerActivity : AppCompatActivity() {
         question_id = exam_data.question_current
 
 
-        var examNumberList:ArrayList<String>?
+        var examNumberList: ArrayList<String>?
         ///////問題IDから試験回を取得///////DB側未作成////////////////////////////////////
-        val examsNumbersDB = ExamsNumbersOpenHelper(db)
-        examNumberList = examsNumbersDB.find_exams_numbers(question_id)
+//        val examsNumbersDB = ExamsNumbersOpenHelper(db)
+//        examNumberList = examsNumbersDB.find_exams_numbers(question_id)
         ////////////////////////////////////////////////////////////////////////
         //正解を取得//
         val answersDB = AnswersOpenHelper(db)
-        var answer = answersDB.find_answers(question_id)
+        var answerList = answersDB.find_answers(question_id)
+        var answerNo = answerList!!.get(1)
+        var sentakusi = listOf<String>("ア", "イ", "ウ", "エ")
+        var answer: String = sentakusi[answerNo]
+
         //////////////
 
         //改行コードの取得//
-        val BR:String = System.getProperty("line.separator")
-        var examNumbers:String = ""
-        for (i in 0..examNumberList!!.size-1){
-            examNumbers += examNumberList[i] + BR
-        }
+        val BR: String = System.getProperty("line.separator")
+        var examNumbers: String = ""
+//        for (i in 0..examNumberList!!.size-1){
+//            examNumbers += examNumberList[i] + BR
+//        }
+        //TODO:DB側が作成されたら更新
+//        examNumbers += "試験回" + BR
+
 
         answer_examNumber_text.setText(exam_data.number)
-        answer_questionNumber_text.setText("問題ID："+ question_id)
+//        answer_questionNumber_text.setText("問題ID："+ question_id)
+        answer_questionNumber_text.setText("解説")
         answer_question_correct_text.setText("正解 : " + answer)
         AA_answerComment_text.setText(questionsDB.find_comment(question_id)?.get(1))
 //        answer_examNumber_text.setText("問題number")

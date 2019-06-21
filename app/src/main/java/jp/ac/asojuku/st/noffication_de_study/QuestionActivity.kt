@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_question.*
 import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 import java.util.*
+import kotlin.collections.ArrayList
 
 class QuestionActivity : AppCompatActivity() {
 
@@ -60,7 +61,11 @@ class QuestionActivity : AppCompatActivity() {
     fun choiceNextQuestion() {
         if (examData.question_current == 0) {
             examData.question_current = examData.question_list[0]
-            examData.question_next = examData.question_list[1]
+            try {
+                examData.question_next = examData.question_list[1]
+            }catch (e:java.lang.IndexOutOfBoundsException){
+                examData.question_next = 9999
+            }
         } else {
             examData.question_current = examData.question_next
 
@@ -146,31 +151,38 @@ class QuestionActivity : AppCompatActivity() {
     //結果表示
     fun printResult() {
         //解いた問題数を取得
-        var answerCount = examData.isCorrect_list.size
+        var answerCount = examData.isCorrect_list.size.toDouble()
         //正解数を取得
-        var correctedCount = examData.isCorrect_list.filter { it == true }.count()
+        var correctedCount = examData.isCorrect_list.filter { it == true }.count().toDouble()
         //正答率を計算
-        var answerRate = correctedCount / answerCount * 100
-
+        var answerRate = correctedCount / answerCount  * 100.00
+        var answerRateStr :String = String.format("%4.1f",answerRate)
         //ポップアップ用のビルダー
         val builder = AlertDialog.Builder(this)
         if (answerRate < 100) { //ミスがある場合、間違った問題を解くボタンを表示させる
-            builder.setMessage("正答率:" + answerRate + "%")
+            builder.setMessage("正答率:" + answerRateStr+ "%")
                 .setCancelable(false)//範囲外タップによるキャンセルを不可にする
                 .setNeutralButton("間違った問題を解く") { dialog, which ->
                     //間違った問題のリストを用意して問題解答画面に遷移する処理
-                    var tempQuestionList = examData.question_list
+//                    var tempQuestionList = this.examData.question_list
+                    var tempQuestionList:ArrayList<Int> = ArrayList()
+                    for (question_id in examData.question_list) {
+                        tempQuestionList.add(question_id)
+                    }
                     examData.question_list.clear() //問題リストの初期化
                     examData.answered_list.clear() //解答リストの初期化
-                    for (i in 0..tempQuestionList.size) {
-                        var isMistake = examData.isCorrect_list.get(i)
-                        if (isMistake) {
-                            examData.question_list.add(tempQuestionList.get(i)) //間違ったquestion_idを詰め込んでいく
+                    examData.question_current = 0
+                    examData.question_next = 0
+                    for (i in 0..examData.isCorrect_list.size-1) {
+                        var isCollected = examData.isCorrect_list.get(i)
+                        if (!isCollected) {
+                            examData.question_list.add(tempQuestionList[i]) //間違ったquestion_idを詰め込んでいく
                         }
                     }
+                    examData.isCorrect_list.clear()
 //                    val intent = Intent(this, AnswerActivity::class.java)
 ////                    startActivity(intent)
-                    startActivity<AnswerActivity>("exam_data" to examData)
+                    startActivity<QuestionActivity>("exam_data" to this.examData)
                     finish()
 
                 }
