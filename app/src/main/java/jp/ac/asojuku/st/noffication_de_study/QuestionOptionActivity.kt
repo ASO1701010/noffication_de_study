@@ -14,8 +14,6 @@ class QuestionOptionActivity : AppCompatActivity() {
 
     //TODO 定数の値はすべて仮の値
     val user_id = 12345678
-//    var question_list 中身が無いと宣言できない
-//    var setting_list 中身が無いと宣言できない
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +25,6 @@ class QuestionOptionActivity : AppCompatActivity() {
             val QuestionsArrayList = ld.first
             val ExamName = ld.second
 
-            //デバック用データ
             var exam_data = ExamData(1, "FE", ExamName)
             exam_data.set_list_data(QuestionsArrayList)
 
@@ -136,14 +133,15 @@ class QuestionOptionActivity : AppCompatActivity() {
         }
 
         // ExamNameFlgが2以上の場合(年度が複数選択された場合)
-        if(ExamNameFlg >= 2 ){
-           ExamName = "random"
+        if (ExamNameFlg >= 2) {
+            ExamName = "multi"
         }
 
         // ジャンルの読み込み
         val GOH = QuestionsGenresOpenHelper(db)
         var genre1_Questions: ArrayList<Int>? = null
         var genre2_Questions: ArrayList<Int>? = null
+
         // ジャンル検索
         if (QOA_Select_Genres_1.isChecked) {
             genre1_Questions = GOH.find_genre_questions(1)
@@ -156,72 +154,57 @@ class QuestionOptionActivity : AppCompatActivity() {
         // ArrayListのTempQuestionsに出題する問題を格納する
         var TempQuestions = ArrayList<Int>()
 
-        if (genre1_Questions != null) {
-            for (ty in TempYear_list) {
-                for (i in 0..ty!!.size) {
-                    for (j in 1..genre1_Questions.size) {
-                        if (genre1_Questions.get(i) == ty.get(j).get(2)) {
-                            TempQuestions.add(genre1_Questions.get(i))
+        if (genre1_Questions != null || genre2_Questions != null) {
+            if (genre1_Questions != null) {
+                for (ty in TempYear_list) {
+                    for (i in 0..ty!!.size) {
+                        for (j in 0..genre1_Questions.size - 1) {
+                            if (genre1_Questions.get(j) == ty.get(i).get(0)) {
+                                TempQuestions.add(genre1_Questions.get(j))
+                            }
                         }
                     }
                 }
             }
-        }
 
-        if (genre2_Questions != null) {
-            for (ty in TempYear_list) {
-                for (i in 0..ty!!.size) {
-                    for (j in 1..genre2_Questions.size) {
-                        if (genre2_Questions.get(i) == ty.get(j).get(2)) {
-                            TempQuestions.add(genre2_Questions.get(i))
+            if (genre2_Questions != null) {
+                for (ty in TempYear_list) {
+                    for (i in 0..ty!!.size - 1) {
+                        for (j in 0..genre2_Questions.size - 1) {
+                            if (genre2_Questions.get(j) == ty.get(i).get(0)) {
+                                TempQuestions.add(genre2_Questions.get(j))
+                            }
                         }
                     }
+                }
+            }
+        } else {
+            for (ty in TempYear_list) {
+                for (i in 0..ty!!.size - 1) {
+                    TempQuestions.add(ty.get(i).get(0))
                 }
             }
         }
 
         // ランダム出題するか、そうじゃないかで問題順を並び替える
-        if (randomBoolean == true) {
+        if (QOA_Select_Method_Random_RBTN.isChecked) {
             Collections.shuffle(TempQuestions)
         }
 
         // 問題数に応じて問題を選択する
         var QuestionsArrayList = ArrayList<Int>()
-        for (tq in TempQuestions)
-            for (i in 0..SpinnerNum - 1) {
-                QuestionsArrayList.add(tq)
-            }
+//        for (tq in TempQuestions) {
+//            for (i in 0..SpinnerNum - 1) {
+//                QuestionsArrayList.add(tq)
+//            }
+//        }
+
+        for (i in 0..SpinnerNum - 1) {
+            QuestionsArrayList.add(TempQuestions[i])
+        }
+
 
         // 問題ArrayList<Int>であるQuestionsArrayとStringを返す
         return Pair(QuestionsArrayList, ExamName)
-
-//        // TempQuestionsに保存した問題を次のページに受け渡す
-//        val ED = ExamData(1, "FE", ExamName)
-//        ED.set_list_data(TempQuestions2)
-
-    }
-
-//読み込んだ選択肢を各セレクトボックスやスピナーにセットする
-//object型を引数には設定できない
-//    fun setChoise(target_list : object) {
-//
-//    }
-
-    //設定完了時の処理。出題する問題を決定し配列に格納、画面遷移を行う
-    fun decideSetting() {
-
-    }
-
-    //選択設定判定
-//設定されたチェックをすべて検索しsetting_listに登録
-    fun discChoice() {
-
-    }
-
-    //出題問題決定
-// 出題する問題を決定し問題IDを配列で返す。未設定時はランダムに20問
-//TODO このメソッドは戻り値にArray<Int>を戻り値にする？
-    fun decideQuestion() {
-
     }
 }
