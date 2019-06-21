@@ -36,7 +36,7 @@ class OptionActivity : AppCompatActivity(),TimePickerFragment.OnTimeSelectedList
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var mAuth: FirebaseAuth
     override fun onSelected(hourOfDay: Int, minute: Int) {
-        OA_Noffication_Time_Between1.text = "%1&02d:%2&02d".format(hourOfDay,minute) //timepickerによってtextviewの変更(未確認)
+        OA_Noffication_Time_Between1.text = "%1&02d:%2&02d".format(hourOfDay,minute) //timepickerによるtextviewの変更(未確認)
         OA_Noffication_Time_Between2.text = "%1&02d:%2&02d".format(hourOfDay,minute) //同上
     }
 
@@ -44,8 +44,6 @@ class OptionActivity : AppCompatActivity(),TimePickerFragment.OnTimeSelectedList
     val checkNDS = OA_NDS_Mode_BTN.isChecked()
     val checkSDS = OA_SDS_Mode_BTN.isChecked()
     val Spinner = OA_Noffication_Interval.getSelectedItemPosition()
-    val dialog = TimePickerFragment()
-    val dialog2 = TimePickerFragment2()
     val option : SharedPreferences.Editor = getSharedPreferences("user_data", AppCompatActivity.MODE_PRIVATE).edit()
     //TODO 定数の中身はすべて仮の値
     val user_id = 12345678 //ユーザID
@@ -59,10 +57,12 @@ class OptionActivity : AppCompatActivity(),TimePickerFragment.OnTimeSelectedList
         OA_NDS_Mode_BTN.setOnClickListener { regRule() }
         OA_SDS_Mode_BTN.setOnClickListener { regRule() }
         OA_Noffication_Time_Between1.setOnClickListener {
+            val dialog = TimePickerFragment()
             dialog.show(supportFragmentManager,"StartTime_dialog")
             regRule()
             }
         OA_Noffication_Time_Between2.setOnClickListener {
+            val dialog2 = TimePickerFragment2()
             dialog2.show(supportFragmentManager,"EndTime_dialog")
             regRule()
             }
@@ -155,8 +155,8 @@ class OptionActivity : AppCompatActivity(),TimePickerFragment.OnTimeSelectedList
         }else{
             option.putBoolean("SDS_check",false).apply()
         }
-        option.putString("NDS_Start", dialog.toString()).apply()
-        option.putString("NDS_End",dialog2.toString()).apply()
+        option.putString("NDS_Start", OA_Noffication_Time_Between1.text.toString()).apply()
+        option.putString("NDS_End",OA_Noffication_Time_Between2.text.toString()).apply()
         option.putInt("NDS_Interval",Spinner).apply() //通知間隔設定の保存
     }
 }
