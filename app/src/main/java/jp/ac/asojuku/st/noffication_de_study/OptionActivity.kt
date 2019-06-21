@@ -2,8 +2,9 @@ package jp.ac.asojuku.st.noffication_de_study
 
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Bundle
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -15,16 +16,53 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_option.*
 import org.json.JSONObject
+import kotlinx.android.synthetic.main.activity_option.*
+import android.R.id.edit
+import android.app.TimePickerDialog
+import android.content.SharedPreferences.Editor
+import android.preference.PreferenceManager
+import android.preference.PreferenceDataStore
+import android.view.Menu;
+import android.view.View;
+import android.view.MenuInflater;
+import android.view.View.OnClickListener;
+import android.widget.*
+import android.support.v4.app.DialogFragment;
+
 
 //TODO オプション画面:未完成(0%)
-class OptionActivity : AppCompatActivity() {
+class OptionActivity : AppCompatActivity(),TimePickerFragment.OnTimeSelectedListener,TimePickerFragment2.OnTimeSelectedListener {
     private val RC_SIGN_IN = 7
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var mAuth: FirebaseAuth
+    override fun onSelected(hourOfDay: Int, minute: Int) {
+        OA_Noffication_Time_Between1.text = "%1&02d:%2&02d".format(hourOfDay,minute) //timepickerによるtextviewの変更(未確認)
+        OA_Noffication_Time_Between2.text = "%1&02d:%2&02d".format(hourOfDay,minute) //同上
+    }
 
+
+    val checkNDS = OA_NDS_Mode_BTN.isChecked()
+    val checkSDS = OA_SDS_Mode_BTN.isChecked()
+    val Spinner = OA_Noffication_Interval.getSelectedItemPosition()
+    val option : SharedPreferences.Editor = getSharedPreferences("user_data", AppCompatActivity.MODE_PRIVATE).edit()
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_option)
+
+        OA_NDS_Mode_BTN.setOnClickListener { regRule() }
+        OA_SDS_Mode_BTN.setOnClickListener { regRule() }
+        OA_Noffication_Time_Between1.setOnClickListener {
+            val dialog = TimePickerFragment()
+            dialog.show(supportFragmentManager,"StartTime_dialog")
+            regRule()
+            }
+        OA_Noffication_Time_Between2.setOnClickListener {
+            val dialog2 = TimePickerFragment2()
+            dialog2.show(supportFragmentManager,"EndTime_dialog")
+            regRule()
+            }
+        OA_Noffication_Interval.setOnClickListener { regRule() }
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -103,11 +141,18 @@ class OptionActivity : AppCompatActivity() {
 
     //ルール登録
     fun regRule() {
-
-    }
-
-    //ルール追加
-    fun addRule() {
-
+        if(checkNDS){ //通知de勉強ボタンのチェック状態保存
+            option.putBoolean("NDS_check",true).apply()
+        }else{
+            option.putBoolean("NDS_check",false).apply()
+        }
+        if(checkSDS){ //画面点灯de勉強ボタンのチェック状態保存
+            option.putBoolean("SDS_check",true).apply()
+        }else{
+            option.putBoolean("SDS_check",false).apply()
+        }
+        option.putString("NDS_Start", OA_Noffication_Time_Between1.text.toString()).apply()
+        option.putString("NDS_End",OA_Noffication_Time_Between2.text.toString()).apply()
+        option.putInt("NDS_Interval",Spinner).apply() //通知間隔設定の保存
     }
 }
