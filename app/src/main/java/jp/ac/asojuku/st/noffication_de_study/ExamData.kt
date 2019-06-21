@@ -4,16 +4,19 @@ import java.io.Serializable
 
 class ExamData (id:Int, name:String, number:String):Serializable{
     ///出題id ?? よく分からん。なんでつけたんだっけか・・・
+    //多分他でも使ってないので後で消してテストしよう
     val id = id
     //試験名 FEとか
     val name = name
-    //試験番号　FE2019Sとか
+    //試験番号 FE2019Sとか
     val number = number
 
     //問題番号リスト
     var question_list = ArrayList<Int>()
     //回答番号リスト　未回答:999
     var answered_list = ArrayList<Int>()
+
+    public var isCorrect_list = ArrayList<Boolean>() //question_listに対応するユーザの解答が正解だったかが入るリスト
 
     //今の問題番号　AnswerActivityで解いた問題を識別するために使用。　QuestionActivityの起動時処理でquestion_nextの値を代入
     var question_current = 0
