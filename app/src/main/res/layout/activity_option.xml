@@ -12,28 +12,25 @@
             android:layout_width="200dp"
             android:layout_height="55dp" android:id="@+id/textView"
             android:textSize="36sp" android:textAlignment="center"
-            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/OA_Back_BTN" app:layout_constraintHorizontal_bias="0.3"
-            app:layout_constraintBottom_toTopOf="@+id/scrollView3"
-            android:layout_marginBottom="16dp" android:layout_marginTop="16dp"/>
+            android:layout_marginTop="13dp" android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"/>
     <ImageButton
             android:layout_width="55dp"
             android:layout_height="55dp" app:srcCompat="@android:drawable/ic_menu_revert"
             android:id="@+id/OA_Back_BTN"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="32dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView"/>
+            app:layout_constraintTop_toTopOf="@+id/textView" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
     <ScrollView
             android:layout_width="0dp"
-            android:layout_height="580dp"
+            android:layout_height="635dp"
             android:id="@+id/scrollView3"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" app:layout_constraintHorizontal_bias="0.0">
+            app:layout_constraintHorizontal_bias="0.0"
+    >
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                      android:orientation="vertical" android:baselineAligned="false">
+                      android:orientation="vertical" android:baselineAligned="false" tools:context=".OptionActivity">
             <TextView
                     android:text="ログイン"
                     android:layout_width="wrap_content"
@@ -41,13 +38,11 @@
                     android:textSize="36sp"
                     android:textAlignment="viewStart"
             />
-            <Button
-                    android:text="Googleでログイン"
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp" android:id="@+id/OA_Google_Login_BTN"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:gravity="center"/>
+            <com.google.android.gms.common.SignInButton
+                    android:id="@+id/sign_in_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+            />
             <TextView
                     android:text="通知"
                     android:layout_width="411dp"
@@ -57,61 +52,75 @@
             />
             <CheckBox
                     android:text="通知de勉強モード"
-                    android:layout_width="match_parent"
+                    android:layout_width="411dp"
                     android:layout_height="wrap_content" android:id="@+id/OA_NDS_Mode_BTN"
-                    android:textSize="32dp" android:textAlignment="viewStart"
+                    android:textSize="36sp" android:textAlignment="textStart"
             />
             <TextView
                     android:text="通知で画面を出題し、解答します。"
-                    android:layout_width="match_parent"
+                    android:layout_width="411dp"
                     android:layout_height="58dp" android:id="@+id/NDS_INFO"
-                    android:textAlignment="textStart" android:textSize="20dp"/>
+                    android:textAlignment="center" android:textSize="20sp"/>
             <CheckBox
                     android:text="画面点灯de勉強モード"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/OA_SDS_Mode_BTN"
-                    android:textSize="32dp" android:textAlignment="viewStart"/>
+                    android:layout_width="411dp"
+                    android:layout_height="63dp" android:id="@+id/OA_SDS_Mode_BTN"
+                    android:textSize="36sp"/>
             <TextView
                     android:text="画面点灯したときに問題の通知を行います。"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/SDS_INFO"
-                    android:textAlignment="textStart" android:textSize="20dp"
-                    android:paddingTop="30px" android:paddingRight="50px" android:paddingBottom="30px"
-                    android:paddingLeft="50px"/>
+                    android:layout_width="411dp"
+                    android:layout_height="58dp" android:id="@+id/SDS_INFO"
+                    android:textAlignment="center" android:textSize="20sp"
+            />
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
                 <TextView
                         android:text="通知を行う時間の範囲"
-                        android:layout_width="290dp"
-                        android:layout_height="40dp" android:id="@+id/option_title2"
-                        android:textSize="24sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="27dp" android:id="@+id/option_title2"
+                        android:textSize="20sp"
                         android:textAlignment="viewStart"
                         android:textAllCaps="false"
                 />
-                <Spinner
-                        android:layout_width="120dp"
-                        android:layout_height="40dp" android:id="@+id/spinner"
-                        android:spinnerMode="dialog"/>
+                <TextView
+                        android:text="Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/OA_Noffication_Time_Between1"
+                        android:textSize="20sp"/>
+                <TextView
+                        android:text="～"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/textView17" android:textSize="20sp"/>
+                <TextView
+                        android:text="Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/OA_Noffication_Time_Between2"
+                        android:textSize="20sp"/>
             </LinearLayout>
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
                 <TextView
                         android:text="通知を行う間隔"
                         android:layout_width="290dp"
                         android:layout_height="40dp" android:id="@+id/option_title4"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textAlignment="viewStart"
                         android:textAllCaps="false"
                 />
                 <Spinner
-                        android:layout_width="120dp"
-                        android:layout_height="40dp" android:id="@+id/OA_Noffication_Interval"
+                        android:layout_width="96dp"
+                        android:layout_height="match_parent" android:id="@+id/OA_Noffication_Interval"
                         android:entries="@array/OA_Noffication_Interval_list"
                 />
+                <TextView
+                        android:text="分"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" android:id="@+id/textView14"
+                        android:textSize="20sp"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

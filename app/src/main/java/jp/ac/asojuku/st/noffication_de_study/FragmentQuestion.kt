@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import android.widget.Toast
 import jp.ac.asojuku.st.noffication_de_study.db.QuestionsOpenHelper
 import kotlinx.android.synthetic.main.fragment_fragment_question.*
 
@@ -54,11 +53,11 @@ class FragmentQuestion : Fragment() {
             val qsAdapter = activity?.let { QuestionStatisticsAdapter(it) }
             val questionHelper = activity?.let { SQLiteHelper(it).readableDatabase }?.let { QuestionsOpenHelper(it) }
 
-            for (data in array) {
+            array.forEach {
                 val item = QuestionStatisticsItem()
-                item.setId(data[0].toLong())
-                item.setTitle(questionHelper!!.find_question(data[0].toInt())!![1])
-                item.setRate((data[1].toDouble() * 100).toString() + " %")
+                item.setId(it[0].toLong())
+                item.setTitle(questionHelper!!.find_question(it[0].toInt())!![1])
+                item.setRate((it[1].toDouble() * 100).toString() + " %")
                 list.add(item)
             }
 
@@ -70,11 +69,15 @@ class FragmentQuestion : Fragment() {
             listView.setOnItemClickListener { parent, _, position, _ ->
                 val item = parent.getItemAtPosition(position) as QuestionStatisticsItem
                 val questionId = item.getId()
-                Toast.makeText(activity, questionId.toString(), Toast.LENGTH_LONG).show()
-                /* クリックすると問題画面へ遷移する
-                val intent = Intent(activity, OptionActivity::class.java)
+
+                val examData = ExamData(1, "FE", "FE10901")
+                examData.question_next = questionId.toInt()
+                val examDataArray = ArrayList<Int>()
+                examDataArray.add(0)
+
+                val intent = Intent(activity, QuestionActivity::class.java)
+                intent.putExtra("exam_data", examData)
                 startActivity(intent)
-                */
             }
         }
     }

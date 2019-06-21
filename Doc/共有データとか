@@ -7,6 +7,11 @@
 
         ・共有プリファレンス (キー値:型 -> 内容)
             user_id:String -> ユーザーID。　OptionActivity で端末とAPサーバに登録し、以降は MainActivity で読み込む
+            NDS_check:Boolean -> 通知de勉強ボタンのチェック判定
+            SDS_check:Boolean -> 画面点灯de勉強ボタンのチェック判定
+            NDS_Interval:Int -> 通知を行う間隔
+            NDS_Start:String -> 通知を行う時間の範囲開始時刻
+            NDS_End:String -> 通知を行う時間の範囲終了時刻
 
 
 
