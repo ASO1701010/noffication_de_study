@@ -160,7 +160,8 @@
                 <RadioButton
                         android:text="順番に出題"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/QOA_Select_Method_Order_RBTN"/>
+                        android:layout_height="wrap_content" android:id="@+id/QOA_Select_Method_Order_RBTN"
+                        android:checked="true"/>
                 <RadioButton
                         android:text="ランダムに出題"
                         android:layout_width="wrap_content"

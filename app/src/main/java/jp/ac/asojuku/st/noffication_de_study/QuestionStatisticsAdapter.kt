@@ -16,7 +16,7 @@ class QuestionStatisticsAdapter(internal var context: Context) : BaseAdapter() {
         this.layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     }
 
-    fun setFoodList(statisticsItem: ArrayList<QuestionStatisticsItem>) {
+    fun setQuestionList(statisticsItem: ArrayList<QuestionStatisticsItem>) {
         this.statisticsItem = statisticsItem
     }
 

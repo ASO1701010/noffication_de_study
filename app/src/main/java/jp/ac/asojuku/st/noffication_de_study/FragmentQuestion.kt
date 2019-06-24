@@ -61,7 +61,7 @@ class FragmentQuestion : Fragment() {
                 list.add(item)
             }
 
-            qsAdapter!!.setFoodList(list)
+            qsAdapter!!.setQuestionList(list)
             qsAdapter.notifyDataSetChanged()
 
             listView.adapter = qsAdapter
