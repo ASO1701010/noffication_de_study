@@ -71,9 +71,7 @@ class FragmentQuestion : Fragment() {
                 val questionId = item.getId()
 
                 val examData = ExamData(1, "FE", "FE10901")
-                examData.question_next = questionId.toInt()
-                val examDataArray = ArrayList<Int>()
-                examDataArray.add(0)
+                examData.question_list.add(questionId.toInt())
 
                 val intent = Intent(activity, QuestionActivity::class.java)
                 intent.putExtra("exam_data", examData)
