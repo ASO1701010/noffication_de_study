@@ -65,6 +65,10 @@ class OptionActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        OA_Back_BTN.setOnClickListener {
+            finish()
+        }
+
         OA_NDS_Mode_BTN.setOnClickListener {
             spEditor.putBoolean("NDS_check", OA_NDS_Mode_BTN.isChecked).apply()
         }
