@@ -33,6 +33,26 @@ class ExamsQuestionsOpenHelper(var db: SQLiteDatabase) {
             null
         }
     }
+    fun find_all_questions_from_exam_number(exams_number: String):ArrayList<Int>?{
+        val query =
+            "SELECT * FROM " + tableName + " where exams_number = '" + exams_number + "'"
+        val cursor = db.rawQuery(query, null)
+
+        return try {
+            cursor.moveToFirst()
+
+            var array = ArrayList<Int>()
+            for (i in 0 until cursor.count) {
+                array.add(cursor.getInt(2))
+                cursor.moveToNext()
+            }
+            cursor.close()
+            array
+        } catch (e: CursorIndexOutOfBoundsException) {
+            cursor.close()
+            null
+        }
+    }
 
     fun add_record(q_id: Int, a_num: String, b_num: Int, c_num: Int) {
         val values = ContentValues()
