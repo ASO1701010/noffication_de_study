@@ -9,8 +9,11 @@
         <item>30</item>
     </string-array>
     <string-array name="QOA_Question_Amount_BOX_list">
+        <item>5問</item>
         <item>10問</item>
+        <item>15問</item>
         <item>20問</item>
+        <item>25問</item>
         <item>30問</item>
         <item>40問</item>
         <item>50問</item>
