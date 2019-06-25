@@ -36,7 +36,7 @@ class QuestionActivity : AppCompatActivity() {
 
         if (examData.question_current == 9999) { //表示する問題がないとき終了する
             printResult()
-        }else {
+        } else {
             printQuestion() //問題文の表示
 
             //ボタンの設定
@@ -47,7 +47,7 @@ class QuestionActivity : AppCompatActivity() {
             AA_End_BTN.setOnClickListener {
                 if (examData.isCorrect_list.size == 0) {
                     finish()
-                }else {
+                } else {
                     printResult()
                 }
             }
@@ -67,7 +67,7 @@ class QuestionActivity : AppCompatActivity() {
             examData.question_current = examData.question_list[0]
             try {
                 examData.question_next = examData.question_list[1]
-            }catch (e:java.lang.IndexOutOfBoundsException){
+            } catch (e: java.lang.IndexOutOfBoundsException) {
                 examData.question_next = 9999
             }
         } else {
@@ -75,16 +75,13 @@ class QuestionActivity : AppCompatActivity() {
 
             try {
                 //次の問題IDを取得
-                examData.question_next = examData.question_list[examData.isCorrect_list.size+1]
+                examData.question_next = examData.question_list[examData.isCorrect_list.size + 1]
 
             } catch (e: IndexOutOfBoundsException) {
                 //次の問題が存在しない場合は次に9999を設定する
                 examData.question_next = 9999
             }
         }
-
-
-
 
 
     }
@@ -94,9 +91,9 @@ class QuestionActivity : AppCompatActivity() {
         val questions = SQLiteHelper(this)
         val db = questions.readableDatabase
         val QOH = QuestionsOpenHelper(db)
-        var question_arr: ArrayList<String>? = QOH.find_question(examData.question_current)
+        val question_arr: ArrayList<String>? = QOH.find_question(examData.question_current)
 //        var question_arr: ArrayList<String>? = QOH.find_question(0)
-        var question_str: String
+        val question_str: String
         if (question_arr == null) {
             question_str = "問題文がありません"
         } else {
@@ -114,9 +111,9 @@ class QuestionActivity : AppCompatActivity() {
         //画面遷移
 //        val intent = Intent(this, AnswerActivity::class.java)
         //Toastを表示する処理
-        if(examData.isCorrect_list.get(examData.isCorrect_list.size-1)) {//正解のとき
+        if (examData.isCorrect_list.get(examData.isCorrect_list.size - 1)) {//正解のとき
             Toast.makeText(this, "正解です！", Toast.LENGTH_SHORT).show()
-        }else{
+        } else {
             Toast.makeText(this, "不正解です！", Toast.LENGTH_SHORT).show()
         }
 
@@ -142,7 +139,7 @@ class QuestionActivity : AppCompatActivity() {
         val answers = SQLiteHelper(this)
         val db = answers.readableDatabase
         val AOH = AnswersOpenHelper(db)
-        var answer = AOH.find_answers(examData.question_current)?.get(1) //正しい正解
+        val answer = AOH.find_answers(examData.question_current)?.get(1) //正しい正解
         var isCorrected = false //正解だった場合にtrueにする
         if (choice_number == answer) {
             isCorrected = true
@@ -162,21 +159,28 @@ class QuestionActivity : AppCompatActivity() {
     //結果表示
     fun printResult() {
         //解いた問題数を取得
-        var answerCount = examData.isCorrect_list.size.toDouble()
+        val BR: String? = System.getProperty("line.separator") //改行用コードを取得
+        val answerCount = examData.isCorrect_list.size.toDouble()
+        val skipCount = examData.answered_list.count { it == 9999 }//うまく動作しない可能性
+        var skipMsg: String = ""
+        if (skipCount > 0) {
+            skipMsg = BR + "スキップ数:" + skipCount
+        }
+
         //正解数を取得
-        var correctedCount = examData.isCorrect_list.filter { it == true }.count().toDouble()
+        val correctedCount = examData.isCorrect_list.filter { it == true }.count().toDouble()
         //正答率を計算
-        var answerRate = correctedCount / answerCount  * 100.00
-        var answerRateStr :String = String.format("%4.1f",answerRate)
+        val answerRate = correctedCount / answerCount * 100.00
+        val answerRateStr: String = String.format("%4.1f", answerRate)
         //ポップアップ用のビルダー
         val builder = AlertDialog.Builder(this)
         if (answerRate < 100) { //ミスがある場合、間違った問題を解くボタンを表示させる
-            builder.setMessage("正答率:" + answerRateStr+ "%")
+            builder.setMessage("正答率:" + answerRateStr + "%" + skipMsg)
                 .setCancelable(false)//範囲外タップによるキャンセルを不可にする
                 .setNeutralButton("間違った問題を解く") { dialog, which ->
                     //間違った問題のリストを用意して問題解答画面に遷移する処理
 //                    var tempQuestionList = this.examData.question_list
-                    var tempQuestionList:ArrayList<Int> = ArrayList()
+                    val tempQuestionList: ArrayList<Int> = ArrayList()
                     for (question_id in examData.question_list) {
                         tempQuestionList.add(question_id)
                     }
@@ -184,8 +188,8 @@ class QuestionActivity : AppCompatActivity() {
                     examData.answered_list.clear() //解答リストの初期化
                     examData.question_current = 0
                     examData.question_next = 0
-                    for (i in 0..examData.isCorrect_list.size-1) {
-                        var isCollected = examData.isCorrect_list.get(i)
+                    for (i in 0..examData.isCorrect_list.size - 1) {
+                        val isCollected = examData.isCorrect_list.get(i)
                         if (!isCollected) {
                             examData.question_list.add(tempQuestionList[i]) //間違ったquestion_idを詰め込んでいく
                         }
