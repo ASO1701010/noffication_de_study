@@ -43,10 +43,12 @@ class QuestionOptionActivity : AppCompatActivity() {
         // ランダム出題の場合、randomBooleanの中身がtrueに
         val randomBoolean = QOA_Select_Method_Random_RBTN.isChecked
 
-        // 問題数スピナーから問題数を取得する
+        //        // 問題数スピナーから問題数を取得する
         val SpinnerStr = QOA_Question_Amount_BOX.getSelectedItem()
-        var SpinnerNum = 5
+//        SpinnerStr =  //TODO:選択肢から頭の数字だけ取り出す処理
+//        var SpinnerNum: Int = Integer.parseInt(SpinnerStr.toString(), 10 +)
 
+        var SpinnerNum = 5
         // スピナーの文字列に合わせて
         if (SpinnerStr == "5問") {
             SpinnerNum = 5
@@ -60,14 +62,16 @@ class QuestionOptionActivity : AppCompatActivity() {
             SpinnerNum = 25
         } else if (SpinnerStr == "30問") {
             SpinnerNum = 30
-        } else if (SpinnerStr == "35問") {
-            SpinnerNum = 35
         } else if (SpinnerStr == "40問") {
             SpinnerNum = 40
-        } else if (SpinnerStr == "45問") {
-            SpinnerNum = 45
         } else if (SpinnerStr == "50問") {
             SpinnerNum = 50
+        } else if (SpinnerStr == "60問") {
+            SpinnerNum = 60
+        } else if (SpinnerStr == "70問") {
+            SpinnerNum = 70
+        } else if (SpinnerStr == "80問") {
+            SpinnerNum = 80
         }
 
         // 問題DBの生成

@@ -44,7 +44,13 @@ class QuestionActivity : AppCompatActivity() {
             AA_Answer_1.setOnClickListener { choiceAnswer(1) }
             AA_Answer_2.setOnClickListener { choiceAnswer(2) }
             AA_Answer_3.setOnClickListener { choiceAnswer(3) }
-            AA_End_BTN.setOnClickListener { printResult() }
+            AA_End_BTN.setOnClickListener {
+                if (examData.isCorrect_list.size == 0) {
+                    finish()
+                }else {
+                    printResult()
+                }
+            }
             AA_Next_BTN.setOnClickListener { skipQuestion() }
         }
 
@@ -107,6 +113,13 @@ class QuestionActivity : AppCompatActivity() {
         regAnswer(choice_number)
         //画面遷移
 //        val intent = Intent(this, AnswerActivity::class.java)
+        //Toastを表示する処理
+        if(examData.isCorrect_list.get(examData.isCorrect_list.size-1)) {//正解のとき
+            Toast.makeText(this, "正解です！", Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(this, "不正解です！", Toast.LENGTH_SHORT).show()
+        }
+
         startActivity<AnswerActivity>("exam_data" to examData)
 
 
@@ -233,5 +246,3 @@ class QuestionActivity : AppCompatActivity() {
 
 
 }
-
-// コミット用
