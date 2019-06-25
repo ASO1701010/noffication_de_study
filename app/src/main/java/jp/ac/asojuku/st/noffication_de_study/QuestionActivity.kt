@@ -32,8 +32,6 @@ class QuestionActivity : AppCompatActivity() {
 //        examData.question_list[0]
         /////////////////デバッグ用///////////////////////////
 
-
-
         choiceNextQuestion() //次の問題を読み込んでおく
 
         if (examData.question_current == 9999) { //表示する問題がないとき終了する
@@ -236,3 +234,4 @@ class QuestionActivity : AppCompatActivity() {
 
 }
 
+// コミット用

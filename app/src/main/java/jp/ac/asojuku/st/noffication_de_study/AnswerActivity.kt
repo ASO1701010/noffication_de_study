@@ -110,3 +110,5 @@ class AnswerActivity : AppCompatActivity() {
 //        answer_answerText_text.setText("カクカク")
     }
 }
+
+// コミット用

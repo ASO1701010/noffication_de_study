@@ -12,7 +12,7 @@
             android:layout_height="0dp" app:srcCompat="@android:drawable/ic_menu_revert"
             android:id="@+id/AA_Back_BTN"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="65dp" app:layout_constraintBottom_toTopOf="@+id/answer_examNumber_text"
+            android:layout_marginBottom="215dp" app:layout_constraintBottom_toTopOf="@+id/AA_AnsweResult_Text"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"/>
     <Button
