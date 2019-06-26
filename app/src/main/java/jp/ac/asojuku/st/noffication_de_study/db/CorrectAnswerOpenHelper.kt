@@ -13,14 +13,18 @@ class CorrectAnswerOpenHelper(var db: SQLiteDatabase) {
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
 
-        try {
+        return try {
             cursor.moveToFirst()
-            var result: Int = cursor.getInt(1)
+            var result = 0
+            for (i in 0 until cursor.count) {
+                result = cursor.getInt(1)
+            }
             cursor.close()
 
-            return result
+            result
         } catch (e: CursorIndexOutOfBoundsException) {
-            return null
+            cursor.close()
+            null
         }
     }
 

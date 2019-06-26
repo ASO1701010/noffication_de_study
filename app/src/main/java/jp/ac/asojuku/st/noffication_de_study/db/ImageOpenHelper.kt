@@ -13,7 +13,7 @@ class ImageOpenHelper(var db: SQLiteDatabase) {
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
 
-        try {
+        return try {
             cursor.moveToFirst()
             var array = ArrayList<String>()
             array.add(cursor.getString(0).toString())
@@ -22,10 +22,10 @@ class ImageOpenHelper(var db: SQLiteDatabase) {
                 cursor.moveToNext()
             }
             cursor.close()
-            return array
+            array
         } catch (e: CursorIndexOutOfBoundsException) {
             cursor.close()
-            return null
+            null
         }
     }
 

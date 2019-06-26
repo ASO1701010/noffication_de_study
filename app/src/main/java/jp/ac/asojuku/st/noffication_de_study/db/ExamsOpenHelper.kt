@@ -11,29 +11,14 @@ class ExamsOpenHelper(var db: SQLiteDatabase) {
         val query = "SELECT * FROM " + tableName + " where exams_id = " + exams_id
         val cursor = db.rawQuery(query, null)
 
-        try {
+        return try {
             cursor.moveToFirst()
-            var result: String = cursor.getString(1)
-
+            var result = cursor.getString(1)
             cursor.close()
-            return result
+            result
         } catch (e: CursorIndexOutOfBoundsException) {
-            return null
-        }
-    }
-
-    fun find_exam_id(exams_id: Int): String? {
-        val query = "SELECT * FROM " + tableName + " where exams_id = " + exams_id
-        val cursor = db.rawQuery(query, null)
-
-        try {
-            cursor.moveToFirst()
-            var result: String = cursor.getString(1)
-
             cursor.close()
-            return result
-        } catch (e: CursorIndexOutOfBoundsException) {
-            return null
+            null
         }
     }
 

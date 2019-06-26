@@ -12,7 +12,7 @@ class UserAnswersOpenHelper(var db: SQLiteDatabase) {
         val query = "SELECT * FROM " + tableName
         val cursor = db.rawQuery(query, null)
 
-        try {
+        return try {
             cursor.moveToFirst()
 
             var array = ArrayList<ArrayList<String>>()
@@ -28,12 +28,12 @@ class UserAnswersOpenHelper(var db: SQLiteDatabase) {
             }
             cursor.close()
             if (array.size == 0) {
-                return null
+                null
             }
-            return array
+            array
         } catch (e: CursorIndexOutOfBoundsException) {
             cursor.close()
-            return null
+            null
         }
     }
 
@@ -41,7 +41,7 @@ class UserAnswersOpenHelper(var db: SQLiteDatabase) {
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
 
-        try {
+        return try {
             cursor.moveToFirst()
 
             var array = ArrayList<ArrayList<String>>()
@@ -57,12 +57,12 @@ class UserAnswersOpenHelper(var db: SQLiteDatabase) {
             }
             cursor.close()
             if (array.size == 0) {
-                return null
+                null
             }
             return array
         } catch (e: CursorIndexOutOfBoundsException) {
             cursor.close()
-            return null
+            null
         }
     }
 
