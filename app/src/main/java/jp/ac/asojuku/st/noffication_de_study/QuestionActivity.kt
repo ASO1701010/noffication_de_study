@@ -163,9 +163,6 @@ class QuestionActivity : AppCompatActivity() {
         val BR: String? = System.getProperty("line.separator") //改行用コードを取得
         val answerCount = examData.isCorrect_list.size.toDouble()
         val skipCount = examData.answered_list.count { it == 9999 } //うまく動作しない可能性
-        //デバッグ用
-        toast(skipCount)
-        /////////////
         var skipMsg: String = ""
         if (skipCount > 0) {
             skipMsg = BR + "スキップ数:" + skipCount
