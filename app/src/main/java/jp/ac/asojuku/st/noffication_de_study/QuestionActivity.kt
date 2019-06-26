@@ -16,6 +16,7 @@ import android.util.Log
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_question.*
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
@@ -161,7 +162,10 @@ class QuestionActivity : AppCompatActivity() {
         //解いた問題数を取得
         val BR: String? = System.getProperty("line.separator") //改行用コードを取得
         val answerCount = examData.isCorrect_list.size.toDouble()
-        val skipCount = examData.answered_list.count { it == 9999 }//うまく動作しない可能性
+        val skipCount = examData.answered_list.count { it == 9999 } //うまく動作しない可能性
+        //デバッグ用
+        toast(skipCount)
+        /////////////
         var skipMsg: String = ""
         if (skipCount > 0) {
             skipMsg = BR + "スキップ数:" + skipCount

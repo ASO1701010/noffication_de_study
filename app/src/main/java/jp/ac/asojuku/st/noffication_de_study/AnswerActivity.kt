@@ -1,5 +1,6 @@
 package jp.ac.asojuku.st.noffication_de_study
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -39,7 +40,9 @@ class AnswerActivity : AppCompatActivity() {
 
         AA_Back_BTN.setOnClickListener {
             var data = ArrayList<String>()
-            startActivity<TitleActivity>("exam_data" to exam_data)
+//            startActivity<TitleActivity>("exam_data" to exam_data)
+            finish()
+
         }
 
         AA_Next_BTN.setOnClickListener {
@@ -98,11 +101,27 @@ class AnswerActivity : AppCompatActivity() {
         //TODO:DB側が作成されたら更新
 //        examNumbers += "試験回" + BR
 
+        //自分の解答と、正しい解答の文字列を生成
+        var myAnswerInt = exam_data.answered_list[exam_data.answered_list.size-1] //自分の解答の番号
+        var myAnswerStr = sentakusi[myAnswerInt]
+        var myAnswerIsCorrected = exam_data.isCorrect_list[exam_data.isCorrect_list.size-1]
+
+        //正解か不正解かを設定
+        var isCorrectStr = "不正解!!!!"
+        AA_AnsweResult_Text.setTextColor(Color.RED)
+        if(myAnswerIsCorrected){
+            isCorrectStr = "正解!"
+            AA_AnsweResult_Text.setTextColor(Color.argb(255,0,128,0))
+
+        }
+        AA_AnsweResult_Text.setText(isCorrectStr)
+
+        var answerStr = "自分の解答："+ myAnswerStr + BR + "正解 : " + answer
 
         answer_examNumber_text.setText(exam_data.number)
 //        answer_questionNumber_text.setText("問題ID："+ question_id)
         answer_questionNumber_text.setText("解説")
-        answer_question_correct_text.setText("正解 : " + answer)
+        answer_question_correct_text.setText(answerStr)
         AA_answerComment_text.setText(questionsDB.find_comment(question_id)?.get(1))
 //        answer_examNumber_text.setText("問題number")
 //        answer_questionNumber_text.setText("問 1")
