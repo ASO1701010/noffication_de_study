@@ -241,7 +241,7 @@ class QuestionActivity : AppCompatActivity() {
         }.execute(
             "add-answer.php", hashMapOf(
                 "question_id" to examData.question_current,
-                "answer_choice" to examData.answered_list.get(examData.question_current),
+                "answer_choice" to examData.answered_list.get(examData.answered_list.size-1),
                 "answer_time" to test1
             ).toString()
         )
