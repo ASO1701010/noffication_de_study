@@ -1,17 +1,21 @@
 package jp.ac.asojuku.st.noffication_de_study
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
+import android.support.v4.app.NotificationCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -34,10 +38,14 @@ class OptionActivity : AppCompatActivity() {
 
     private val noticeIntervalItems = arrayOf("5", "10", "15", "20", "25", "30")
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_option)
+
+        //テストデータ
+        showNotification(1,"１＋１＝？\nア:0 イ:1 ウ:2 エ:3")
 
         spEditor = getSharedPreferences("user_data", Context.MODE_PRIVATE).edit()
 
@@ -178,5 +186,45 @@ class OptionActivity : AppCompatActivity() {
                 }
             }.execute("add-user.php", hashMapOf("token" to user.uid).toString())
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun showNotification(question_id: Int, question_text: String) {
+        val mChannel = NotificationChannel("0","問題通知", NotificationManager.IMPORTANCE_HIGH)
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(mChannel)
+        val contentView = RemoteViews(getPackageName(), R.layout.notifi_layout)
+
+        val intent1 = Intent(this, StaticsActivity::class.java)
+        val intent2 = Intent(this, StaticsActivity::class.java)
+        val intent3 = Intent(this, StaticsActivity::class.java)
+        val intent4 = Intent(this, StaticsActivity::class.java)
+
+        // 通知ボタンタップ時に渡す値
+        intent1.putExtra("question_id",question_id)
+        intent1.putExtra("answer_number",1)
+        intent2.putExtra("question_id",question_id)
+        intent2.putExtra("answer_number",2)
+        intent3.putExtra("question_id",question_id)
+        intent3.putExtra("answer_number",3)
+        intent4.putExtra("question_id",question_id)
+        intent4.putExtra("answer_number",4)
+        val pi1 = PendingIntent.getActivity(this, 1983418741, intent1, PendingIntent.FLAG_UPDATE_CURRENT)
+        contentView.setOnClickPendingIntent(R.id.notifyButton, pi1)
+        val pi2 = PendingIntent.getActivity(this, 1983418742, intent2, PendingIntent.FLAG_UPDATE_CURRENT)
+        contentView.setOnClickPendingIntent(R.id.notifyButton2, pi2)
+        val pi3 = PendingIntent.getActivity(this, 1983418743, intent3, PendingIntent.FLAG_UPDATE_CURRENT)
+        contentView.setOnClickPendingIntent(R.id.notifyButton3, pi3)
+        val pi4 = PendingIntent.getActivity(this, 1983418744, intent4, PendingIntent.FLAG_UPDATE_CURRENT)
+        contentView.setOnClickPendingIntent(R.id.notifyButton4, pi4)
+
+        contentView.setTextViewText(R.id.notifiText,question_text)
+        // Notify
+        var notification = NotificationCompat.Builder(this,"0")
+            .setSmallIcon(R.drawable.abc_ic_star_half_black_16dp)
+            .setContent(contentView)
+            .build()
+
+        notificationManager.notify(0, notification);
     }
 }
