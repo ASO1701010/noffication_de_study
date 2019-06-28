@@ -188,6 +188,8 @@ class OptionActivity : AppCompatActivity() {
         }
     }
 
+    fun getRandomQuestion
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun showNotification(question_id: Int) {
         val db = SQLiteHelper(this).readableDatabase
@@ -203,10 +205,10 @@ class OptionActivity : AppCompatActivity() {
         val contentView = RemoteViews(getPackageName(), R.layout.notifi_layout)
 
 
-        val intent1 = Intent(this, StaticsActivity::class.java)
-        val intent2 = Intent(this, StaticsActivity::class.java)
-        val intent3 = Intent(this, StaticsActivity::class.java)
-        val intent4 = Intent(this, StaticsActivity::class.java)
+        val intent1 = Intent(this, AnswerActivity::class.java)
+        val intent2 = Intent(this, AnswerActivity::class.java)
+        val intent3 = Intent(this, AnswerActivity::class.java)
+        val intent4 = Intent(this, AnswerActivity::class.java)
 
         // 通知ボタンタップ時に渡す値
         intent1.putExtra("question_id",question_id)
@@ -239,6 +241,7 @@ class OptionActivity : AppCompatActivity() {
             .setContentTitle("問題ですが何か？？")
             .setSmallIcon(R.drawable.abc_ic_star_half_black_16dp)
             .build()
+
         // 表示
         notificationManager.notify(0,notification)
 
