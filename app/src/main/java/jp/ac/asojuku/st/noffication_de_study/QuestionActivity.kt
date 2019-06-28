@@ -149,8 +149,6 @@ class QuestionActivity : AppCompatActivity() {
             isCorrected = true
         }
         examData.isCorrect_list.add(isCorrected)//解いた問題が正解だったかどうかがBoolean型で入る
-
-
     }
 
 //    なんか使わないっぽい？（クラス一覧参照）
