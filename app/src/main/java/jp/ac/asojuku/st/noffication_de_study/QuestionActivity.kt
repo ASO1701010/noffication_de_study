@@ -70,7 +70,7 @@ class QuestionActivity : AppCompatActivity() {
             examData.question_current = examData.question_list[0]
             try {
                 examData.question_next = examData.question_list[1]
-            } catch (e: java.lang.IndexOutOfBoundsException) {
+            } catch (e: IndexOutOfBoundsException) {
                 examData.question_next = 9999
             }
         } else {
@@ -121,8 +121,6 @@ class QuestionActivity : AppCompatActivity() {
         }
 
         startActivity<AnswerActivity>("exam_data" to examData)
-
-
 
     }
 
