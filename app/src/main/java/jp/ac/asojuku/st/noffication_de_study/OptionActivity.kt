@@ -1,10 +1,7 @@
 package jp.ac.asojuku.st.noffication_de_study
 
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.TimePickerDialog
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -24,7 +21,10 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import jp.ac.asojuku.st.noffication_de_study.db.QuestionsOpenHelper
 import kotlinx.android.synthetic.main.activity_option.*
+import org.jetbrains.anko.custom.async
+import org.jetbrains.anko.doAsync
 import org.json.JSONObject
 
 class OptionActivity : AppCompatActivity() {
@@ -45,7 +45,7 @@ class OptionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_option)
 
         //テストデータ
-        showNotification(1,"１＋１＝？\nア:0 イ:1 ウ:2 エ:3")
+        showNotification(1)
 
         spEditor = getSharedPreferences("user_data", Context.MODE_PRIVATE).edit()
 
@@ -189,11 +189,19 @@ class OptionActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun showNotification(question_id: Int, question_text: String) {
+    fun showNotification(question_id: Int) {
+        val db = SQLiteHelper(this).readableDatabase
+        val dbHelper = QuestionsOpenHelper(db)
+
+        var question_text = dbHelper.find_question(question_id)
+        if(question_text == null){
+            return
+        }
         val mChannel = NotificationChannel("0","問題通知", NotificationManager.IMPORTANCE_HIGH)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(mChannel)
         val contentView = RemoteViews(getPackageName(), R.layout.notifi_layout)
+
 
         val intent1 = Intent(this, StaticsActivity::class.java)
         val intent2 = Intent(this, StaticsActivity::class.java)
@@ -202,13 +210,16 @@ class OptionActivity : AppCompatActivity() {
 
         // 通知ボタンタップ時に渡す値
         intent1.putExtra("question_id",question_id)
-        intent1.putExtra("answer_number",1)
         intent2.putExtra("question_id",question_id)
-        intent2.putExtra("answer_number",2)
         intent3.putExtra("question_id",question_id)
-        intent3.putExtra("answer_number",3)
         intent4.putExtra("question_id",question_id)
-        intent4.putExtra("answer_number",4)
+
+        /////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////
+        //////////////////各intentに必要なデータをputExtra//////////////////////
+        /////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////
+
         val pi1 = PendingIntent.getActivity(this, 1983418741, intent1, PendingIntent.FLAG_UPDATE_CURRENT)
         contentView.setOnClickPendingIntent(R.id.notifyButton, pi1)
         val pi2 = PendingIntent.getActivity(this, 1983418742, intent2, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -218,13 +229,15 @@ class OptionActivity : AppCompatActivity() {
         val pi4 = PendingIntent.getActivity(this, 1983418744, intent4, PendingIntent.FLAG_UPDATE_CURRENT)
         contentView.setOnClickPendingIntent(R.id.notifyButton4, pi4)
 
-        contentView.setTextViewText(R.id.notifiText,question_text)
+        contentView.setTextViewText(R.id.notifiText,question_text.get(1))
         // Notify
-        var notification = NotificationCompat.Builder(this,"0")
-            .setSmallIcon(R.drawable.abc_ic_star_half_black_16dp)
-            .setContent(contentView)
-            .build()
 
-        notificationManager.notify(0, notification);
+        val notification = NotificationCompat.Builder(this,"0")
+            .setCustomBigContentView(contentView)
+            .setContentTitle("問題ですが何か？？")
+            .setSmallIcon(R.drawable.abc_ic_star_half_black_16dp)
+            .build()
+            notificationManager.notify(0,notification)
+
     }
 }
