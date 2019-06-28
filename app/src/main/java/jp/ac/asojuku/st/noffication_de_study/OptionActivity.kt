@@ -65,19 +65,19 @@ class OptionActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        OA_Back_BTN.setOnClickListener {
+        OA_Back_BTN.setSafeClickListener {
             finish()
         }
 
-        OA_NDS_Mode_BTN.setOnClickListener {
+        OA_NDS_Mode_BTN.setSafeClickListener {
             spEditor.putBoolean("NDS_check", OA_NDS_Mode_BTN.isChecked).apply()
         }
 
-        OA_SDS_Mode_BTN.setOnClickListener {
+        OA_SDS_Mode_BTN.setSafeClickListener {
             spEditor.putBoolean("SDS_check", OA_SDS_Mode_BTN.isChecked).apply()
         }
 
-        OA_Noffication_Time_Between1.setOnClickListener {
+        OA_Noffication_Time_Between1.setSafeClickListener {
             val nowTime = spGetter.getString("NDS_Start", "09:00")
             val nowTimeList: List<String> =
                 if (nowTime.isNullOrEmpty()) listOf("21", "00") else nowTime.split(Regex(":"))
@@ -91,7 +91,7 @@ class OptionActivity : AppCompatActivity() {
             ).show()
         }
 
-        OA_Noffication_Time_Between2.setOnClickListener {
+        OA_Noffication_Time_Between2.setSafeClickListener {
             val nowTime = spGetter.getString("NDS_End", "21:00")
             val nowTimeList: List<String> =
                 if (nowTime.isNullOrEmpty()) listOf("21", "00") else nowTime.split(Regex(":"))
@@ -118,7 +118,7 @@ class OptionActivity : AppCompatActivity() {
         }
 
         // Google SignIn
-        sign_in_button.setOnClickListener {
+        sign_in_button.setSafeClickListener {
             val signInIntent = mGoogleSignInClient.signInIntent
             startActivityForResult(signInIntent, rcSignIn)
         }
