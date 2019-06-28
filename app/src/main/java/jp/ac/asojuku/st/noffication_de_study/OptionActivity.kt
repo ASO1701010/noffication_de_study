@@ -188,7 +188,7 @@ class OptionActivity : AppCompatActivity() {
         }
     }
 
-    fun getRandomQuestion
+//    fun getRandomQuestion
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun showNotification(question_id: Int) {
