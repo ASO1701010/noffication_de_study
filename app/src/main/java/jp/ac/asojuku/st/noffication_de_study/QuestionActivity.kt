@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.activity_question.*
 import java.lang.Exception
 import android.text.format.DateFormat
 import android.util.Log
+import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_question.*
 import org.jetbrains.anko.startActivity
@@ -29,9 +31,6 @@ class QuestionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question)
         examData = intent.getSerializableExtra("exam_data") as ExamData
-        /////////////////デバッグ用///////////////////////////
-//        examData.question_list[0]
-        /////////////////デバッグ用///////////////////////////
 
         choiceNextQuestion() //次の問題を読み込んでおく
 
@@ -41,18 +40,21 @@ class QuestionActivity : AppCompatActivity() {
             printQuestion() //問題文の表示
 
             //ボタンの設定
-            AA_Answer_0.setOnClickListener { choiceAnswer(0) }
-            AA_Answer_1.setOnClickListener { choiceAnswer(1) }
-            AA_Answer_2.setOnClickListener { choiceAnswer(2) }
-            AA_Answer_3.setOnClickListener { choiceAnswer(3) }
-            AA_End_BTN.setOnClickListener {
+            AA_Answer_0.setSafeClickListener { choiceAnswer(0) } //TODO:連打防止
+            AA_Answer_1.setSafeClickListener { choiceAnswer(1) }
+            AA_Answer_2.setSafeClickListener { choiceAnswer(2) }
+            AA_Answer_3.setSafeClickListener { choiceAnswer(3) }
+            AA_End_BTN.setSafeClickListener {
                 if (examData.isCorrect_list.size == 0) {
                     finish()
                 } else {
                     printResult()
                 }
             }
-            AA_Next_BTN.setOnClickListener { skipQuestion() }
+            AA_Next_BTN.setSafeClickListener { skipQuestion() }
+
+
+
         }
 
     }
@@ -121,14 +123,17 @@ class QuestionActivity : AppCompatActivity() {
         startActivity<AnswerActivity>("exam_data" to examData)
 
 
+
     }
 
     //スキップ
     fun skipQuestion() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         //DBにスキップしたとして999を登録して次の問題画面に画面遷移
         regAnswer(9999)
 //        val intent = Intent(this, QuestionActivity::class.java)
         startActivity<QuestionActivity>("exam_data" to examData)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         finish()
     }
 
@@ -162,21 +167,28 @@ class QuestionActivity : AppCompatActivity() {
         //解いた問題数を取得
         val BR: String? = System.getProperty("line.separator") //改行用コードを取得
         val answerCount = examData.isCorrect_list.size.toDouble()
-        val skipCount = examData.answered_list.count { it == 9999 } //うまく動作しない可能性
-        var skipMsg: String = ""
-        if (skipCount > 0) {
-            skipMsg = BR + "スキップ数:" + skipCount
-        }
+        val skipCount = examData.answered_list.count { it == 9999 }
 
         //正解数を取得
         val correctedCount = examData.isCorrect_list.filter { it == true }.count().toDouble()
         //正答率を計算
         val answerRate = correctedCount / answerCount * 100.00
         val answerRateStr: String = String.format("%4.1f", answerRate)
+
+        //メッセージを用意する
+        val popupMsg1 = "回答数:" + String.format("%3d",answerCount.toInt()) +"問"+ BR
+        val popupMsg2 = "正答率:" + answerRateStr +"%"+ BR
+        var popupMsg3 = BR
+        if (skipCount > 0) {
+            popupMsg3 = "スキップ数:" + skipCount + BR
+        }
+
+        var popupMsgs = popupMsg1 + popupMsg2 + popupMsg3
+
         //ポップアップ用のビルダー
         val builder = AlertDialog.Builder(this)
         if (answerRate < 100) { //ミスがある場合、間違った問題を解くボタンを表示させる
-            builder.setMessage("正答率:" + answerRateStr + "%" + skipMsg)
+            builder.setMessage(popupMsgs)
                 .setCancelable(false)//範囲外タップによるキャンセルを不可にする
                 .setNeutralButton("間違った問題を解く") { dialog, which ->
                     //間違った問題のリストを用意して問題解答画面に遷移する処理
@@ -196,8 +208,6 @@ class QuestionActivity : AppCompatActivity() {
                         }
                     }
                     examData.isCorrect_list.clear()
-//                    val intent = Intent(this, AnswerActivity::class.java)
-////                    startActivity(intent)
                     startActivity<QuestionActivity>("exam_data" to this.examData)
                     finish()
 
@@ -242,7 +252,7 @@ class QuestionActivity : AppCompatActivity() {
         }.execute(
             "add-answer.php", hashMapOf(
                 "question_id" to examData.question_current,
-                "answer_choice" to examData.answered_list.get(examData.answered_list.size-1),
+                "answer_choice" to examData.answered_list.get(examData.answered_list.size - 1),
                 "answer_time" to test1
             ).toString()
         )
