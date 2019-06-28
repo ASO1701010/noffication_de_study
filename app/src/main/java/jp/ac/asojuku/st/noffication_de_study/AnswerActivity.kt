@@ -38,14 +38,14 @@ class AnswerActivity : AppCompatActivity() {
 
 
 
-        AA_Back_BTN.setOnClickListener {
+        AA_Back_BTN.setSafeClickListener {
             var data = ArrayList<String>()
 //            startActivity<TitleActivity>("exam_data" to exam_data)
             finish()
 
         }
 
-        AA_Next_BTN.setOnClickListener {
+        AA_Next_BTN.setSafeClickListener {
 
             startActivity<QuestionActivity>("exam_data" to exam_data)
         }
