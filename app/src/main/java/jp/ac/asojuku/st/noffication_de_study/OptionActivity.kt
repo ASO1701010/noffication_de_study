@@ -44,7 +44,7 @@ class OptionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_option)
 
-        //テストデータ
+        //通知のテストデータ
         showNotification(1)
 
         spEditor = getSharedPreferences("user_data", Context.MODE_PRIVATE).edit()
@@ -220,6 +220,7 @@ class OptionActivity : AppCompatActivity() {
         /////////////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////////////
 
+        // 各intentをPendingIntentに変換
         val pi1 = PendingIntent.getActivity(this, 1983418741, intent1, PendingIntent.FLAG_UPDATE_CURRENT)
         contentView.setOnClickPendingIntent(R.id.notifyButton, pi1)
         val pi2 = PendingIntent.getActivity(this, 1983418742, intent2, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -229,15 +230,17 @@ class OptionActivity : AppCompatActivity() {
         val pi4 = PendingIntent.getActivity(this, 1983418744, intent4, PendingIntent.FLAG_UPDATE_CURRENT)
         contentView.setOnClickPendingIntent(R.id.notifyButton4, pi4)
 
+        // 表示するテキスト
         contentView.setTextViewText(R.id.notifiText,question_text.get(1))
-        // Notify
 
+        // 表示内容を生成
         val notification = NotificationCompat.Builder(this,"0")
             .setCustomBigContentView(contentView)
             .setContentTitle("問題ですが何か？？")
             .setSmallIcon(R.drawable.abc_ic_star_half_black_16dp)
             .build()
-            notificationManager.notify(0,notification)
+        // 表示
+        notificationManager.notify(0,notification)
 
     }
 }
