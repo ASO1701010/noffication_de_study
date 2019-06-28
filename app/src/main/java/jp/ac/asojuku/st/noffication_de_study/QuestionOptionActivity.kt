@@ -21,7 +21,7 @@ class QuestionOptionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_option)
 
-        QOA_Start_BTN.setOnClickListener {
+        QOA_Start_BTN.setSafeClickListener {
             // loadChoiceの実行
             val ld = loadChoice()
             val QuestionsArrayList = ld.first
@@ -32,7 +32,7 @@ class QuestionOptionActivity : AppCompatActivity() {
 
             startActivity<QuestionActivity>("exam_data" to exam_data)
         }
-        QOA_Back_BTN.setOnClickListener {
+        QOA_Back_BTN.setSafeClickListener {
             finish()
         }
     }
