@@ -9,7 +9,7 @@ import org.jetbrains.anko.startActivity
 import java.util.*
 import kotlin.collections.ArrayList
 
-//TODO 問題オプション画面：おおよそ完成（90%）
+//TODO 問題オプション画面：おおよそ完成（99%）
 class QuestionOptionActivity : AppCompatActivity() {
 
     //TODO 定数の値はすべて仮の値

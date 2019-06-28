@@ -42,25 +42,25 @@
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="vertical">
             <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp" app:srcCompat="@android:drawable/arrow_down_float"
-                        android:id="@+id/imageButton"
-                />
-                <TextView
-                        android:text="試験回選択"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp" android:id="@+id/textView10"
-                        android:textSize="18sp"
-                />
-            </LinearLayout>
-            <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp" app:srcCompat="@android:drawable/arrow_down_float"
+                            android:id="@+id/imageButton"
+                    />
+                    <TextView
+                            android:text="試験回選択"
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp" android:id="@+id/textView10"
+                            android:textSize="18sp"
+                    />
+                </LinearLayout>
                 <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
