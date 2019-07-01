@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_question.*
 import java.lang.Exception
 import android.text.format.DateFormat
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -22,10 +23,15 @@ import org.jetbrains.anko.toast
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.concurrent.thread
+import android.view.MotionEvent
+
 
 class QuestionActivity : AppCompatActivity() {
 
     lateinit var examData: ExamData
+
+    var isTouched = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +50,9 @@ class QuestionActivity : AppCompatActivity() {
             AA_Answer_1.setSafeClickListener { choiceAnswer(1) }
             AA_Answer_2.setSafeClickListener { choiceAnswer(2) }
             AA_Answer_3.setSafeClickListener { choiceAnswer(3) }
+//            linearLayout4.onTouchEvent
+
+
             AA_End_BTN.setSafeClickListener {
                 if (examData.isCorrect_list.size == 0) {
                     finish()
@@ -52,7 +61,6 @@ class QuestionActivity : AppCompatActivity() {
                 }
             }
             AA_Next_BTN.setSafeClickListener { skipQuestion() }
-
 
 
         }
@@ -109,8 +117,12 @@ class QuestionActivity : AppCompatActivity() {
 
     //解答選択
     fun choiceAnswer(choice_number: Int) {
+        if (isTouched) {
+            return
+        }
         //登録処理
         regAnswer(choice_number)
+
         //画面遷移
 //        val intent = Intent(this, AnswerActivity::class.java)
         //Toastを表示する処理
@@ -119,20 +131,18 @@ class QuestionActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "不正解です！", Toast.LENGTH_SHORT).show()
         }
-
         startActivity<AnswerActivity>("exam_data" to examData)
-
     }
 
     //スキップ
     fun skipQuestion() {
+        finish()
         window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         //DBにスキップしたとして999を登録して次の問題画面に画面遷移
         regAnswer(9999)
 //        val intent = Intent(this, QuestionActivity::class.java)
         startActivity<QuestionActivity>("exam_data" to examData)
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-        finish()
     }
 
     //解答登録
@@ -174,8 +184,8 @@ class QuestionActivity : AppCompatActivity() {
         val answerRateStr: String = String.format("%4.1f", answerRate)
 
         //メッセージを用意する
-        val popupMsg1 = "回答数:" + String.format("%3d",answerCount.toInt()) +"問"+ BR
-        val popupMsg2 = "正答率:" + answerRateStr +"%"+ BR
+        val popupMsg1 = "回答数:" + String.format("%3d", answerCount.toInt()) + "問" + BR
+        val popupMsg2 = "正答率:" + answerRateStr + "%" + BR
         var popupMsg3 = BR
         if (skipCount > 0) {
             popupMsg3 = "スキップ数:" + skipCount + BR
@@ -254,6 +264,24 @@ class QuestionActivity : AppCompatActivity() {
                 "answer_time" to test1
             ).toString()
         )
+
+    }
+
+    //時間差での同時押し防止
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        return super.onTouchEvent(event)
+
+        when (event?.action) {
+            MotionEvent.ACTION_DOWN -> {
+                isTouched = true
+            }
+            MotionEvent.ACTION_POINTER_UP -> {
+                thread {
+                    Thread.sleep(500)
+                    isTouched = false
+                }
+            }
+        }
 
     }
 
