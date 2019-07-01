@@ -1,30 +1,21 @@
 package jp.ac.asojuku.st.noffication_de_study
 
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import jp.ac.asojuku.st.noffication_de_study.db.AnswersOpenHelper
 import jp.ac.asojuku.st.noffication_de_study.db.QuestionsOpenHelper
-import jp.ac.asojuku.st.noffication_de_study.db.UserAnswersOpenHelper
 import kotlinx.android.synthetic.main.activity_question.*
-import java.lang.Exception
 import android.text.format.DateFormat
 import android.util.Log
-import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_question.*
 import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.toast
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.concurrent.thread
-import android.view.MotionEvent
 
 
 class QuestionActivity : AppCompatActivity() {
@@ -46,20 +37,11 @@ class QuestionActivity : AppCompatActivity() {
             printQuestion() //問題文の表示
 
             //ボタンの設定
-            AA_Answer_0.setSafeClickListener { choiceAnswer(0) } //TODO:連打防止
+            AA_Answer_0.setSafeClickListener { choiceAnswer(0) }
             AA_Answer_1.setSafeClickListener { choiceAnswer(1) }
             AA_Answer_2.setSafeClickListener { choiceAnswer(2) }
             AA_Answer_3.setSafeClickListener { choiceAnswer(3) }
-//            linearLayout4.onTouchEvent
-
-
-            AA_End_BTN.setSafeClickListener {
-                if (examData.isCorrect_list.size == 0) {
-                    finish()
-                } else {
-                    printResult()
-                }
-            }
+            AA_End_BTN.setSafeClickListener { pushEndButton() }
             AA_Next_BTN.setSafeClickListener { skipQuestion() }
 
 
@@ -120,6 +102,7 @@ class QuestionActivity : AppCompatActivity() {
         if (isTouched) {
             return
         }
+        isTouched = true
         //登録処理
         regAnswer(choice_number)
 
@@ -136,6 +119,9 @@ class QuestionActivity : AppCompatActivity() {
 
     //スキップ
     fun skipQuestion() {
+        if (isTouched) {
+            return
+        }
         finish()
         window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         //DBにスキップしたとして999を登録して次の問題画面に画面遷移
@@ -265,23 +251,41 @@ class QuestionActivity : AppCompatActivity() {
 
     }
 
-    //時間差での同時押し防止
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return super.onTouchEvent(event)
-
-        when (event?.action) {
-            MotionEvent.ACTION_DOWN -> {
-                isTouched = true
-            }
-            MotionEvent.ACTION_POINTER_UP -> {
-                thread {
-                    Thread.sleep(500)
-                    isTouched = false
-                }
-            }
+    fun pushEndButton() {
+        if (isTouched) { //他のボタンが押されてない時だけ処理する
+            return
         }
+        if (examData.isCorrect_list.size == 0) { //1問も解いていない場合はオプション画面に戻る
+            finish()
+        } else {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("終了しますか？")
+                .setPositiveButton("はい") { dialog, which ->
+                    printResult()
+                }
+                .setNegativeButton("がんばる") { dialog, which ->
+                    //何もしない
 
+                }.show()
+        }
+        return
     }
 
+    //Android端末側の戻るボタンを押した時の処理を上書き
+    override fun onBackPressed() {
+        pushEndButton()
+        return //無理やりリターンされることでActivityがDestroyされることを防ぐ
+        //以下は必ず処理されない。この方法がどうなのかは微妙
+        super.onBackPressed()
+    }
 
+    override fun onRestart() {
+        super.onRestart()
+        isTouched = false
+        AA_Next_BTN.setSafeClickListener { startActivity<QuestionActivity>("exam_data" to examData) }
+        AA_Return_Answer_BTN.setSafeClickListener { startActivity<AnswerActivity>("exam_data" to examData) }
+        AA_Return_Answer_BTN.visibility = View.VISIBLE
+
+        AA_Answers.visibility = View.INVISIBLE
+    }
 }
