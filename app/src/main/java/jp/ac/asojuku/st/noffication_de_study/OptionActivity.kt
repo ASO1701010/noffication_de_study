@@ -69,42 +69,61 @@ class OptionActivity : AppCompatActivity() {
             finish()
         }
 
+        // 出題モード
         OA_NDS_Mode_BTN.setOnClickListener {
             spEditor.putBoolean("NDS_check", OA_NDS_Mode_BTN.isChecked).apply()
+            // registerNotice()
+            val service = LocalNotificationTwoQuestionScheduleService()
+            service.registerNotice(this)
         }
 
+        // 画面点灯モード
         OA_SDS_Mode_BTN.setOnClickListener {
             spEditor.putBoolean("SDS_check", OA_SDS_Mode_BTN.isChecked).apply()
+            // 画面点灯モードを実装予定
         }
 
+        // 出題開始時間の指定
         OA_Noffication_Time_Between1.setOnClickListener {
-            val nowTime = spGetter.getString("NDS_Start", "09:00")
-            val nowTimeList: List<String> =
-                if (nowTime.isNullOrEmpty()) listOf("21", "00") else nowTime.split(Regex(":"))
+            val nowTime = spGetter.getString("NDS_Start", "09:00") as String
+            val nowTimeList: List<String> = nowTime.split(Regex(":"))
             TimePickerDialog(
                 this,
                 TimePickerDialog.OnTimeSetListener { _, hourOfDay, minuteOfDay ->
-                    val time = String.format("%02d:%02d", hourOfDay, minuteOfDay)
-                    OA_Noffication_Time_Between1.text = time
-                    spEditor.putString("NDS_Start", time).apply()
+                    val endTime = spGetter.getString("NDS_End", "21:00") as String
+                    val endTimeList: List<String> = endTime.split(Regex(":"))
+                    if (Integer.parseInt("$hourOfDay$minuteOfDay") <= Integer.parseInt(endTimeList[0] + endTimeList[1])) {
+                        val time = String.format("%02d:%02d", hourOfDay, minuteOfDay)
+                        OA_Noffication_Time_Between1.text = time
+                        spEditor.putString("NDS_Start", time).apply()
+                    } else {
+                        Toast.makeText(this, "終了時間を超えています", Toast.LENGTH_LONG).show()
+                    }
                 }, nowTimeList[0].toInt(), nowTimeList[1].toInt(), true
             ).show()
         }
 
+        // 出題終了時間の指定
         OA_Noffication_Time_Between2.setOnClickListener {
-            val nowTime = spGetter.getString("NDS_End", "21:00")
-            val nowTimeList: List<String> =
-                if (nowTime.isNullOrEmpty()) listOf("21", "00") else nowTime.split(Regex(":"))
+            val nowTime = spGetter.getString("NDS_End", "21:00") as String
+            val nowTimeList: List<String> = nowTime.split(Regex(":"))
             TimePickerDialog(
                 this,
                 TimePickerDialog.OnTimeSetListener { _, hourOfDay, minuteOfDay ->
-                    val time = String.format("%02d:%02d", hourOfDay, minuteOfDay)
-                    OA_Noffication_Time_Between2.text = time
-                    spEditor.putString("NDS_End", time).apply()
+                    val startTime = spGetter.getString("NDS_Start", "09:00") as String
+                    val startTimeList: List<String> = startTime.split(Regex(":"))
+                    if (Integer.parseInt("$hourOfDay$minuteOfDay") >= Integer.parseInt(startTimeList[0] + startTimeList[1])) {
+                        val time = String.format("%02d:%02d", hourOfDay, minuteOfDay)
+                        OA_Noffication_Time_Between2.text = time
+                        spEditor.putString("NDS_End", time).apply()
+                    } else {
+                        Toast.makeText(this, "開始時間を超えています", Toast.LENGTH_LONG).show()
+                    }
                 }, nowTimeList[0].toInt(), nowTimeList[1].toInt(), true
             ).show()
         }
 
+        // 出題間隔の指定
         OA_Noffication_Interval.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val spinner = parent as Spinner
@@ -124,6 +143,7 @@ class OptionActivity : AppCompatActivity() {
         }
     }
 
+    // Google SignIn ->
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -169,6 +189,7 @@ class OptionActivity : AppCompatActivity() {
                     val jsonObject = JSONObject(it)
                     val status = jsonObject.getString("status")
                     if (status == "S00") {
+                        // Firebaseからアカウント登録を取得してDBに登録
                         val userId = jsonObject.getJSONObject("data").getString("user_id")
                         val e: SharedPreferences.Editor = getSharedPreferences("user_data", MODE_PRIVATE).edit()
                         e.putString("user_id", userId).apply()
@@ -179,4 +200,18 @@ class OptionActivity : AppCompatActivity() {
             }.execute("add-user.php", hashMapOf("token" to user.uid).toString())
         }
     }
+    // Google SignIn <-
+
+    // 通知登録
+    /*
+    private fun registerNotice() {
+        if (spGetter.getBoolean("NDS_check", false)) {
+            val service = LocalNotificationTwoQuestionScheduleService()
+            service.registerNotice(this)
+        } else {
+            // Cancel
+        }
+    }
+    */
+
 }

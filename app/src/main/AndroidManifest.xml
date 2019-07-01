@@ -9,6 +9,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <receiver android:name=".LocalNotificationReceiver"/>
+        <receiver android:name=".LocalNotificationTwoQuestionScheduleService"/>
         <activity android:name=".TitleActivity">
         </activity>
         <activity android:name=".QuestionActivity">
@@ -29,5 +31,7 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
 </manifest>
