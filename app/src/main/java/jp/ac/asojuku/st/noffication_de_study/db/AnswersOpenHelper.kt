@@ -14,19 +14,19 @@ class AnswersOpenHelper(var db: SQLiteDatabase) {
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
 
-        try {
+        var array = ArrayList<Int>()
+        return try {
             cursor.moveToFirst()
-            var array = ArrayList<Int>()
             array.add(cursor.getInt(0))
             for (i in 0 until cursor.count) {
                 array.add(cursor.getInt(1))
                 cursor.moveToNext();
             }
             cursor.close()
-            return array
+            array
         } catch (e: CursorIndexOutOfBoundsException) {
             cursor.close()
-            return null
+            null
         }
     }
 

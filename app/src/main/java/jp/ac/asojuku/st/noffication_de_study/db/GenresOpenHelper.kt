@@ -11,16 +11,14 @@ class GenresOpenHelper(var db: SQLiteDatabase) {
     fun find_genre(genre_id: Int): String? {
         val query = "SELECT * FROM " + tableName + " where genre_id = " + genre_id
         val cursor = db.rawQuery(query, null)
-        try {
+        return try {
             cursor.moveToFirst()
-
-            var result: String = cursor.getString(1)
-
+            var result = cursor.getString(1)
             cursor.close()
-            return result
+            result
         } catch (e: CursorIndexOutOfBoundsException) {
             cursor.close()
-            return null
+            null
         }
     }
 

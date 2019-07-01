@@ -10,48 +10,49 @@ class QuestionsOpenHelper(var db: SQLiteDatabase) {
 
     //問題idを渡して、
     fun find_question(question_id: Int): ArrayList<String>? {
-
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
 
-        cursor.moveToFirst()
         var array = ArrayList<String>()
-        for (i in 0 until cursor.count) {
+        return try{
+            cursor.moveToFirst()
             array.add(cursor.getString(0).toString())
             array.add(cursor.getString(1).toString())
             array.add(cursor.getString(2).toString())
+
+            cursor.close()
+            array
+        } catch (e: CursorIndexOutOfBoundsException) {
+            cursor.close()
+            null
         }
-        cursor.close()
-        return array
     }
 
     fun find_comment(question_id: Int): ArrayList<String>? {
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
 
-        cursor.moveToFirst()
         var array = ArrayList<String>()
-
-        try {
+        return try{
+            cursor.moveToFirst()
             array.add(cursor.getString(0).toString())
             array.add(cursor.getString(3).toString())
+
             cursor.close()
+            array
         } catch (e: CursorIndexOutOfBoundsException) {
             cursor.close()
-            return null
+            null
         }
-
-        return array
     }
 
     fun find_update_date(question_id: Int): ArrayList<ArrayList<Int>>? {
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
 
-        try {
+        var array = ArrayList<ArrayList<Int>>()
+        return try {
             cursor.moveToFirst()
-
-            var array = ArrayList<ArrayList<Int>>()
             var bufferlist: ArrayList<Int>
             for (i in 0 until cursor.count) {
                 bufferlist = ArrayList()
@@ -62,22 +63,23 @@ class QuestionsOpenHelper(var db: SQLiteDatabase) {
             }
             cursor.close()
             if (array.size == 0) {
-                return null
+                null
             }
-            return array
+            array
         } catch (e: CursorIndexOutOfBoundsException) {
             cursor.close()
-            return null
+            null
         }
     }
 
-    fun add_record(a: Int, b: String, c: Int, d: String, e: String) {
+    fun add_record(a: Int, b: String, c: Int, d: String, e: String, question_flag: Int) {
         val values = ContentValues()
         values.put("question_id", a)
         values.put("question", b)
         values.put("is_have_image", c)
         values.put("comment", d)
         values.put("update_date", e)
+        values.put("question_flag",question_flag)
 
         try {
             db.insertOrThrow(tableName, null, values)

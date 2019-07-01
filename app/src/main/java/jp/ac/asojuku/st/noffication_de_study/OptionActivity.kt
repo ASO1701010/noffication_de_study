@@ -39,6 +39,7 @@ class OptionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_option)
 
+        //通知のテストデータ
         spEditor = getSharedPreferences("user_data", Context.MODE_PRIVATE).edit()
 
         val adapter = ArrayAdapter(applicationContext, android.R.layout.simple_spinner_item, noticeIntervalItems)

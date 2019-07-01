@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".AnswerActivity">
+        tools:context=".AnswerActivity" android:isScrollContainer="false">
 
     <ImageButton
             android:layout_width="55dp"
@@ -53,11 +53,12 @@
     <TextView
             android:text="解説文"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:id="@+id/AA_answerComment_text"
             android:textSize="20sp"
             app:layout_constraintTop_toBottomOf="@+id/answer_question_correct_text" android:layout_marginBottom="135dp"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="61dp" android:layout_marginEnd="61dp"/>
+            android:layout_marginStart="61dp" android:layout_marginEnd="61dp"
+            android:isScrollContainer="true"/>
 </android.support.constraint.ConstraintLayout>

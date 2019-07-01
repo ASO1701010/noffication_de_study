@@ -13,7 +13,7 @@ class QuestionsGenresOpenHelper(var db: SQLiteDatabase) {
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
 
-        try {
+        return try {
             cursor.moveToFirst()
             var array = ArrayList<Int>()
             array.add(cursor.getInt(0))
@@ -22,10 +22,10 @@ class QuestionsGenresOpenHelper(var db: SQLiteDatabase) {
                 cursor.moveToNext()
             }
             cursor.close()
-            return array
+            array
         } catch (e: CursorIndexOutOfBoundsException) {
             cursor.close()
-            return null
+            null
         }
     }
 
@@ -33,7 +33,7 @@ class QuestionsGenresOpenHelper(var db: SQLiteDatabase) {
         val query = "SELECT * FROM " + tableName + " where genre_id = " + genre_id
         val cursor = db.rawQuery(query, null)
 
-        try {
+        return try {
             cursor.moveToFirst()
             var array = ArrayList<Int>()
             array.add(cursor.getInt(1))
@@ -42,10 +42,10 @@ class QuestionsGenresOpenHelper(var db: SQLiteDatabase) {
                 cursor.moveToNext()
             }
             cursor.close()
-            return array
+            array
         } catch (e: CursorIndexOutOfBoundsException) {
             cursor.close()
-            return null
+            null
         }
     }
 

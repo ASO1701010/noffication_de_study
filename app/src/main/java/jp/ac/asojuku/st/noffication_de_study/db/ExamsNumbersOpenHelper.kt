@@ -13,18 +13,19 @@ class ExamsNumbersOpenHelper(var db: SQLiteDatabase) {
         val query = "SELECT * FROM " + tableName + " where exam_id = " + exams_id
         val cursor = db.rawQuery(query, null)
 
-        try {
-            cursor.moveToFirst()
             var array = ArrayList<String>()
+        return try {
+            cursor.moveToFirst()
             array.add(cursor.getString(0))
             for (i in 0 until cursor.count) {
                 array.add(cursor.getString(1))
                 cursor.moveToNext()
             }
             cursor.close()
-            return array
+            array
         } catch (e: CursorIndexOutOfBoundsException) {
-            return null
+            cursor.close()
+            null
         }
     }
 
