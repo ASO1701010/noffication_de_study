@@ -140,7 +140,8 @@ class MainActivity : AppCompatActivity() {
                     jArray.getJSONObject(i).getString("question"),
                     jArray.getJSONObject(i).getInt("is_have_image"),
                     jArray.getJSONObject(i).getString("comment"),
-                    jArray.getJSONObject(i).getString("update_date")
+                    jArray.getJSONObject(i).getString("update_date"),
+                    jArray.getJSONObject(i).getInt("question_flag")
                 )
             }
         }
@@ -153,15 +154,15 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
-        jArray = json.getJSONArray("correct_answer_db")
-        if (jArray != {}) {
-            for (i in 0..jArray.length() - 1) {
-                correct_answer.add_record(
-                    jArray.getJSONObject(i).getInt("question_id"),
-                    jArray.getJSONObject(i).getInt("correct_answer_number")
-                )
-            }
-        }
+//        jArray = json.getJSONArray("correct_answer_db")
+//        if (jArray != {}) {
+//            for (i in 0..jArray.length() - 1) {
+//                correct_answer.add_record(
+//                    jArray.getJSONObject(i).getInt("question_id"),
+//                    jArray.getJSONObject(i).getInt("correct_answer_number")
+//                )
+//            }
+//        }
 //        テーブル内データ確認用
 //        Log.d("tete1",answers.find_answers(1).toString())
 //        Log.d("tete2",answers_rate.find_all_rate().toString())

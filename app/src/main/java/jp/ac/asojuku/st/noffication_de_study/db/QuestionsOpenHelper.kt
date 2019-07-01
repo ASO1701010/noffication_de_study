@@ -10,7 +10,6 @@ class QuestionsOpenHelper(var db: SQLiteDatabase) {
 
     //問題idを渡して、
     fun find_question(question_id: Int): ArrayList<String>? {
-
         val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
         val cursor = db.rawQuery(query, null)
 
@@ -73,13 +72,14 @@ class QuestionsOpenHelper(var db: SQLiteDatabase) {
         }
     }
 
-    fun add_record(a: Int, b: String, c: Int, d: String, e: String) {
+    fun add_record(a: Int, b: String, c: Int, d: String, e: String, question_flag: Int) {
         val values = ContentValues()
         values.put("question_id", a)
         values.put("question", b)
         values.put("is_have_image", c)
         values.put("comment", d)
         values.put("update_date", e)
+        values.put("question_flag",question_flag)
 
         try {
             db.insertOrThrow(tableName, null, values)
