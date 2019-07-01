@@ -12,5 +12,6 @@
         <!--マルチタップの防止-->
         <item name="android:windowEnableSplitTouch">false</item>
         <item name="android:splitMotionEvents">false</item>
+
     </style>
 </resources>
