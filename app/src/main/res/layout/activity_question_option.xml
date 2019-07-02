@@ -42,25 +42,25 @@
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="vertical">
             <LinearLayout
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp" app:srcCompat="@android:drawable/arrow_down_float"
-                            android:id="@+id/imageButton"
-                    />
-                    <TextView
-                            android:text="試験回選択"
-                            android:layout_width="wrap_content"
-                            android:layout_height="25dp" android:id="@+id/textView10"
-                            android:textSize="18sp"
-                    />
-                </LinearLayout>
+                <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp" app:srcCompat="@android:drawable/arrow_down_float"
+                        android:id="@+id/QOA_Select_Exam_BTN"
+                />
+                <TextView
+                        android:text="試験回選択"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp" android:id="@+id/textView10"
+                        android:textSize="18sp"
+                />
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/QOA_Select_Exam_LL">
                 <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
@@ -107,7 +107,7 @@
                 <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="30dp" app:srcCompat="@android:drawable/arrow_down_float"
-                        android:id="@+id/imageButton2"
+                        android:id="@+id/QOA_Select_Genres_BTN"
                 />
                 <TextView
                         android:text="ジャンル選択"
@@ -119,7 +119,7 @@
             <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp">
+                    android:layout_height="120dp" android:id="@+id/QOA_Select_Genres_LL">
                 <CheckBox
                         android:text="CheckBox"
                         android:layout_width="wrap_content"

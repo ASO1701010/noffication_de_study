@@ -2,6 +2,7 @@ package jp.ac.asojuku.st.noffication_de_study
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import jp.ac.asojuku.st.noffication_de_study.db.ExamsQuestionsOpenHelper
 import jp.ac.asojuku.st.noffication_de_study.db.QuestionsGenresOpenHelper
 import kotlinx.android.synthetic.main.activity_question_option.*
@@ -34,6 +35,20 @@ class QuestionOptionActivity : AppCompatActivity() {
         }
         QOA_Back_BTN.setSafeClickListener {
             finish()
+        }
+        QOA_Select_Exam_BTN.setSafeClickListener {
+            if(QOA_Select_Exam_LL.visibility == View.VISIBLE){
+                QOA_Select_Exam_LL.visibility = View.GONE
+            }else{
+                QOA_Select_Exam_LL.visibility = View.VISIBLE
+            }
+        }
+        QOA_Select_Genres_BTN.setSafeClickListener {
+            if(QOA_Select_Genres_LL.visibility == View.VISIBLE){
+                QOA_Select_Genres_LL.visibility = View.GONE
+            }else{
+                QOA_Select_Genres_LL.visibility = View.VISIBLE
+            }
         }
     }
 
