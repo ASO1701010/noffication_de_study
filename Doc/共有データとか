@@ -12,6 +12,7 @@
             NDS_Interval:Int -> 通知を行う間隔
             NDS_Start:String -> 通知を行う時間の範囲開始時刻
             NDS_End:String -> 通知を行う時間の範囲終了時刻
+            NDS_QuestionType -> 1:通常の4択問題  2:まるばつ問題
 
 
 
