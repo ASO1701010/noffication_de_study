@@ -50,7 +50,7 @@ class StaticsActivity : AppCompatActivity(), FragmentMyRecord.OnFragmentInteract
         val tabLayout = tabLayout
         tabLayout.setupWithViewPager(viewPager)
 
-        SA_Back_BTN.setOnClickListener {
+        SA_Back_BTN.setSafeClickListener {
             finish()
         }
     }

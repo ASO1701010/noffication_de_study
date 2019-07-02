@@ -12,15 +12,15 @@ class TitleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_title)
 
-        TA_Question_BTN.setOnClickListener {
+        TA_Question_BTN.setSafeClickListener {
             startActivity<QuestionOptionActivity>()
         }
 
-        TA_Statics_BTN.setOnClickListener {
+        TA_Statics_BTN.setSafeClickListener {
             startActivity<StaticsActivity>()
         }
 
-        TA_Option_BTN.setOnClickListener {
+        TA_Option_BTN.setSafeClickListener {
             startActivity<OptionActivity>()
         }
 

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">noffication_de_study</string>
+    <string name="Return_Answer_BTN_Str">解説へ戻る</string>
     <string-array name="OA_Noffication_Interval_list">
         <item>5</item>
         <item>10</item>
@@ -9,8 +10,11 @@
         <item>30</item>
     </string-array>
     <string-array name="QOA_Question_Amount_BOX_list">
+        <item>5問</item>
         <item>10問</item>
+        <item>15問</item>
         <item>20問</item>
+        <item>25問</item>
         <item>30問</item>
         <item>40問</item>
         <item>50問</item>
