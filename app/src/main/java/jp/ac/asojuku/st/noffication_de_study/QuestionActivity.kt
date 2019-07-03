@@ -37,13 +37,59 @@ class QuestionActivity : AppCompatActivity() {
             printQuestion() //問題文の表示
 
             //ボタンの設定
-            AA_Answer_0.setSafeClickListener { choiceAnswer(0) }
-            AA_Answer_1.setSafeClickListener { choiceAnswer(1) }
-            AA_Answer_2.setSafeClickListener { choiceAnswer(2) }
-            AA_Answer_3.setSafeClickListener { choiceAnswer(3) }
-            AA_End_BTN.setSafeClickListener { pushEndButton() }
-            AA_Next_BTN.setSafeClickListener { skipQuestion() }
+            Log.d("test",examData.mac.toString())
+            Log.d("test",examData.name)
 
+            when(examData.mac) {
+                //QuestionOptionActivityから
+                1-> {
+                    AA_TwoAnswers.visibility = View.GONE
+                    AA_Answers.visibility = View.VISIBLE
+                    AA_Answer_0.setSafeClickListener { choiceAnswer(0) }
+                    AA_Answer_1.setSafeClickListener { choiceAnswer(1) }
+                    AA_Answer_2.setSafeClickListener { choiceAnswer(2) }
+                    AA_Answer_3.setSafeClickListener { choiceAnswer(3) }
+                    AA_End_BTN.setSafeClickListener { pushEndButton() }
+                    AA_Next_BTN.setSafeClickListener { skipQuestion() }
+                }
+                //FragmentQuestionから
+                2->{
+                    AA_TwoAnswers.visibility = View.GONE
+                    AA_Answers.visibility = View.VISIBLE
+                    AA_Next_BTN.visibility = View.GONE
+                    AA_Answer_0.setSafeClickListener { choiceAnswer(0) }
+                    AA_Answer_1.setSafeClickListener { choiceAnswer(1) }
+                    AA_Answer_2.setSafeClickListener { choiceAnswer(2) }
+                    AA_Answer_3.setSafeClickListener { choiceAnswer(3) }
+                    AA_End_BTN.setSafeClickListener { finish() }
+
+                }
+                //4択通知から
+                3->{
+                    AA_Answers.visibility = View.VISIBLE
+                    AA_TwoAnswers.visibility = View.GONE
+                    AA_Next_BTN.visibility = View.GONE
+                    AA_Answer_0.setSafeClickListener { choiceAnswer(0) }
+                    AA_Answer_1.setSafeClickListener { choiceAnswer(1) }
+                    AA_Answer_2.setSafeClickListener { choiceAnswer(2) }
+                    AA_Answer_3.setSafeClickListener { choiceAnswer(3) }
+                    AA_End_BTN.setSafeClickListener { finish() }
+                }
+                //◯×通知から
+                4->{
+                    AA_Answers.visibility = View.GONE
+                    AA_Next_BTN.visibility = View.GONE
+                    AA_TwoAnswers.visibility = View.VISIBLE
+                    AA_maru.setSafeClickListener { choiceAnswer(0) }
+                    AA_batu.setSafeClickListener { choiceAnswer(1) }
+                    AA_End_BTN.setSafeClickListener { finish() }
+                }
+                else->{
+                    AA_Answers.visibility = View.GONE
+                    AA_Next_BTN.visibility = View.GONE
+                    AA_TwoAnswers.visibility = View.GONE
+                }
+            }
 
         }
 
@@ -92,16 +138,15 @@ class QuestionActivity : AppCompatActivity() {
         } else {
             question_str = question_arr[1]
         }
-
         textView4.setText(question_str)
 
     }
 
     //解答選択
     fun choiceAnswer(choice_number: Int) {
-        if (isTouched) {
-            return
-        }
+//        if (isTouched) {
+//            return
+//        }
         isTouched = true
         //登録処理
         regAnswer(choice_number)
@@ -115,6 +160,9 @@ class QuestionActivity : AppCompatActivity() {
             Toast.makeText(this, "不正解です！", Toast.LENGTH_SHORT).show()
         }
         startActivity<AnswerActivity>("exam_data" to examData)
+        if(examData.mac==2) {
+            finish()
+        }
     }
 
     //スキップ
@@ -284,6 +332,7 @@ class QuestionActivity : AppCompatActivity() {
         isTouched = false
         AA_Next_BTN.setSafeClickListener { startActivity<QuestionActivity>("exam_data" to examData) }
         AA_Return_Answer_BTN.setSafeClickListener { startActivity<AnswerActivity>("exam_data" to examData) }
+        AA_TwoAnswers.visibility = View.GONE
         AA_Return_Answer_BTN.visibility = View.VISIBLE
 
         AA_Answers.visibility = View.INVISIBLE
