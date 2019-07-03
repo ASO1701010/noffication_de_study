@@ -70,7 +70,7 @@ class FragmentQuestion : Fragment() {
                 val item = parent.getItemAtPosition(position) as QuestionStatisticsItem
                 val questionId = item.getId()
 
-                val examData = ExamData(1, "FE", "FE10901")
+                val examData = ExamData(2, "FE", "FE10901")
                 examData.question_list.add(questionId.toInt())
 
                 val intent = Intent(activity, QuestionActivity::class.java)

@@ -70,15 +70,15 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
         intent4.putExtra("question_id", questionId)
 
         // ExamDataを生成＆整形
-        val data1 = ExamData(1, "", "")
+        val data1 = ExamData(3, "", "")
         data1.set_list_data(arrayListOf(questionId))
-        val data2 = ExamData(1, "", "")
+        val data2 = ExamData(3, "", "")
         data2.set_list_data(arrayListOf(questionId))
-        val data3 = ExamData(1, "", "")
+        val data3 = ExamData(3, "", "")
         data3.set_list_data(arrayListOf(questionId))
-        val data4 = ExamData(1, "", "")
+        val data4 = ExamData(3, "", "")
         data4.set_list_data(arrayListOf(questionId))
-        val data5 = ExamData(1, "", "")
+        val data5 = ExamData(3, "", "")
         data5.set_list_data(arrayListOf(questionId))
         data1.question_current = questionId
         data2.question_current = questionId
@@ -146,7 +146,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
 
     private fun twoQuestion(context: Context) {
         // 出題する問題を取得
-        val examData = ExamData(1, "FE", "FE10901")
+        val examData = ExamData(3, "FE", "FE10901")
 
         // DBから問題を取得
         val helper = SQLiteHelper(context)

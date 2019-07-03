@@ -2,10 +2,9 @@ package jp.ac.asojuku.st.noffication_de_study
 
 import java.io.Serializable
 
-class ExamData (id:Int, name:String, number:String):Serializable{
-    ///出題id ?? よく分からん。なんでつけたんだっけか・・・
-    //多分他でも使ってないので後で消してテストしよう
-    val id = id
+class ExamData (mac:Int, name:String, number:String):Serializable{
+    //製造元番号　1:QuestionOptionActivity 2:StaticsActivity 3:notification
+    val mac = mac
     //試験名 FEとか
     val name = name
     //試験番号 FE2019Sとか
