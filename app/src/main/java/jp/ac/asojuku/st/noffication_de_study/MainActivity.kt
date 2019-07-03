@@ -36,11 +36,12 @@ class MainActivity : AppCompatActivity() {
 //            jsonArrayのキー値を設定して、個別に確認してください。
 //            Log.d("test",JSONObject(it).getJSONObject("data").getJSONArray("questions_db").toString())
             if (!it.isNullOrEmpty()) {
-                try {
-                    all_update(JSONObject(it))
-                } catch (e:java.lang.Exception) {
-                    Toast.makeText(this, "えらーはっせい", Toast.LENGTH_SHORT).show()
-                }
+//                try {
+//                    all_update(JSONObject(it))
+//                } catch (e:java.lang.Exception) {
+//                    Toast.makeText(this, "えらーはっせい", Toast.LENGTH_SHORT).show()
+//                }
+                all_update(JSONObject(it))
 
             } else {
                 Toast.makeText(this, "APIの通信に失敗しました(´･ω･`)", Toast.LENGTH_SHORT).show()
@@ -80,8 +81,8 @@ class MainActivity : AppCompatActivity() {
 //            Log.d("TEST", json.toString())
             return false
         }
-        json = json.getJSONObject("data")
 
+        json = json.getJSONObject("data")
         val db = SQLiteHelper(this).writableDatabase
 
         val answers = AnswersOpenHelper(db)
@@ -156,9 +157,9 @@ class MainActivity : AppCompatActivity() {
             for (i in 0 until jArray.length()) {
                 questions.add_record(
                     jArray.getJSONObject(i).getInt("question_id"),
-                    jArray.getJSONObject(i).getString("question"),
+                    escapeHTLM(jArray.getJSONObject(i).getString("question")),
                     jArray.getJSONObject(i).getInt("is_have_image"),
-                    jArray.getJSONObject(i).getString("comment"),
+                    escapeHTLM(jArray.getJSONObject(i).getString("comment")),
                     jArray.getJSONObject(i).getString("update_date"),
                     jArray.getJSONObject(i).getInt("question_flag")
                 )
@@ -204,5 +205,12 @@ class MainActivity : AppCompatActivity() {
             }
         }.execute("add-user.php", hashMapOf("token" to token).toString())
         return result
+    }
+    fun escapeHTLM(str: String): String{
+        var str2 = str.replace("&quot;".toRegex(), "\"")
+            .replace("&lt;".toRegex(),"<")
+            .replace("&gt;".toRegex(),">")
+            .replace("&amp;".toRegex(),"&")
+        return  str2
     }
 }
