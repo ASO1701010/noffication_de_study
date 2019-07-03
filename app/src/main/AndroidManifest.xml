@@ -10,8 +10,6 @@
             android:supportsRtl="true"
             android:theme="@style/NoActionBar_NoMultiTup">
         <receiver android:name=".LocalNotificationTwoReceiver"/>
-        <receiver android:name=".LocalNotificationFourScheduleService"/>
-        <receiver android:name=".LocalNotificationTwoScheduleService"/>
         <receiver android:name=".LocalNotificationScheduleService"/>
         <activity android:name=".TitleActivity">
         </activity>

@@ -76,9 +76,6 @@ class OptionActivity : AppCompatActivity() {
         // 出題モード
         OA_NDS_Mode_BTN.setSafeClickListener {
             spEditor.putBoolean("NDS_check", OA_NDS_Mode_BTN.isChecked).apply()
-            // registerNotice()
-            // val service = LocalNotificationTwoScheduleService()
-            // service.registerNotice(this)
             val service = LocalNotificationScheduleService()
             service.registerNotice(this)
         }
