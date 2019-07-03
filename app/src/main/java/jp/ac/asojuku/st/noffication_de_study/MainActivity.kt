@@ -174,6 +174,7 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+
 //        テーブル内データ確認用
 //        Log.d("tete1",answers.find_answers(1).toString())
 //        Log.d("tete2",answers_rate.find_all_rate().toString())
@@ -185,7 +186,7 @@ class MainActivity : AppCompatActivity() {
 //        Log.d("tete8",questions.find_comment(1).toString())
 //        Log.d("tete9",questions_genres.find_question_genres(1).toString())
 //        Log.d("tete0",questions_genres.find_genre_questions(1).toString())
-//        Log.d("tete10",correct_answer.find_correct_answer(1).toString())
+//        Log.d("test",exams_questions.find_exam_number_from_question_id(1))
         db.close()
         return true
     }
