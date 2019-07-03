@@ -38,12 +38,12 @@ class QuestionActivity : AppCompatActivity() {
             printQuestion() //問題文の表示
 
             //ボタンの設定
-            AA_Answer_0.setSafeClickListener { choiceAnswer(0) }
-            AA_Answer_1.setSafeClickListener { choiceAnswer(1) }
-            AA_Answer_2.setSafeClickListener { choiceAnswer(2) }
-            AA_Answer_3.setSafeClickListener { choiceAnswer(3) }
-            AA_End_BTN.setSafeClickListener { pushEndButton() }
-            AA_Next_BTN.setSafeClickListener { skipQuestion() }
+            QA_Answer_0.setSafeClickListener { choiceAnswer(0) }
+            QA_Answer_1.setSafeClickListener { choiceAnswer(1) }
+            QA_Answer_2.setSafeClickListener { choiceAnswer(2) }
+            QA_Answer_3.setSafeClickListener { choiceAnswer(3) }
+            QA_End_BTN.setSafeClickListener { pushEndButton() }
+            QA_Next_BTN.setSafeClickListener { skipQuestion() }
 
 
         }
@@ -94,7 +94,7 @@ class QuestionActivity : AppCompatActivity() {
             question_str = question_arr[1]
         }
 
-        textView4.setText(question_str)
+        QA_Question_Text.setText(question_str)
 
     }
 
