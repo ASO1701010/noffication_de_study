@@ -1,29 +1,26 @@
 package jp.ac.asojuku.st.noffication_de_study
 
 import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import jp.ac.asojuku.st.noffication_de_study.db.AnswersOpenHelper
-import jp.ac.asojuku.st.noffication_de_study.db.CorrectAnswerOpenHelper
-import jp.ac.asojuku.st.noffication_de_study.db.ExamsNumbersOpenHelper
+import jp.ac.asojuku.st.noffication_de_study.db.ExamsQuestionsOpenHelper
 import jp.ac.asojuku.st.noffication_de_study.db.QuestionsOpenHelper
 import kotlinx.android.synthetic.main.activity_answer.*
 import org.jetbrains.anko.startActivity
 
 class AnswerActivity : AppCompatActivity() {
-//    val questions = SQLiteHelper(this)
-//    val db = questions.readableDatabase
-//    val questionsDB = QuestionsOpenHelper(db)
-//    val correctDB = CorrectAnswerOpenHelper(db)
-
-
     lateinit var user_id: String
     lateinit var exam_data: ExamData
 
     var question_id = -1
+    lateinit var exam_number:String
     var answer_num: Int? = 999999
     var answer_text: String? = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,63 +31,68 @@ class AnswerActivity : AppCompatActivity() {
 
         at_first()
 
-
-
-
-
         AA_Back_BTN.setSafeClickListener {
-            var data = ArrayList<String>()
-//            startActivity<TitleActivity>("exam_data" to exam_data)
             finish()
-
         }
-
-        AA_Next_BTN.setSafeClickListener {
-
-            startActivity<QuestionActivity>("exam_data" to exam_data)
-        }
-
-
     }
 
     fun at_first() {
-
         val questions = SQLiteHelper(this)
         val db = questions.readableDatabase
         val questionsDB = QuestionsOpenHelper(db)
-        val correctDB = CorrectAnswerOpenHelper(db)
-
-        if (user_id == "999999") {
-            Log.d("user_id が受け取れていません", "/")
+        val examsquestionDB = ExamsQuestionsOpenHelper(db)
+        when(exam_data.mac){
+            //QuestionOptionActivityから
+            1->{
+                AA_Next_BTN.setSafeClickListener {
+                    startActivity<QuestionActivity>("exam_data" to exam_data)
+                }
+                AA_Next_BTN.visibility = View.VISIBLE
+            }
+            //FragmentQuestion.ktから
+            2->{
+                AA_Next_BTN.setText("統計に戻る")
+                AA_Next_BTN.setSafeClickListener {
+                    finish()
+                }
+            }
+            //4択通知から
+            3->{
+                AA_Next_BTN.setText("戻る")
+                AA_Next_BTN.setSafeClickListener {
+                    finish()
+                }
+            }
+            //○×から
+            4->{
+                AA_Next_BTN.setText("戻る")
+                AA_Next_BTN.setSafeClickListener {
+                    finish()
+                }
+            }
         }
+        question_id = exam_data.question_current
         answer_text = questionsDB.find_comment(question_id)?.get(1)
-        answer_num = correctDB.find_correct_answer(question_id)
+        exam_number = examsquestionDB.find_exam_number_from_question_id(question_id).toString()
         print_answer()
     }
 
-    //テスト用データが入ってます
-    //本番用は上のコメントアウトされてる部分です。
     fun print_answer() {
         val questions = SQLiteHelper(this)
         val db = questions.readableDatabase
         val questionsDB = QuestionsOpenHelper(db)
-
-        question_id = exam_data.question_current
-
-
-        var examNumberList: ArrayList<String>?
-        ///////問題IDから試験回を取得///////DB側未作成////////////////////////////////////
-//        val examsNumbersDB = ExamsNumbersOpenHelper(db)
-//        examNumberList = examsNumbersDB.find_exams_numbers(question_id)
-        ////////////////////////////////////////////////////////////////////////
-        //正解を取得//
         val answersDB = AnswersOpenHelper(db)
+
+        //出題年度を表示
+        answer_examNumber_text.setText(exam_number)
+
+        //正解を取得
         var answerList = answersDB.find_answers(question_id)
+        var sentakusi = listOf("ア", "イ", "ウ", "エ")
         var answerNo = answerList!!.get(1)
-        var sentakusi = listOf<String>("ア", "イ", "ウ", "エ")
         var answer: String = sentakusi[answerNo]
 
-        //////////////
+
 
         //改行コードの取得//
         val BR: String = System.getProperty("line.separator")
@@ -119,13 +121,7 @@ class AnswerActivity : AppCompatActivity() {
         var answerStr = "自分の解答："+ myAnswerStr + BR + "正解 : " + answer
 
         answer_examNumber_text.setText(exam_data.number)
-//        answer_questionNumber_text.setText("問題ID："+ question_id)
-        answer_questionNumber_text.setText("解説")
         answer_question_correct_text.setText(answerStr)
         AA_answerComment_text.setText(questionsDB.find_comment(question_id)?.get(1))
-//        answer_examNumber_text.setText("問題number")
-//        answer_questionNumber_text.setText("問 1")
-//        answer_question_correct_text.setText("正解 : あ" )
-//        answer_answerText_text.setText("カクカク")
     }
 }
