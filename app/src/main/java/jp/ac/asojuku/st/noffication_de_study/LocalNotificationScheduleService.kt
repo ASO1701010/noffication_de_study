@@ -146,7 +146,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
 
     private fun twoQuestion(context: Context) {
         // 出題する問題を取得
-        val examData = ExamData(3, "FE", "FE10901")
+        val examData = ExamData(4, "FE", "FE10901")
 
         // DBから問題を取得
         val helper = SQLiteHelper(context)
@@ -177,7 +177,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
         val pendingIntent = PendingIntent.getActivity(
             context, 777, Intent(
                 context,
-                TitleActivity::class.java
+                QuestionActivity::class.java
             ).putExtra("exam_data", examData), 0
         )
 
