@@ -15,11 +15,13 @@ class QuestionOptionActivity : AppCompatActivity() {
     //TODO 定数の値はすべて仮の値
     val user_id = 12345678
 
+    // テスト
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_option)
 
-        QOA_Start_BTN.setOnClickListener {
+        QOA_Start_BTN.setSafeClickListener {
             // loadChoiceの実行
             val ld = loadChoice()
             val QuestionsArrayList = ld.first
@@ -30,7 +32,7 @@ class QuestionOptionActivity : AppCompatActivity() {
 
             startActivity<QuestionActivity>("exam_data" to exam_data)
         }
-        QOA_Back_BTN.setOnClickListener {
+        QOA_Back_BTN.setSafeClickListener {
             finish()
         }
     }
@@ -42,31 +44,9 @@ class QuestionOptionActivity : AppCompatActivity() {
         val randomBoolean = QOA_Select_Method_Random_RBTN.isChecked
 
         // 問題数スピナーから問題数を取得する
-        val SpinnerStr = QOA_Question_Amount_BOX.getSelectedItem()
-        var SpinnerNum = 5
-
-        // スピナーの文字列に合わせて
-        if (SpinnerStr == "5問") {
-            SpinnerNum = 5
-        } else if (SpinnerStr == "10問") {
-            SpinnerNum = 10
-        } else if (SpinnerStr == "15問") {
-            SpinnerNum = 15
-        } else if (SpinnerStr == "20問") {
-            SpinnerNum = 20
-        } else if (SpinnerStr == "25問") {
-            SpinnerNum = 25
-        } else if (SpinnerStr == "30問") {
-            SpinnerNum = 30
-        } else if (SpinnerStr == "35問") {
-            SpinnerNum = 35
-        } else if (SpinnerStr == "40問") {
-            SpinnerNum = 40
-        } else if (SpinnerStr == "45問") {
-            SpinnerNum = 45
-        } else if (SpinnerStr == "50問") {
-            SpinnerNum = 50
-        }
+        val SpinnerStr: String = QOA_Question_Amount_BOX.getSelectedItem().toString()
+        var testList = SpinnerStr.split("問")
+        var SpinnerNum: Int = Integer.parseInt(testList[0])
 
         // 問題DBの生成
         val questions = SQLiteHelper(this)

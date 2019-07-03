@@ -21,7 +21,12 @@ class MainActivity : AppCompatActivity() {
 //            jsonArrayのキー値を設定して、個別に確認してください。
 //            Log.d("test",JSONObject(it).getJSONObject("data").getJSONArray("questions_db").toString())
             if (!it.isNullOrEmpty()) {
-                all_update(JSONObject(it))
+                try {
+                    all_update(JSONObject(it))
+                } catch (e:java.lang.Exception) {
+                    Toast.makeText(this, "えらーはっせい", Toast.LENGTH_SHORT).show()
+                }
+
             } else {
                 Toast.makeText(this, "APIの通信に失敗しました(´･ω･`)", Toast.LENGTH_SHORT).show()
             }
