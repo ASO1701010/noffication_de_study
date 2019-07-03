@@ -2,6 +2,7 @@ package jp.ac.asojuku.st.noffication_de_study
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import jp.ac.asojuku.st.noffication_de_study.db.AnswersOpenHelper
@@ -279,13 +280,28 @@ class QuestionActivity : AppCompatActivity() {
         super.onBackPressed()
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        isTouched = false
-        AA_Next_BTN.setSafeClickListener { startActivity<QuestionActivity>("exam_data" to examData) }
-        AA_Return_Answer_BTN.setSafeClickListener { startActivity<AnswerActivity>("exam_data" to examData) }
-        AA_Return_Answer_BTN.visibility = View.VISIBLE
 
-        AA_Answers.visibility = View.INVISIBLE
+    override fun onPause() {
+        super.onPause()
+        val mHandler = Handler()
+        //スレッドを生成
+        val thread = Thread(Runnable {
+            Thread.sleep(100) //表示を切り替えるタイミングを遅らせるために0.1秒待機
+            mHandler.post {
+                //UI関連の処理はThreadでは行えないのでHandlerを用いる
+                QA_Next_BTN.setSafeClickListener {
+                    finish()
+                    startActivity<QuestionActivity>("exam_data" to examData)
+                }
+                QA_Return_Answer_BTN.setSafeClickListener {
+                    finish()
+                    startActivity<AnswerActivity>("exam_data" to examData)
+                }
+                QA_Return_Answer_BTN.visibility = View.VISIBLE
+                QA_Answers.visibility = View.INVISIBLE
+            }
+
+        })
+        thread.start()
     }
 }
