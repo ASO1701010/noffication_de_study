@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
 
-class LocalNotificationScheduleService : BroadcastReceiver() {
+class LocalNotificationFourScheduleService : BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context, intent: Intent) {
         // ここに通知の処理
@@ -28,7 +28,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
         this.registerNotice(context)
 
         //通知表示
-        this.showNotification(1, context)
+        this.showNotification(context)
     }
 
     fun registerNotice(context: Context) {
@@ -43,7 +43,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
             // 通知で出題する
             val spaceTime = spGetter.getString("NDS_Interval", "5") as String
 
-            val intent = Intent(context, LocalNotificationScheduleService::class.java)
+            val intent = Intent(context, LocalNotificationFourScheduleService::class.java)
             val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
 
             val calendar = Calendar.getInstance()
@@ -68,7 +68,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
         } else {
             // 通知をキャンセル（できるはず）
-            val intent = Intent(context, LocalNotificationScheduleService::class.java)
+            val intent = Intent(context, LocalNotificationFourScheduleService::class.java)
             val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             alarmManager.cancel(pendingIntent)
@@ -76,7 +76,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun showNotification(question_id: Int, context: Context) {
+    fun showNotification(context: Context) {
         val question_id = Random.nextInt(80) + 1
 
         val db = SQLiteHelper(context).readableDatabase
@@ -86,8 +86,8 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
         if (question_text == null) {
             return
         }
-        question_text.get(1).replace("&quot;".toRegex(), "\"")
-        question_text.get(2).replace("&quot;".toRegex(), "\"")
+        question_text[1].replace("&quot;".toRegex(), "\"")
+        question_text[2].replace("&quot;".toRegex(), "\"")
 
 
         val mChannel = NotificationChannel("0", "問題通知", NotificationManager.IMPORTANCE_HIGH)
@@ -161,7 +161,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
             .setCustomBigContentView(contentView)
             .setContentTitle("問題ですが何か？？")
             .setContentIntent(piQuestion)
-            .setSmallIcon(R.drawable.abc_ic_star_half_black_16dp)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
             .build()
 
         // 表示
@@ -175,7 +175,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
         val answers = SQLiteHelper(context)
         val db = answers.readableDatabase
         val AOH = AnswersOpenHelper(db)
-        var answer = AOH.find_answers(examData.question_current)?.get(1) //正しい正解
+        val answer = AOH.find_answers(examData.question_current)?.get(1) //正しい正解
         var isCorrected = false //正解だった場合にtrueにする
         if (choice_number == answer) {
             isCorrected = true
