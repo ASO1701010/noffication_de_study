@@ -1,8 +1,13 @@
 package jp.ac.asojuku.st.noffication_de_study
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.database.Cursor
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -15,6 +20,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // 通知のバージョン差対応
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel =
+                NotificationChannel("channel_question", "channel", NotificationManager.IMPORTANCE_DEFAULT)
+            notificationChannel.lightColor = Color.BLUE
+            notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
 
         ApiGetTask {
 //            itの値チェック用ですが、itのデータが大きすぎて全ての表示ができません。
@@ -72,7 +87,6 @@ class MainActivity : AppCompatActivity() {
 
         val answers = AnswersOpenHelper(db)
         val answers_rate = AnswersRateOpenHelper(db)
-        val correct_answer = CorrectAnswerOpenHelper(db)
         val exams_numbers = ExamsNumbersOpenHelper(db)
         val exams_questions = ExamsQuestionsOpenHelper(db)
         val genres = GenresOpenHelper(db)
@@ -160,15 +174,6 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
-//        jArray = json.getJSONArray("correct_answer_db")
-//        if (jArray != {}) {
-//            for (i in 0..jArray.length() - 1) {
-//                correct_answer.add_record(
-//                    jArray.getJSONObject(i).getInt("question_id"),
-//                    jArray.getJSONObject(i).getInt("correct_answer_number")
-//                )
-//            }
-//        }
 //        テーブル内データ確認用
 //        Log.d("tete1",answers.find_answers(1).toString())
 //        Log.d("tete2",answers_rate.find_all_rate().toString())
