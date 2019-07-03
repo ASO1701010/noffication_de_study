@@ -1,22 +1,17 @@
 package jp.ac.asojuku.st.noffication_de_study
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import jp.ac.asojuku.st.noffication_de_study.db.AnswersOpenHelper
 import jp.ac.asojuku.st.noffication_de_study.db.CorrectAnswerOpenHelper
-import jp.ac.asojuku.st.noffication_de_study.db.ExamsNumbersOpenHelper
 import jp.ac.asojuku.st.noffication_de_study.db.QuestionsOpenHelper
 import kotlinx.android.synthetic.main.activity_answer.*
 import org.jetbrains.anko.startActivity
 
 class AnswerActivity : AppCompatActivity() {
-//    val questions = SQLiteHelper(this)
-//    val db = questions.readableDatabase
-//    val questionsDB = QuestionsOpenHelper(db)
-//    val correctDB = CorrectAnswerOpenHelper(db)
-
 
     lateinit var user_id: String
     lateinit var exam_data: ExamData
@@ -39,15 +34,11 @@ class AnswerActivity : AppCompatActivity() {
 
 
         AA_Back_BTN.setSafeClickListener {
-            var data = ArrayList<String>()
-//            startActivity<TitleActivity>("exam_data" to exam_data)
             finish()
-
         }
 
         AA_Next_BTN.setSafeClickListener {
-
-            startActivity<QuestionActivity>("exam_data" to exam_data)
+            finish()
         }
 
 
@@ -123,9 +114,5 @@ class AnswerActivity : AppCompatActivity() {
         answer_questionNumber_text.setText("解説")
         answer_question_correct_text.setText(answerStr)
         AA_answerComment_text.setText(questionsDB.find_comment(question_id)?.get(1))
-//        answer_examNumber_text.setText("問題number")
-//        answer_questionNumber_text.setText("問 1")
-//        answer_question_correct_text.setText("正解 : あ" )
-//        answer_answerText_text.setText("カクカク")
     }
 }

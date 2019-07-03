@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">noffication_de_study</string>
-    <string name="Return_Answer_BTN_Str">解説へ戻る</string>
+    <string name="Return_Answer_BTN_Str">解説を見る</string>
     <string name="QA_Title_Text_Str">問題</string>
     <string name="QA_Answer_0_BTN">ア</string>
     <string name="QA_Answer_1_BTN">イ</string>
@@ -8,6 +8,7 @@
     <string name="QA_Answer_3_BTN">エ</string>
     <string name="QA_End_BTN_Diskription">戻</string>
     <string name="QA_Next_BTN_Discription">進</string>
+    <string name="QA_Next_BTN_Str">次へ進む</string>
     <string-array name="OA_Noffication_Interval_list">
         <item>5</item>
         <item>10</item>
