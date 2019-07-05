@@ -8,7 +8,6 @@ import jp.ac.asojuku.st.noffication_de_study.db.AnswersOpenHelper
 import jp.ac.asojuku.st.noffication_de_study.db.QuestionsOpenHelper
 import kotlinx.android.synthetic.main.activity_question.*
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -35,10 +34,6 @@ class QuestionActivity : AppCompatActivity() {
             printResult()
         } else {
             printQuestion() //問題文の表示
-
-            //ボタンの設定
-            Log.d("test",examData.mac.toString())
-            Log.d("test",examData.name)
 
             when(examData.mac) {
                 //QuestionOptionActivityから
@@ -283,7 +278,6 @@ class QuestionActivity : AppCompatActivity() {
 //            "answer_choice" to exam_data.answered_list.get(exam_data.question_current),
 //            "answer_time" to test1).toString())
         ApiPostTask {
-            Log.d("tetes", it)
             if (JSONObject(it).getString("status") != "E00") {
                 Toast.makeText(this, "APIの通信に成功しました(｀・ω・´)", Toast.LENGTH_SHORT).show()
             } else {

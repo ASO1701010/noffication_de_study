@@ -1,10 +1,8 @@
 package jp.ac.asojuku.st.noffication_de_study
 
 import android.graphics.Color
-import android.opengl.Visibility
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import jp.ac.asojuku.st.noffication_de_study.db.AnswersOpenHelper
 import jp.ac.asojuku.st.noffication_de_study.db.ExamsQuestionsOpenHelper
