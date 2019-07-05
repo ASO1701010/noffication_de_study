@@ -9,6 +9,7 @@
     <string name="QA_End_BTN_Diskription">戻</string>
     <string name="QA_Next_BTN_Discription">進</string>
     <string name="QA_Next_BTN_Str">次へ進む</string>
+    <string name="AA_Next_BTN_Str">次の問題へ</string>
     <string-array name="OA_Noffication_Interval_list">
         <item>5</item>
         <item>10</item>
