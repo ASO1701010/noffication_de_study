@@ -18,7 +18,7 @@ class LocalNotificationTwoReceiver : BroadcastReceiver() {
         val db = helper.readableDatabase
         val query = "SELECT * FROM answers WHERE question_id = ?"
         val cursor = db.rawQuery(query, arrayOf(questionId.toString()))
-        var questionAnswer: Int = 0
+        var questionAnswer = 0
         cursor.use { c ->
             c.moveToFirst()
             for (i in 0 until c.count) {
