@@ -67,13 +67,12 @@
                 android:id="@+id/answer_questionNumber_text" android:textSize="24sp"
                 tools:text="解説"/>
         <TextView
-                android:text="解説文"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/AA_answerComment_text"
                 android:textSize="14sp"
                 android:isScrollContainer="true"
-        />
+                tools:text="解説文"/>
     </LinearLayout><![CDATA[
 
 
