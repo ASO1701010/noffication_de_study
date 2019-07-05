@@ -36,8 +36,9 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
         this.registerNotice(context)
     }
 
+    // 四択問題の通知の生成
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun fourQuestion(context: Context) {
+    fun fourQuestion(context: Context) {
         val helper = SQLiteHelper(context)
         val db = helper.readableDatabase
 
@@ -146,6 +147,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
         notificationManager.notify(questionId, notification)
     }
 
+    // 四択問題の正誤判定
     private fun fourQuestionRegAnswer(choice_number: Int, examData: ExamData, context: Context) {
         //自分の解答を登録
         examData.answered_list.add(choice_number)
@@ -161,7 +163,8 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
         examData.isCorrect_list.add(isCorrected)//解いた問題が正解だったかどうかがBoolean型で入る
     }
 
-    private fun twoQuestion(context: Context) {
+    // 二択問題の通知の生成
+    fun twoQuestion(context: Context) {
         // 出題する問題を取得
         val examData = ExamData(4, "FE", "FE10901")
 
@@ -246,6 +249,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
         spEditor.putInt("notification_id", notificationId + 1).apply()
     }
 
+    // 通知de勉強モード
     fun registerNotice(context: Context) {
         // 設定情報の読み込み
         val spGetter = context.getSharedPreferences("user_data", MODE_PRIVATE)
@@ -276,7 +280,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
                 calendar.set(Calendar.MILLISECOND, 0)
             } else {
                 // 現在の時間に通知間隔を加算して出題
-                calendar.add(Calendar.SECOND, spaceTime.toInt())
+                calendar.add(Calendar.MINUTE, spaceTime.toInt())
             }
 
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
