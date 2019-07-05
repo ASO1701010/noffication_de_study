@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.database.CursorIndexOutOfBoundsException
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
 
 class ExamsQuestionsOpenHelper(var db: SQLiteDatabase) {
     val tableName: String = "exams_questions";

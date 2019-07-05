@@ -10,11 +10,12 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import android.text.format.DateFormat
 import android.widget.Toast
 import jp.ac.asojuku.st.noffication_de_study.db.*
 import org.jetbrains.anko.startActivity
 import org.json.JSONObject
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,21 +33,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         ApiGetTask {
-//            itの値チェック用ですが、itのデータが大きすぎて全ての表示ができません。
-//            jsonArrayのキー値を設定して、個別に確認してください。
-//            Log.d("test",JSONObject(it).getJSONObject("data").getJSONArray("questions_db").toString())
             if (!it.isNullOrEmpty()) {
-//                try {
-//                    all_update(JSONObject(it))
-//                } catch (e:java.lang.Exception) {
-//                    Toast.makeText(this, "えらーはっせい", Toast.LENGTH_SHORT).show()
-//                }
                 all_update(JSONObject(it))
-
             } else {
                 Toast.makeText(this, "APIの通信に失敗しました(´･ω･`)", Toast.LENGTH_SHORT).show()
             }
-
             startActivity<TitleActivity>()
             finish()
         }.execute("db-update.php", hashMapOf("last_update_date" to find_last_update()).toString())
@@ -60,18 +51,17 @@ class MainActivity : AppCompatActivity() {
         var cursor:Cursor
 
         var result = "2019-05-06"
-        try {
+        return try {
             cursor = db.rawQuery(query, null)
             cursor.moveToFirst()
             result = cursor.getString(0).toString()
             cursor.close()
             db.close()
+            result
         }catch (e:Exception){
             db.close()
-//            Log.d("error",e.toString())
-            return result
+            result
         }
-        return result
     }
 
     //    受け取った全ての値をDBに登録する。
@@ -93,8 +83,6 @@ class MainActivity : AppCompatActivity() {
         val image = ImageOpenHelper(db)
         val questions = QuestionsOpenHelper(db)
         val questions_genres = QuestionsGenresOpenHelper(db)
-//        val user_answers = UserAnswersOpenHelper(ac)
-
 
         var jArray = json.getJSONArray("answer_db")
         if (jArray != {}) {
@@ -191,12 +179,10 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    //あとでオプション画面に移動します
     //端末に登録されているトークンをAPIサーバに送信し、ユーザーIDを受け取る
     fun get_user_id(token: String):Boolean {
         var result:Boolean = true
         ApiPostTask {
-            Log.d("tetes",it)
             if(JSONObject(it).getString("status") != "E00"){
                 val e : SharedPreferences.Editor = getSharedPreferences("user_data", AppCompatActivity.MODE_PRIVATE).edit()
                 e.putString("user_id",JSONObject(it).getJSONObject("data").getString("user_id")).apply()
@@ -207,6 +193,7 @@ class MainActivity : AppCompatActivity() {
         }.execute("add-user.php", hashMapOf("token" to token).toString())
         return result
     }
+    // 文字列中のHTLM特殊文字を変換して、変換後の文字列を返す
     fun escapeHTLM(str: String): String{
         var str2 = str.replace("&quot;".toRegex(), "\"")
             .replace("&lt;".toRegex(),"<")
