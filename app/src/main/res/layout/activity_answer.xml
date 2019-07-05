@@ -8,7 +8,6 @@
         tools:context=".AnswerActivity" android:isScrollContainer="false">
 
     <TextView
-            android:text="統計情報"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/A_title_text"
             android:textSize="36sp"
@@ -16,7 +15,8 @@
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:text="@string/A_title_Text_Str"/>
     <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" app:srcCompat="@android:drawable/ic_menu_revert"
@@ -35,9 +35,10 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="71dp"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent">
+            android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/AA_Back_BTN">
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,17 +58,20 @@
                 android:textSize="28sp"
         />
         <TextView
-                android:text="問9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView3" android:visibility="invisible"
+                android:textSize="24sp"/>
+        <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/answer_questionNumber_text" android:textSize="24sp"
-        />
+                tools:text="解説"/>
         <TextView
                 android:text="解説文"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/AA_answerComment_text"
-                android:textSize="20sp"
+                android:textSize="14sp"
                 android:isScrollContainer="true"
         />
     </LinearLayout><![CDATA[
