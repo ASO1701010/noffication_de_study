@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.database.CursorIndexOutOfBoundsException
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 
 class ExamsQuestionsOpenHelper(var db: SQLiteDatabase) {
     val tableName: String = "exams_questions";
@@ -51,6 +52,26 @@ class ExamsQuestionsOpenHelper(var db: SQLiteDatabase) {
         } catch (e: CursorIndexOutOfBoundsException) {
             cursor.close()
             null
+        }
+    }
+    fun find_exam_number_from_question_id(question_id: Int):String?{
+        val query =
+            "SELECT * FROM " + tableName + " where question_id = " + question_id
+        val cursor = db.rawQuery(query, null)
+        var sb = StringBuffer()
+        return try {
+            cursor.moveToFirst()
+
+            for (i in 0 until cursor.count) {
+                sb.append(cursor.getString(1))
+                sb.append(" ")
+                cursor.moveToNext()
+            }
+            cursor.close()
+            sb.toString()
+        } catch (e: CursorIndexOutOfBoundsException) {
+            cursor.close()
+            ""
         }
     }
 
