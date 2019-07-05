@@ -14,7 +14,6 @@ import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 import android.widget.RemoteViews
 import jp.ac.asojuku.st.noffication_de_study.db.AnswersOpenHelper
-import jp.ac.asojuku.st.noffication_de_study.db.QuestionsOpenHelper
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -24,7 +23,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val spGetter = context.getSharedPreferences("user_data", MODE_PRIVATE)
         // 四択問題・二択問題どちらを出題するか設定から読み込み出題
-        when (spGetter.getString("way_radio_select", "two")) {
+        when (spGetter.getString("way_radio_select", "four")) {
             "four" -> {
                 this.fourQuestion(context)
             }
@@ -39,18 +38,36 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fourQuestion(context: Context) {
-        val questionId = kotlin.random.Random.nextInt(80) + 1
+        val helper = SQLiteHelper(context)
+        val db = helper.readableDatabase
 
-        val db = SQLiteHelper(context).readableDatabase
-        val dbHelper = QuestionsOpenHelper(db)
+        val query = "SELECT * FROM questions WHERE is_have_image = 0 AND question_flag = 1"
+        val cursor = db.rawQuery(query, null)
 
-        val questionText = dbHelper.find_question(questionId)
+        var question: HashMap<Int, String> = hashMapOf()
+        cursor.use { c ->
+            c.moveToFirst()
+            val array = ArrayList<HashMap<Int, String>>()
+            for (i in 0 until c.count) {
+                val map: HashMap<Int, String> = hashMapOf()
+                if (c.getString(c.getColumnIndex("question")).count() < 300) {
+                    map[c.getInt(c.getColumnIndex("question_id"))] =
+                        c.getString(c.getColumnIndex("question"))
+                    array.add(map)
+                }
+                c.moveToNext()
+            }
+            val random = Random().nextInt(array.size - 1)
+            question = array[random]
+            if (question.isNullOrEmpty()) return
+        }
+
+        val questionId = question.keys.first()
+        val questionText = question[question.keys.first()]
+
         if (questionText == null) {
             return
         }
-        questionText[1].replace("&quot;".toRegex(), "\"")
-        questionText[2].replace("&quot;".toRegex(), "\"")
-
 
         val mChannel = NotificationChannel("0", "問題通知", NotificationManager.IMPORTANCE_HIGH)
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -70,15 +87,15 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
         intent4.putExtra("question_id", questionId)
 
         // ExamDataを生成＆整形
-        val data1 = ExamData(1, "", "")
+        val data1 = ExamData(3, "", "")
         data1.set_list_data(arrayListOf(questionId))
-        val data2 = ExamData(1, "", "")
+        val data2 = ExamData(3, "", "")
         data2.set_list_data(arrayListOf(questionId))
-        val data3 = ExamData(1, "", "")
+        val data3 = ExamData(3, "", "")
         data3.set_list_data(arrayListOf(questionId))
-        val data4 = ExamData(1, "", "")
+        val data4 = ExamData(3, "", "")
         data4.set_list_data(arrayListOf(questionId))
-        val data5 = ExamData(1, "", "")
+        val data5 = ExamData(3, "", "")
         data5.set_list_data(arrayListOf(questionId))
         data1.question_current = questionId
         data2.question_current = questionId
@@ -115,7 +132,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
             PendingIntent.getActivity(context, 1983418745, intentQuestion, PendingIntent.FLAG_CANCEL_CURRENT)
 
         // 表示するテキスト
-        contentView.setTextViewText(R.id.notifiText, questionText[1])
+        contentView.setTextViewText(R.id.notifiText, questionText)
 
         // 表示内容を生成
         val notification = NotificationCompat.Builder(context, "0")
@@ -146,7 +163,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
 
     private fun twoQuestion(context: Context) {
         // 出題する問題を取得
-        val examData = ExamData(1, "FE", "FE10901")
+        val examData = ExamData(4, "FE", "FE10901")
 
         // DBから問題を取得
         val helper = SQLiteHelper(context)
@@ -173,11 +190,10 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
         val questionContent = question[question.keys.first()]
 
         examData.set_list_data(arrayListOf(questionId))
-        // 後日AnswerActivityに飛ばす処理を実装
         val pendingIntent = PendingIntent.getActivity(
             context, 777, Intent(
                 context,
-                TitleActivity::class.java
+                QuestionActivity::class.java
             ).putExtra("exam_data", examData), 0
         )
 
@@ -200,20 +216,30 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
             .addAction(
                 R.mipmap.ic_launcher,
                 "○ 正しい",
-                PendingIntent.getBroadcast(context, 0, Intent(context, LocalNotificationTwoReceiver::class.java).apply {
-                    action = "1"
-                    putExtra("question_id", questionId)
-                    putExtra("user_answer", 1)
-                }, 0)
+                PendingIntent.getBroadcast(
+                    context,
+                    (Math.random() * 100000).toInt(),
+                    Intent(context, LocalNotificationTwoReceiver::class.java).apply {
+                        action = "1"
+                        putExtra("question_id", questionId)
+                        putExtra("user_answer", 1)
+                    },
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
             )
             .addAction(
                 R.mipmap.ic_launcher,
                 "× 誤り",
-                PendingIntent.getBroadcast(context, 0, Intent(context, LocalNotificationTwoReceiver::class.java).apply {
-                    action = "2"
-                    putExtra("question_id", questionId)
-                    putExtra("user_answer", 2)
-                }, 0)
+                PendingIntent.getBroadcast(
+                    context,
+                    (Math.random() * 100000).toInt(),
+                    Intent(context, LocalNotificationTwoReceiver::class.java).apply {
+                        action = "2"
+                        putExtra("question_id", questionId)
+                        putExtra("user_answer", 2)
+                    },
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
             )
             .build()
         notificationManager.notify(notificationId, notification)
