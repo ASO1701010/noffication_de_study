@@ -81,10 +81,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:id="@+id/QA_ScrollView_Questions"
-            app:layout_constraintBottom_toTopOf="@+id/QA_Answers"
+            app:layout_constraintBottom_toTopOf="@+id/QA_to_Answer_BTN"
             app:layout_constraintTop_toBottomOf="@+id/QA_Title_Text" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp" android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp" android:layout_marginStart="16dp">
+            android:layout_marginBottom="8dp" android:layout_marginStart="16dp">
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/QA_Question_Text"
