@@ -6,15 +6,14 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 
 class AnswersRateOpenHelper(var db: SQLiteDatabase) {
-
-    val tableName: String = "answers_rate";
+    val tableName: String = "answers_rate"
 
     fun find_rate(question_id: Int): Double? {
-        val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
+        val query = "SELECT * FROM $tableName where question_id = $question_id"
         val cursor = db.rawQuery(query, null)
         return try {
             cursor.moveToFirst()
-            var result: Double = cursor.getDouble(1)
+            val result: Double = cursor.getDouble(1)
             cursor.close()
             result
         } catch (e: CursorIndexOutOfBoundsException) {
@@ -24,12 +23,12 @@ class AnswersRateOpenHelper(var db: SQLiteDatabase) {
     }
 
     fun find_all_rate(): ArrayList<String>? {
-        val query = "SELECT * FROM " + tableName
+        val query = "SELECT * FROM $tableName"
         val cursor = db.rawQuery(query, null)
 
         return try {
             cursor.moveToFirst()
-            var array = ArrayList<String>()
+            val array = ArrayList<String>()
             var bufferList = ArrayList<String>()
 
             for (i in 0 until cursor.count) {
@@ -59,7 +58,7 @@ class AnswersRateOpenHelper(var db: SQLiteDatabase) {
         try {
             db.insertOrThrow(tableName, null, values)
         } catch (e: SQLiteConstraintException) {
-            db.update(tableName, values, "question_id = " + q_id, null)
+            db.update(tableName, values, "question_id = $q_id", null)
         }
     }
 }

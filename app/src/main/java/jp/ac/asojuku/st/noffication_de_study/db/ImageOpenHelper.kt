@@ -7,11 +7,11 @@ import android.database.sqlite.SQLiteDatabase
 import jp.ac.asojuku.st.noffication_de_study.R
 
 class ImageOpenHelper(var db: SQLiteDatabase) {
-    val tableName: String = "image";
+    val tableName: String = "image"
 
     fun find_image(question_id: Int): Int? {
 
-        val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
+        val query = "SELECT * FROM $tableName where question_id = $question_id"
         val cursor = db.rawQuery(query, null)
 
         return try {
@@ -36,7 +36,7 @@ class ImageOpenHelper(var db: SQLiteDatabase) {
         try {
             db.insertOrThrow(tableName, null, values)
         } catch (e: SQLiteConstraintException) {
-            db.update(tableName, values, "question_id = " + q_id, null)
+            db.update(tableName, values, "question_id = $q_id", null)
         }
     }
     fun setDefaultRecoad(){

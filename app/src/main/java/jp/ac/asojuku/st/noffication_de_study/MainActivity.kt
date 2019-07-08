@@ -23,15 +23,22 @@ class MainActivity : AppCompatActivity() {
         // 通知のバージョン差対応
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel =
+            // 二択問題通知チャンネル
+            var notificationChannel =
                 NotificationChannel("channel_two_question", "二択問題", NotificationManager.IMPORTANCE_DEFAULT)
             notificationChannel.lightColor = Color.BLUE
             notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
             notificationManager.createNotificationChannel(notificationChannel)
-        }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel =
+            // 四択問題通知チャンネル
+            notificationChannel =
+                NotificationChannel("channel_four_question", "四択問題", NotificationManager.IMPORTANCE_DEFAULT)
+            notificationChannel.lightColor = Color.BLUE
+            notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            notificationManager.createNotificationChannel(notificationChannel)
+
+            // サービス通知チャンネル
+            notificationChannel =
                 NotificationChannel("channel_screen_question", "サービス", NotificationManager.IMPORTANCE_DEFAULT)
             notificationChannel.lightColor = Color.BLUE
             notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE

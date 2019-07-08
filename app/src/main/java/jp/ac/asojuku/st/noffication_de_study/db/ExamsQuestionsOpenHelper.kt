@@ -10,13 +10,13 @@ class ExamsQuestionsOpenHelper(var db: SQLiteDatabase) {
 
     fun find_all_questions(exams_id: Int, exams_number: String): ArrayList<ArrayList<Int>>? {
         val query =
-            "SELECT * FROM " + tableName + " where exams_id = " + exams_id + " and exams_number = '" + exams_number + "'"
+            "SELECT * FROM $tableName where exams_id = $exams_id and exams_number = '$exams_number'"
         val cursor = db.rawQuery(query, null)
 
         return try {
             cursor.moveToFirst()
 
-            var array = ArrayList<ArrayList<Int>>()
+            val array = ArrayList<ArrayList<Int>>()
             var bufferList: ArrayList<Int>
 
             for (i in 0 until cursor.count) {
@@ -35,13 +35,13 @@ class ExamsQuestionsOpenHelper(var db: SQLiteDatabase) {
     }
     fun find_all_questions_from_exam_number(exams_number: String):ArrayList<Int>?{
         val query =
-            "SELECT * FROM " + tableName + " where exams_number = '" + exams_number + "'"
+            "SELECT * FROM $tableName where exams_number = '$exams_number'"
         val cursor = db.rawQuery(query, null)
 
         return try {
             cursor.moveToFirst()
 
-            var array = ArrayList<Int>()
+            val array = ArrayList<Int>()
             for (i in 0 until cursor.count) {
                 array.add(cursor.getInt(2))
                 cursor.moveToNext()
@@ -55,9 +55,9 @@ class ExamsQuestionsOpenHelper(var db: SQLiteDatabase) {
     }
     fun find_exam_number_from_question_id(question_id: Int):String?{
         val query =
-            "SELECT * FROM " + tableName + " where question_id = " + question_id
+            "SELECT * FROM $tableName where question_id = $question_id"
         val cursor = db.rawQuery(query, null)
-        var sb = StringBuffer()
+        val sb = StringBuffer()
         return try {
             cursor.moveToFirst()
 
@@ -87,7 +87,7 @@ class ExamsQuestionsOpenHelper(var db: SQLiteDatabase) {
             db.update(
                 tableName,
                 values,
-                "exams_id = " + q_id + " and exams_number = '" + a_num + "' and question_id = " + b_num + " and question_number = " + c_num,
+                "exams_id = $q_id and exams_number = '$a_num' and question_id = $b_num and question_number = $c_num",
                 null
             )
         }

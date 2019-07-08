@@ -6,14 +6,14 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 
 class QuestionsOpenHelper(var db: SQLiteDatabase) {
-    val tableName: String = "questions";
+    val tableName: String = "questions"
 
     //問題idを渡して、出題に利用する情報を取得
     fun find_question(question_id: Int): ArrayList<String>? {
-        val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
+        val query = "SELECT * FROM $tableName where question_id = $question_id"
         val cursor = db.rawQuery(query, null)
 
-        var array = ArrayList<String>()
+        val array = ArrayList<String>()
         return try{
             cursor.moveToFirst()
             array.add(cursor.getString(0).toString())
@@ -30,10 +30,10 @@ class QuestionsOpenHelper(var db: SQLiteDatabase) {
 
     //問題idを渡して、解説に必要な情報を取得
     fun find_comment(question_id: Int): ArrayList<String>? {
-        val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
+        val query = "SELECT * FROM $tableName where question_id = $question_id"
         val cursor = db.rawQuery(query, null)
 
-        var array = ArrayList<String>()
+        val array = ArrayList<String>()
         return try{
             cursor.moveToFirst()
             array.add(cursor.getString(0).toString())
@@ -59,7 +59,7 @@ class QuestionsOpenHelper(var db: SQLiteDatabase) {
         try {
             db.insertOrThrow(tableName, null, values)
         } catch (e: SQLiteConstraintException) {
-            db.update(tableName, values, "question_id = " + a, null)
+            db.update(tableName, values, "question_id = $a", null)
         }
     }
 }

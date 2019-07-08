@@ -9,13 +9,13 @@ class UserAnswersOpenHelper(var db: SQLiteDatabase) {
     val tableName: String = "user_answers";
 
     fun find_all_user_answers(): ArrayList<ArrayList<String>>? {
-        val query = "SELECT * FROM " + tableName
+        val query = "SELECT * FROM $tableName"
         val cursor = db.rawQuery(query, null)
 
         return try {
             cursor.moveToFirst()
 
-            var array = ArrayList<ArrayList<String>>()
+            val array = ArrayList<ArrayList<String>>()
             var bufferlist: ArrayList<String>
             for (i in 0 until cursor.count) {
                 bufferlist = ArrayList()
@@ -38,13 +38,13 @@ class UserAnswersOpenHelper(var db: SQLiteDatabase) {
     }
 
     fun find_user_answers(question_id: Int): ArrayList<ArrayList<String>>? {
-        val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
+        val query = "SELECT * FROM $tableName where question_id = $question_id"
         val cursor = db.rawQuery(query, null)
 
         return try {
             cursor.moveToFirst()
 
-            var array = ArrayList<ArrayList<String>>()
+            val array = ArrayList<ArrayList<String>>()
             var bufferlist: ArrayList<String>
             for (i in 0 until cursor.count) {
                 bufferlist = ArrayList()
@@ -76,7 +76,7 @@ class UserAnswersOpenHelper(var db: SQLiteDatabase) {
         try {
             db.insertOrThrow(tableName, null, values)
         } catch (e: SQLiteConstraintException) {
-            db.update(tableName, values, "user_answer_id = " + a, null)
+            db.update(tableName, values, "user_answer_id = $a", null)
         }
     }
 }

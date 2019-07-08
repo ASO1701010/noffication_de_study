@@ -5,15 +5,15 @@ import android.database.CursorIndexOutOfBoundsException
 import android.database.sqlite.SQLiteDatabase
 
 class ExamsOpenHelper(var db: SQLiteDatabase) {
-    val tableName: String = "exams";
+    val tableName: String = "exams"
 
     fun find_exam_name(exams_id: Int): String? {
-        val query = "SELECT * FROM " + tableName + " where exams_id = " + exams_id
+        val query = "SELECT * FROM $tableName where exams_id = $exams_id"
         val cursor = db.rawQuery(query, null)
 
         return try {
             cursor.moveToFirst()
-            var result = cursor.getString(1)
+            val result = cursor.getString(1)
             cursor.close()
             result
         } catch (e: CursorIndexOutOfBoundsException) {

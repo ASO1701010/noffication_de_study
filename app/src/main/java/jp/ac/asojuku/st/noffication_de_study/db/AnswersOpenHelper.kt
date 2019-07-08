@@ -6,15 +6,15 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 
 class AnswersOpenHelper(var db: SQLiteDatabase) {
-    val tableName: String = "answers";
+    val tableName: String = "answers"
 
     //問題idを受け取って、対応する答えの選択肢を返す
     fun find_answers(question_id: Int): ArrayList<Int>? {
 
-        val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
+        val query = "SELECT * FROM $tableName where question_id = $question_id"
         val cursor = db.rawQuery(query, null)
 
-        var array = ArrayList<Int>()
+        val array = ArrayList<Int>()
         return try {
             cursor.moveToFirst()
             array.add(cursor.getInt(0))
@@ -38,7 +38,7 @@ class AnswersOpenHelper(var db: SQLiteDatabase) {
         try {
             db.insertOrThrow(tableName, null, values)
         } catch (e: SQLiteConstraintException) {
-            db.update(tableName, values, "question_id = " + q_id + " and answer_number = " + a_num, null)
+            db.update(tableName, values, "question_id = $q_id and answer_number = $a_num", null)
         }
     }
 }
