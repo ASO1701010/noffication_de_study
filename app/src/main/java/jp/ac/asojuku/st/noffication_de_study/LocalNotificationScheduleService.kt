@@ -1,7 +1,6 @@
 package jp.ac.asojuku.st.noffication_de_study
 
 import android.app.AlarmManager
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -9,18 +8,15 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
-import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 import android.widget.RemoteViews
-import android.widget.TextView
 import jp.ac.asojuku.st.noffication_de_study.db.AnswersOpenHelper
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class LocalNotificationScheduleService : BroadcastReceiver() {
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onReceive(context: Context, intent: Intent) {
         val spGetter = context.getSharedPreferences("user_data", MODE_PRIVATE)
         // 四択問題・二択問題どちらを出題するか設定から読み込み出題
@@ -38,7 +34,6 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
     }
 
     // 四択問題の通知の生成
-    @RequiresApi(Build.VERSION_CODES.O)
     fun fourQuestion(context: Context) {
         val helper = SQLiteHelper(context)
         val db = helper.readableDatabase
@@ -71,9 +66,6 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
             return
         }
 
-//        val mChannel = NotificationChannel("0", "問題通知", NotificationManager.IMPORTANCE_HIGH)
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//        notificationManager.createNotificationChannel(mChannel)
         val contentView = RemoteViews(context.packageName, R.layout.notifi_layout)
 
         val intent1 = Intent(context, AnswerActivity::class.java)
@@ -144,7 +136,9 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
 
 
         // 表示内容を生成
-        val notification = NotificationCompat.Builder(context, "0")
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notification = NotificationCompat.Builder(context, "channel_four_question")
+            .setChannelId("channel_four_question")
             .setCustomBigContentView(contentView)
             .setContentTitle("問題です")
             .setContentIntent(piQuestion)

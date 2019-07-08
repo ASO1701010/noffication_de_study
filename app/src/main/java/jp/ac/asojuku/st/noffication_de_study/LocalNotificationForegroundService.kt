@@ -6,9 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Build
 import android.os.IBinder
-import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 
 class LocalNotificationForegroundService : Service() {
@@ -23,7 +21,6 @@ class LocalNotificationForegroundService : Service() {
 
         val spGetter = getSharedPreferences("user_data", MODE_PRIVATE)
         mReceiver = object : BroadcastReceiver() {
-            @RequiresApi(Build.VERSION_CODES.O)
             override fun onReceive(context: Context, intent: Intent) {
                 if (intent.action == Intent.ACTION_SCREEN_ON) {
                     // 四択問題・二択問題どちらを出題するか設定から読み込み出題
