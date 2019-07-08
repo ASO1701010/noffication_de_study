@@ -9,7 +9,7 @@
     <string name="QA_End_BTN_Diskription">戻</string>
     <string name="QA_Next_BTN_Discription">進</string>
     <string name="QA_Next_BTN_Str">次へ進む</string>
-    <string name="AA_Next_BTN_Str">次の問題へ</string>
+    <string name="AA_Next_BTN_Str">問題へ戻る</string>
     <string name="NDS_INFO_Str">通知で画面を出題し、解答します。</string>
     <string name="Q_option_txt1_Str">出題方法</string>
     <string name="way_four_radio_button_Str">四択問題</string>
