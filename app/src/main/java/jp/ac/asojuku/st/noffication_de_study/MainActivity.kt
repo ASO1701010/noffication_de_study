@@ -10,12 +10,10 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.text.format.DateFormat
 import android.widget.Toast
 import jp.ac.asojuku.st.noffication_de_study.db.*
 import org.jetbrains.anko.startActivity
 import org.json.JSONObject
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +24,15 @@ class MainActivity : AppCompatActivity() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
-                NotificationChannel("channel_question", "channel", NotificationManager.IMPORTANCE_DEFAULT)
+                NotificationChannel("channel_two_question", "二択問題", NotificationManager.IMPORTANCE_DEFAULT)
+            notificationChannel.lightColor = Color.BLUE
+            notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel =
+                NotificationChannel("channel_screen_question", "サービス", NotificationManager.IMPORTANCE_NONE)
             notificationChannel.lightColor = Color.BLUE
             notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
             notificationManager.createNotificationChannel(notificationChannel)
@@ -48,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         val questions = SQLiteHelper(this)
         val db = questions.readableDatabase
         val query = "SELECT update_date FROM questions ORDER BY update_date desc limit 1"
-        var cursor:Cursor
+        var cursor: Cursor
 
         var result = "2019-05-06"
         return try {
@@ -58,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             cursor.close()
             db.close()
             result
-        }catch (e:Exception){
+        } catch (e: Exception) {
             db.close()
             result
         }
@@ -180,25 +186,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     //端末に登録されているトークンをAPIサーバに送信し、ユーザーIDを受け取る
-    fun get_user_id(token: String):Boolean {
-        var result:Boolean = true
+    fun get_user_id(token: String): Boolean {
+        var result: Boolean = true
         ApiPostTask {
-            if(JSONObject(it).getString("status") != "E00"){
-                val e : SharedPreferences.Editor = getSharedPreferences("user_data", AppCompatActivity.MODE_PRIVATE).edit()
-                e.putString("user_id",JSONObject(it).getJSONObject("data").getString("user_id")).apply()
+            if (JSONObject(it).getString("status") != "E00") {
+                val e: SharedPreferences.Editor =
+                    getSharedPreferences("user_data", AppCompatActivity.MODE_PRIVATE).edit()
+                e.putString("user_id", JSONObject(it).getJSONObject("data").getString("user_id")).apply()
 
-            }else{
+            } else {
                 result = false
             }
         }.execute("add-user.php", hashMapOf("token" to token).toString())
         return result
     }
+
     // 文字列中のHTLM特殊文字を変換して、変換後の文字列を返す
-    fun escapeHTLM(str: String): String{
+    fun escapeHTLM(str: String): String {
         var str2 = str.replace("&quot;".toRegex(), "\"")
-            .replace("&lt;".toRegex(),"<")
-            .replace("&gt;".toRegex(),">")
-            .replace("&amp;".toRegex(),"&")
-        return  str2
+            .replace("&lt;".toRegex(), "<")
+            .replace("&gt;".toRegex(), ">")
+            .replace("&amp;".toRegex(), "&")
+        return str2
     }
 }

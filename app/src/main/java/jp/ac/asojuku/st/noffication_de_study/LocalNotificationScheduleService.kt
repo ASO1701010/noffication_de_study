@@ -208,7 +208,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notification = NotificationCompat.Builder(context, "default")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setChannelId("channel_question")
+            .setChannelId("channel_two_question")
             .setContentTitle("問題")
             .setContentText(questionContent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
