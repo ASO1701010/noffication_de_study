@@ -6,16 +6,16 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 
 class QuestionsGenresOpenHelper(var db: SQLiteDatabase) {
-    val tableName: String = "questions_genres";
+    val tableName: String = "questions_genres"
 
     fun find_question_genres(question_id: Int): ArrayList<Int>? {
 
-        val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
+        val query = "SELECT * FROM $tableName where question_id = $question_id"
         val cursor = db.rawQuery(query, null)
 
         return try {
             cursor.moveToFirst()
-            var array = ArrayList<Int>()
+            val array = ArrayList<Int>()
             array.add(cursor.getInt(0))
             for (i in 0 until cursor.count) {
                 array.add(cursor.getInt(1))
@@ -30,12 +30,12 @@ class QuestionsGenresOpenHelper(var db: SQLiteDatabase) {
     }
 
     fun find_genre_questions(genre_id: Int): ArrayList<Int>? {
-        val query = "SELECT * FROM " + tableName + " where genre_id = " + genre_id
+        val query = "SELECT * FROM $tableName where genre_id = $genre_id"
         val cursor = db.rawQuery(query, null)
 
         return try {
             cursor.moveToFirst()
-            var array = ArrayList<Int>()
+            val array = ArrayList<Int>()
             array.add(cursor.getInt(1))
             for (i in 0 until cursor.count) {
                 array.add(cursor.getInt(0))
@@ -57,7 +57,7 @@ class QuestionsGenresOpenHelper(var db: SQLiteDatabase) {
         try {
             db.insertOrThrow(tableName, null, values)
         } catch (e: SQLiteConstraintException) {
-            db.update(tableName, values, "question_id = " + q_id + " and genre_id = " + a_num, null)
+            db.update(tableName, values, "question_id = $q_id and genre_id = $a_num", null)
         }
     }
 }

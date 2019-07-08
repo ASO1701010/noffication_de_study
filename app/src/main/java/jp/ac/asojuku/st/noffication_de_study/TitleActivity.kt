@@ -2,7 +2,6 @@ package jp.ac.asojuku.st.noffication_de_study
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import kotlinx.android.synthetic.main.activity_title.*
 import org.jetbrains.anko.startActivity
 
@@ -31,7 +30,6 @@ class TitleActivity : AppCompatActivity() {
 
         val data = getSharedPreferences("user_data", MODE_PRIVATE)
         val userId = data.getString("user_id", "0")
-        Log.d("Login", userId)
     }
 
 }

@@ -6,16 +6,16 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 
 class ImageOpenHelper(var db: SQLiteDatabase) {
-    val tableName: String = "image";
+    val tableName: String = "image"
 
     fun find_image(question_id: Int): ArrayList<String>? {
 
-        val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
+        val query = "SELECT * FROM $tableName where question_id = $question_id"
         val cursor = db.rawQuery(query, null)
 
         return try {
             cursor.moveToFirst()
-            var array = ArrayList<String>()
+            val array = ArrayList<String>()
             array.add(cursor.getString(0).toString())
             for (i in 0 until cursor.count) {
                 array.add(cursor.getString(1).toString())
@@ -37,7 +37,7 @@ class ImageOpenHelper(var db: SQLiteDatabase) {
         try {
             db.insertOrThrow(tableName, null, values)
         } catch (e: SQLiteConstraintException) {
-            db.update(tableName, values, "question_id = " + q_id, null)
+            db.update(tableName, values, "question_id = $q_id", null)
         }
 
     }
