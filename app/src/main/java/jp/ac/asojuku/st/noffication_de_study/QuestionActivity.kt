@@ -1,6 +1,7 @@
 package jp.ac.asojuku.st.noffication_de_study
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -11,6 +12,7 @@ import android.text.format.DateFormat
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import jp.ac.asojuku.st.noffication_de_study.db.ImageOpenHelper
 import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 import java.util.*
@@ -20,7 +22,6 @@ import kotlin.collections.ArrayList
 class QuestionActivity : AppCompatActivity() {
 
     lateinit var examData: ExamData
-
     var isTouched = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,8 +117,6 @@ class QuestionActivity : AppCompatActivity() {
                 examData.question_next = 9999
             }
         }
-
-
     }
 
     //問題表示
@@ -132,6 +131,11 @@ class QuestionActivity : AppCompatActivity() {
             question_str = "問題文がありません"
         } else {
             question_str = question_arr[1]
+            if(question_arr[2] == "1") {
+                val IOH = ImageOpenHelper(db)
+                val imageAddress = IOH.find_image(examData.question_current)
+                question_image.setImageDrawable(this.getDrawable(imageAddress!!))
+            }
         }
         textView4.setText(question_str)
 

@@ -168,6 +168,7 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+        image.setDefaultRecoad()
 
 //        テーブル内データ確認用
 //        Log.d("tete1",answers.find_answers(1).toString())
