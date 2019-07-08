@@ -1,7 +1,5 @@
 package jp.ac.asojuku.st.noffication_de_study
 
-import android.app.Notification
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.BroadcastReceiver
@@ -24,7 +22,7 @@ class LocalNotificationForegroundService : Service() {
         super.onCreate()
 
         val spGetter = getSharedPreferences("user_data", MODE_PRIVATE)
-        val receiver = object : BroadcastReceiver() {
+        mReceiver = object : BroadcastReceiver() {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onReceive(context: Context, intent: Intent) {
                 if (intent.action == Intent.ACTION_SCREEN_ON) {
@@ -42,35 +40,28 @@ class LocalNotificationForegroundService : Service() {
             }
         }
 
-        registerReceiver(receiver, IntentFilter(Intent.ACTION_SCREEN_ON))
+        registerReceiver(mReceiver, IntentFilter(Intent.ACTION_SCREEN_ON))
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        /*
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel =
-                NotificationChannel("channel_screen_question", "サービス", NotificationManager.IMPORTANCE_NONE)
-            notificationChannel.lightColor = Color.BLUE
-            notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
-        */
+        super.onStartCommand(intent, flags, startId)
 
-        val pendingIntent =
-            PendingIntent.getActivity(applicationContext, 777, Intent(applicationContext, TitleActivity::class.java), 0)
-
-        val notification = NotificationCompat.Builder(applicationContext, "default")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setChannelId("channel_screen_question")
-            .setContentTitle("通知de勉強")
-            .setContentText("サービス作動中")
-            .setWhen(System.currentTimeMillis())
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(false)
-            .build()
-        notification.flags = Notification.FLAG_NO_CLEAR
-        notificationManager.notify(99999, notification)
+        val notification = NotificationCompat.Builder(applicationContext, "channel_screen_question").apply {
+            setSmallIcon(R.drawable.ic_launcher_foreground)
+            setChannelId("channel_screen_question")
+            setContentTitle("通知de勉強")
+            setContentText("サービス作動中")
+            setContentIntent(
+                PendingIntent.getActivity(
+                    applicationContext,
+                    777,
+                    Intent(applicationContext, MainActivity::class.java),
+                    0
+                )
+            )
+            setWhen(System.currentTimeMillis())
+            setAutoCancel(false)
+        }.build()
 
         startForeground(1, notification)
 

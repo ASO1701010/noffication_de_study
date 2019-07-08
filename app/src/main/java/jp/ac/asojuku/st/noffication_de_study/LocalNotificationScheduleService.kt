@@ -206,7 +206,7 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
 
         // 通知の生成
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notification = NotificationCompat.Builder(context, "default")
+        val notification = NotificationCompat.Builder(context, "channel_two_question")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setChannelId("channel_two_question")
             .setContentTitle("問題")

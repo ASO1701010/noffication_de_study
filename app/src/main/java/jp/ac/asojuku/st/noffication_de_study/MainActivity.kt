@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
-                NotificationChannel("channel_screen_question", "サービス", NotificationManager.IMPORTANCE_NONE)
+                NotificationChannel("channel_screen_question", "サービス", NotificationManager.IMPORTANCE_DEFAULT)
             notificationChannel.lightColor = Color.BLUE
             notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
             notificationManager.createNotificationChannel(notificationChannel)
