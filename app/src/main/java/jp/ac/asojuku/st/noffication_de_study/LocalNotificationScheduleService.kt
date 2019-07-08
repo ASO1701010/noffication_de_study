@@ -13,6 +13,7 @@ import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 import android.widget.RemoteViews
+import android.widget.TextView
 import jp.ac.asojuku.st.noffication_de_study.db.AnswersOpenHelper
 import java.text.SimpleDateFormat
 import java.util.*
@@ -70,9 +71,9 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
             return
         }
 
-        val mChannel = NotificationChannel("0", "問題通知", NotificationManager.IMPORTANCE_HIGH)
+//        val mChannel = NotificationChannel("0", "問題通知", NotificationManager.IMPORTANCE_HIGH)
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(mChannel)
+//        notificationManager.createNotificationChannel(mChannel)
         val contentView = RemoteViews(context.packageName, R.layout.notifi_layout)
 
         val intent1 = Intent(context, AnswerActivity::class.java)
@@ -134,6 +135,13 @@ class LocalNotificationScheduleService : BroadcastReceiver() {
 
         // 表示するテキスト
         contentView.setTextViewText(R.id.notifiText, questionText)
+
+        contentView.setTextColor(R.id.notifiText, Color.DKGRAY)
+        contentView.setTextColor(R.id.notifyButton, Color.DKGRAY)
+        contentView.setTextColor(R.id.notifyButton2, Color.DKGRAY)
+        contentView.setTextColor(R.id.notifyButton3, Color.DKGRAY)
+        contentView.setTextColor(R.id.notifyButton4, Color.DKGRAY)
+
 
         // 表示内容を生成
         val notification = NotificationCompat.Builder(context, "0")

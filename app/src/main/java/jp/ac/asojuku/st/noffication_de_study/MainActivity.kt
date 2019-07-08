@@ -151,9 +151,9 @@ class MainActivity : AppCompatActivity() {
             for (i in 0 until jArray.length()) {
                 questions.add_record(
                     jArray.getJSONObject(i).getInt("question_id"),
-                    escapeHTLM(jArray.getJSONObject(i).getString("question")),
+                    unescapeHTLM(jArray.getJSONObject(i).getString("question")),
                     jArray.getJSONObject(i).getInt("is_have_image"),
-                    escapeHTLM(jArray.getJSONObject(i).getString("comment")),
+                    unescapeHTLM(jArray.getJSONObject(i).getString("comment")),
                     jArray.getJSONObject(i).getString("update_date"),
                     jArray.getJSONObject(i).getInt("question_flag")
                 )
@@ -202,7 +202,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 文字列中のHTLM特殊文字を変換して、変換後の文字列を返す
-    fun escapeHTLM(str: String): String {
+    fun unescapeHTLM(str: String): String {
         var str2 = str.replace("&quot;".toRegex(), "\"")
             .replace("&lt;".toRegex(), "<")
             .replace("&gt;".toRegex(), ">")
