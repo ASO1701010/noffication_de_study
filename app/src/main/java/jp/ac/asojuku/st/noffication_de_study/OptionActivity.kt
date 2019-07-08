@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -83,7 +84,17 @@ class OptionActivity : AppCompatActivity() {
         // 画面点灯モード
         OA_SDS_Mode_BTN.setSafeClickListener {
             spEditor.putBoolean("SDS_check", OA_SDS_Mode_BTN.isChecked).apply()
-            // 画面点灯モードを実装予定
+
+            val service = Intent(this, LocalNotificationForegroundService::class.java)
+            if (OA_SDS_Mode_BTN.isChecked) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(service)
+                } else {
+                    startService(service)
+                }
+            } else {
+                stopService(service)
+            }
         }
 
         // 通知の問題の出題方法
