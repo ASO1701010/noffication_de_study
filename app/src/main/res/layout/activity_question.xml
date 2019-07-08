@@ -5,17 +5,17 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".QuestionActivity">
+        tools:context=".QuestionActivity" android:background="#ECECEC">
     <Button
             android:text="@string/Return_Answer_BTN_Str"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/QA_to_Answer_BTN"
             android:visibility="invisible" tools:visibility="visible"
             android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:textSize="30sp"
-            style="@style/Widget.AppCompat.Button.Colored" android:layout_marginBottom="24dp"
+            style="@style/Widget.AppCompat.Button.Colored" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/QA_Answers"/>
     <LinearLayout
             android:orientation="horizontal"
@@ -82,22 +82,34 @@
             android:layout_height="0dp"
             android:id="@+id/QA_ScrollView_Questions"
             app:layout_constraintBottom_toTopOf="@+id/QA_to_Answer_BTN"
-            app:layout_constraintTop_toBottomOf="@+id/QA_Title_Text" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp" android:layout_marginTop="32dp"
-            android:layout_marginBottom="8dp" android:layout_marginStart="16dp"
-            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toBottomOf="@+id/Q_Question_Text" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp" android:layout_marginStart="16dp"
+            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintVertical_bias="0.0"
+            android:outlineProvider="paddedBounds" android:elevation="20dp" android:background="#F3F3F3"
+            android:layout_marginTop="8dp">
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/QA_Question_Text"
-                tools:text="問題文がここに表示されます" android:textSize="14sp"/>
+                tools:text="問題文がここに表示されます" android:textSize="14sp"
+                android:paddingTop="15dp" android:paddingStart="10dp" android:paddingRight="10dp"
+                android:paddingEnd="15dp"/>
     </ScrollView>
     <Button
             android:text="@string/QA_Next_BTN_Str"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/QA_Next_BTN" android:layout_marginBottom="24dp"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" android:textSize="30sp"
             style="@style/Widget.AppCompat.Button.Colored" android:visibility="invisible"/>
+    <TextView
+            android:text="@string/Q_Question_Text_Str"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Q_Question_Text" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/QA_Title_Text" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+    />
 </android.support.constraint.ConstraintLayout>

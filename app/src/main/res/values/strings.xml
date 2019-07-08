@@ -19,6 +19,7 @@
     <string name="O_option_title4_Str">通知を行う間隔　</string>
     <string name="O_title_Text_Str">オプション</string>
     <string name="A_title_Text_Str">解説</string>
+    <string name="Q_Question_Text_Str">問題文</string>
     <string-array name="OA_Noffication_Interval_list">
         <item>5</item>
         <item>10</item>
