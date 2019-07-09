@@ -8,6 +8,7 @@
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/NoActionBar_NoMultiTup">
+
         <receiver android:name=".LocalNotificationReceiver"/>
         <receiver android:name=".LocalNotificationTwoQuestionScheduleService"/>
         <activity android:name=".TitleActivity">

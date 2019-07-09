@@ -39,6 +39,7 @@ class OptionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_option)
 
+
         //通知のテストデータ
         spEditor = getSharedPreferences("user_data", Context.MODE_PRIVATE).edit()
 
@@ -192,6 +193,7 @@ class OptionActivity : AppCompatActivity() {
                     val jsonObject = JSONObject(it)
                     val status = jsonObject.getString("status")
                     if (status == "S00") {
+                        // Firebaseからアカウント登録を取得してDBに登録
                         val userId = jsonObject.getJSONObject("data").getString("user_id")
                         val e: SharedPreferences.Editor = getSharedPreferences("user_data", MODE_PRIVATE).edit()
                         e.putString("user_id", userId).apply()

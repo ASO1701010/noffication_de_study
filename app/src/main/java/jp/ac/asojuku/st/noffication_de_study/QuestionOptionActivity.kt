@@ -10,7 +10,7 @@ import org.jetbrains.anko.startActivity
 import java.util.*
 import kotlin.collections.ArrayList
 
-//TODO 問題オプション画面：おおよそ完成（90%）
+//TODO 問題オプション画面：おおよそ完成（99%）
 class QuestionOptionActivity : AppCompatActivity() {
 
     //TODO 定数の値はすべて仮の値
@@ -36,7 +36,6 @@ class QuestionOptionActivity : AppCompatActivity() {
         QOA_Back_BTN.setSafeClickListener {
             finish()
         }
-
         QOA_Select_Exam_BTN.setSafeClickListener {
             if(QOA_Select_Exam_LL.visibility == View.VISIBLE){
                 QOA_Select_Exam_LL.visibility = View.GONE
