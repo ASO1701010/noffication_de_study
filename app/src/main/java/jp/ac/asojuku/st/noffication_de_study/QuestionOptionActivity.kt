@@ -51,6 +51,20 @@ class QuestionOptionActivity : AppCompatActivity() {
                 QOA_Select_Genres_LL.visibility = View.VISIBLE
             }
         }
+        QOA_Select_Amount_BTN.setSafeClickListener {
+            if(QOA_Question_Amount_BOX.visibility == View.VISIBLE){
+                QOA_Question_Amount_BOX.visibility = View.GONE
+            }else{
+                QOA_Question_Amount_BOX.visibility = View.VISIBLE
+            }
+        }
+        QOA_Select_Method_BTN.setSafeClickListener {
+            if(QOA_Select_Method_Group.visibility == View.VISIBLE){
+                QOA_Select_Method_Group.visibility = View.GONE
+            }else{
+                QOA_Select_Method_Group.visibility = View.VISIBLE
+            }
+        }
     }
 
     //選択肢を読み込む
