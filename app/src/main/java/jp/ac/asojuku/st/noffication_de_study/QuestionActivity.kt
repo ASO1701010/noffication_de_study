@@ -344,7 +344,7 @@ class QuestionActivity : AppCompatActivity() {
                 QA_to_Answer_BTN.visibility = View.VISIBLE //解説へボタンを表示
                 QA_Answers.visibility = View.INVISIBLE //選択肢を非表示に
                 QA_Next_BTN.visibility = View.VISIBLE //次へボタンを表示
-                QA_Next_BTN.setOnClickListener {
+                QA_Next_BTN.setSafeClickListener {
                     finish()
                     startActivity<QuestionActivity>("exam_data" to examData)
                 } //クリックリスナーを設定
