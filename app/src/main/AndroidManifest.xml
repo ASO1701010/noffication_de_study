@@ -4,11 +4,13 @@
 
     <application
             android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@mipmap/notification_de_study_logo7"
             android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/NoActionBar_NoMultiTup">
+
+        <receiver android:name=".LocalNotificationReceiver"/>
+        <receiver android:name=".LocalNotificationTwoQuestionScheduleService"/>
         <activity android:name=".TitleActivity">
         </activity>
         <activity android:name=".QuestionActivity">
@@ -29,5 +31,7 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
 </manifest>

@@ -5,82 +5,111 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".QuestionActivity">
-
-    <Button
-            android:text="ア"
-            android:layout_width="60dp"
-            android:layout_height="60dp" android:id="@+id/AA_Answer_0"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="28dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="40dp" android:textSize="30sp"/>
-    <Button
-            android:text="イ"
-            android:layout_width="60dp"
-            android:layout_height="60dp" android:id="@+id/AA_Answer_1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="28dp"
-            app:layout_constraintStart_toEndOf="@+id/AA_Answer_0" android:layout_marginStart="28dp"
-            android:textSize="30sp"/>
-    <Button
-            android:text="ウ"
-            android:layout_width="60dp"
-            android:layout_height="60dp" android:id="@+id/AA_Answer_2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="28dp"
-            app:layout_constraintStart_toEndOf="@+id/AA_Answer_1" android:layout_marginStart="28dp"
-            android:textSize="30sp"/>
-    <Button
-            android:text="エ"
-            android:layout_width="60dp"
-            android:layout_height="60dp" android:id="@+id/AA_Answer_3"
-            android:layout_marginBottom="28dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="40dp" app:layout_constraintStart_toEndOf="@+id/AA_Answer_2"
-            android:layout_marginStart="28dp" android:textSize="30sp"/>
-    <ImageView
-            android:layout_width="360dp"
-            android:layout_height="560dp" app:srcCompat="@android:drawable/alert_light_frame"
-            android:id="@+id/imageView5" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent" android:scaleType="fitXY"
-            app:layout_constraintHorizontal_bias="0.485" app:layout_constraintVertical_bias="0.0"/>
+        tools:context=".QuestionActivity" android:background="#ECECEC">
     <TextView
-            android:text="TextView"
-            android:layout_width="320dp"
-            android:layout_height="520dp" android:id="@+id/textView4"
-            app:layout_constraintTop_toTopOf="@+id/imageView5"
-            app:layout_constraintStart_toStartOf="@+id/imageView5" app:layout_constraintEnd_toEndOf="@+id/imageView5"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+            android:text="@string/Q_Question_Text_Str"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Q_Question_Text" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/QA_Title_Text" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
     />
-    <ImageView
-            android:layout_width="0dp"
-            android:layout_height="80dp" app:srcCompat="@android:drawable/editbox_background_normal"
-            android:id="@+id/imageView4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" android:scaleType="fitXY"
-            app:layout_constraintHorizontal_bias="0.0"/>
     <ImageButton
             android:src="@android:drawable/ic_media_play"
-            android:layout_width="55dp"
-            android:layout_height="55dp" android:id="@+id/AA_Next_BTN"
-            app:layout_constraintEnd_toEndOf="@+id/imageView4" android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
-    <ImageButton
-            android:layout_width="55dp"
-            android:layout_height="55dp" app:srcCompat="@android:drawable/ic_menu_revert"
-            android:id="@+id/AA_End_BTN"
-            app:layout_constraintStart_toStartOf="@+id/imageView4"
-            android:layout_marginStart="8dp" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_width="wrap_content"
+            android:layout_height="51dp" android:id="@+id/QA_Skip_BTN"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" style="@style/Widget.AppCompat.Button.Colored"
+            android:contentDescription="@string/QA_Next_BTN_Discription"/>
     <TextView
-            android:layout_width="200dp"
-            android:layout_height="55dp" android:id="@+id/textView3"
-            android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="@+id/imageView4"
-            app:layout_constraintStart_toStartOf="@+id/imageView4" app:layout_constraintEnd_toEndOf="@+id/imageView4"
-            android:textSize="36sp" android:text="問題" android:textAlignment="center"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/QA_Title_Text"
+            android:textSize="36sp" android:text="@string/QA_Title_Text_Str" android:textAlignment="center"
+            app:layout_constraintStart_toEndOf="@+id/QA_End_BTN"
+            app:layout_constraintEnd_toStartOf="@+id/QA_Skip_BTN" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"/>
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@android:drawable/ic_menu_revert"
+            android:id="@+id/QA_End_BTN"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" style="@style/Widget.AppCompat.Button.Colored"
+            android:contentDescription="@string/QA_End_BTN_Diskription"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_alignParentStart="true"
+            android:id="@+id/QA_Answers"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="8dp" android:layout_marginEnd="8dp">
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/QA_Answer_0"
+                android:textSize="30sp"
+                tools:layout_alignParentTop="true"
+                app:layout_constraintLeft_toRightOf="parent" android:layout_weight="1" tools:text="ア"
+                android:text="@string/QA_Answer_0_BTN"
+                style="@style/Widget.AppCompat.Button.Colored"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/QA_Answer_1"
+                android:textSize="30sp"
+                android:layout_weight="1" tools:text="イ" android:text="@string/QA_Answer_1_BTN"
+                style="@style/Widget.AppCompat.Button.Colored"/>
+        <Button
+                android:text="@string/QA_Answer_2_BTN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/QA_Answer_2"
+                android:textSize="30sp"
+                android:layout_weight="1" style="@style/Widget.AppCompat.Button.Colored"/>
+        <Button
+                android:text="@string/QA_Answer_3_BTN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/QA_Answer_3"
+                android:textSize="30sp"
+                android:layout_weight="1" style="@style/Widget.AppCompat.Button.Colored"/>
+    </LinearLayout>
+    <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/QA_ScrollView_Questions"
+            app:layout_constraintBottom_toTopOf="@+id/QA_to_Answer_BTN"
+            app:layout_constraintTop_toBottomOf="@+id/Q_Question_Text" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp" android:layout_marginStart="16dp"
+            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintVertical_bias="0.0"
+            android:outlineProvider="paddedBounds" android:elevation="20dp" android:background="#F3F3F3"
+            android:layout_marginTop="8dp">
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/QA_Question_Text"
+                tools:text="問題文がここに表示されます" android:textSize="14sp"
+                android:paddingTop="8dp" android:paddingStart="8dp"
+                android:paddingEnd="8dp" android:paddingBottom="8dp"/>
+    </ScrollView>
+    <Button
+            android:text="@string/QA_Next_BTN_Str"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/QA_Next_BTN" android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" android:textSize="30sp"
+            style="@style/Widget.AppCompat.Button.Colored" android:visibility="invisible"/>
+    <Button
+            android:text="@string/Return_Answer_BTN_Str"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/QA_to_Answer_BTN"
+            android:visibility="invisible" tools:visibility="visible"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:textSize="30sp"
+            style="@style/Widget.AppCompat.Button.Colored" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/QA_Answers"/>
 </android.support.constraint.ConstraintLayout>

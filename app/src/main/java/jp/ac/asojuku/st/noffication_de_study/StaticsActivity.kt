@@ -1,53 +1,57 @@
 package jp.ac.asojuku.st.noffication_de_study
 
-import android.support.v7.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
-import org.jetbrains.anko.startActivity
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentPagerAdapter
+import android.support.v7.app.AppCompatActivity
+import jp.ac.asojuku.st.noffication_de_study.db.AnswersRateOpenHelper
+import kotlinx.android.synthetic.main.activity_statics.*
 
-//TODO 統計情報画面:未完成(0%)
-class StaticsActivity : AppCompatActivity() {
+class StaticsActivity : AppCompatActivity(), FragmentMyRecord.OnFragmentInteractionListener,
+    FragmentQuestion.OnFragmentInteractionListener {
+    override fun onFragmentInteraction(uri: Uri) {}
 
-    //定数はすべて仮の値
-    val user_id:Int = 12345678 //ユーザID
-    var my_record:String = "testRecord" //my記録
-    var correct_rate:String = "999%" //正答率
-    var text_print:String = "testTextPrint" //表示に利用する
+    private val tabTitle = arrayOf<CharSequence>("my記録", "問題ごと")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statics)
 
-        SA_Back_BTN.setOnClickListener {
-            startActivity<TitleActivity>()
+        val adapter = object : FragmentPagerAdapter(supportFragmentManager) {
+            override fun getItem(position: Int): Fragment? {
+                return when (position) {
+                    0 -> FragmentMyRecord()
+                    1 -> {
+                        val fragment = FragmentQuestion()
+                        fragment.arguments = Bundle().apply {
+                            val dbHelper = AnswersRateOpenHelper(SQLiteHelper(this@StaticsActivity).readableDatabase)
+                            val data = dbHelper.find_all_rate()
+                            putStringArrayList("DATA", data)
+                        }
+                        return fragment
+                    }
+                    else -> null
+                }
+            }
+
+            override fun getPageTitle(position: Int): CharSequence? {
+                return tabTitle[position]
+            }
+
+            override fun getCount(): Int {
+                return tabTitle.size
+            }
         }
 
-        SA_My_Statics_BTN.setOnClickListener {
+        val viewPager = viewPager
+        viewPager.offscreenPageLimit = tabTitle.size
+        viewPager.adapter = adapter
+        val tabLayout = tabLayout
+        tabLayout.setupWithViewPager(viewPager)
 
+        SA_Back_BTN.setSafeClickListener {
+            finish()
         }
-
-        SA_Question_Statics_BTN.setOnClickListener {
-
-        }
     }
-
-    //my記録表示
-    fun printMyRecord() {
-
-    }
-
-    //問題正答率表示
-    fun printCorrectRate() {
-
-    }
-
-    //表示切り替え
-    fun changeTab() {
-
-    }
-
-    //表示文字列生成
-    fun createStrToPrint() {
-
-    }
-
 }

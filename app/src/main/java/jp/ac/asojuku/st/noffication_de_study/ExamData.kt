@@ -1,21 +1,34 @@
 package jp.ac.asojuku.st.noffication_de_study
 
-class ExamData (id:Int, name:String, number:String){
+import java.io.Serializable
 
-    public val exams_id = id
-    public val exams_name = name
-    public val exams_number = number
+class ExamData (id:Int, name:String, number:String):Serializable{
+    ///出題id ?? よく分からん。なんでつけたんだっけか・・・
+    //多分他でも使ってないので後で消してテストしよう
+    val id = id
+    //試験名 FEとか
+    val name = name
+    //試験番号 FE2019Sとか
+    val number = number
 
-    public var question_list = ArrayList<Int>()
-    public var answered_list = ArrayList<Int>()
+    //問題番号リスト
+    var question_list = ArrayList<Int>()
+    //回答番号リスト　未回答:999
+    var answered_list = ArrayList<Int>()
 
-    public var question_current = 0
-    public var question_next = 0
+    public var isCorrect_list = ArrayList<Boolean>() //question_listに対応するユーザの解答が正解だったかが入るリスト
 
+    //今の問題番号　AnswerActivityで解いた問題を識別するために使用。　QuestionActivityの起動時処理でquestion_nextの値を代入
+    var question_current = 0
+
+    //次の問題番号　QuestionActivityの起動時処理で変更
+    var question_next = 0
+
+    // 完成した問題リストを受け取り、それに対応する解答リストを999(未解答)で初期化する
     public fun set_list_data(list:ArrayList<Int>){
         this.question_list = list
-        for(i in 1..question_list.size){
-            list.add(999)
+        for(i in 1..list.size){
+            answered_list.add(999)
         }
     }
 
