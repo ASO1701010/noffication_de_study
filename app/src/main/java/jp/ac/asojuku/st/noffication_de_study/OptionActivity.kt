@@ -39,6 +39,8 @@ class OptionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_option)
 
+
+        //通知のテストデータ
         spEditor = getSharedPreferences("user_data", Context.MODE_PRIVATE).edit()
 
         val adapter = ArrayAdapter(applicationContext, android.R.layout.simple_spinner_item, noticeIntervalItems)
@@ -65,12 +67,12 @@ class OptionActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        OA_Back_BTN.setOnClickListener {
+        OA_Back_BTN.setSafeClickListener {
             finish()
         }
 
         // 出題モード
-        OA_NDS_Mode_BTN.setOnClickListener {
+        OA_NDS_Mode_BTN.setSafeClickListener {
             spEditor.putBoolean("NDS_check", OA_NDS_Mode_BTN.isChecked).apply()
             // registerNotice()
             val service = LocalNotificationTwoQuestionScheduleService()
@@ -78,15 +80,16 @@ class OptionActivity : AppCompatActivity() {
         }
 
         // 画面点灯モード
-        OA_SDS_Mode_BTN.setOnClickListener {
+        OA_SDS_Mode_BTN.setSafeClickListener {
             spEditor.putBoolean("SDS_check", OA_SDS_Mode_BTN.isChecked).apply()
             // 画面点灯モードを実装予定
         }
 
         // 出題開始時間の指定
-        OA_Noffication_Time_Between1.setOnClickListener {
-            val nowTime = spGetter.getString("NDS_Start", "09:00") as String
-            val nowTimeList: List<String> = nowTime.split(Regex(":"))
+        OA_Noffication_Time_Between1.setSafeClickListener {
+            val nowTime = spGetter.getString("NDS_Start", "09:00")
+            val nowTimeList: List<String> =
+                if (nowTime.isNullOrEmpty()) listOf("21", "00") else nowTime.split(Regex(":"))
             TimePickerDialog(
                 this,
                 TimePickerDialog.OnTimeSetListener { _, hourOfDay, minuteOfDay ->
@@ -104,9 +107,10 @@ class OptionActivity : AppCompatActivity() {
         }
 
         // 出題終了時間の指定
-        OA_Noffication_Time_Between2.setOnClickListener {
-            val nowTime = spGetter.getString("NDS_End", "21:00") as String
-            val nowTimeList: List<String> = nowTime.split(Regex(":"))
+        OA_Noffication_Time_Between2.setSafeClickListener {
+            val nowTime = spGetter.getString("NDS_End", "21:00")
+            val nowTimeList: List<String> =
+                if (nowTime.isNullOrEmpty()) listOf("21", "00") else nowTime.split(Regex(":"))
             TimePickerDialog(
                 this,
                 TimePickerDialog.OnTimeSetListener { _, hourOfDay, minuteOfDay ->
@@ -137,7 +141,7 @@ class OptionActivity : AppCompatActivity() {
         }
 
         // Google SignIn
-        sign_in_button.setOnClickListener {
+        sign_in_button.setSafeClickListener {
             val signInIntent = mGoogleSignInClient.signInIntent
             startActivityForResult(signInIntent, rcSignIn)
         }

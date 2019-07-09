@@ -1,7 +1,7 @@
 package jp.ac.asojuku.st.noffication_de_study
 
-import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import jp.ac.asojuku.st.noffication_de_study.db.AnswersOpenHelper
@@ -37,13 +37,12 @@ class QuestionActivity : AppCompatActivity() {
             printQuestion() //問題文の表示
 
             //ボタンの設定
-            AA_Answer_0.setSafeClickListener { choiceAnswer(0) }
-            AA_Answer_1.setSafeClickListener { choiceAnswer(1) }
-            AA_Answer_2.setSafeClickListener { choiceAnswer(2) }
-            AA_Answer_3.setSafeClickListener { choiceAnswer(3) }
-            AA_End_BTN.setSafeClickListener { pushEndButton() }
-            AA_Next_BTN.setSafeClickListener { skipQuestion() }
-
+            QA_Answer_0.setSafeClickListener { choiceAnswer(0) }
+            QA_Answer_1.setSafeClickListener { choiceAnswer(1) }
+            QA_Answer_2.setSafeClickListener { choiceAnswer(2) }
+            QA_Answer_3.setSafeClickListener { choiceAnswer(3) }
+            QA_End_BTN.setSafeClickListener { pushEndButton() }
+            QA_Skip_BTN.setSafeClickListener { skipQuestion() }
 
         }
 
@@ -93,7 +92,7 @@ class QuestionActivity : AppCompatActivity() {
             question_str = question_arr[1]
         }
 
-        textView4.setText(question_str)
+        QA_Question_Text.setText(question_str)
 
     }
 
@@ -114,7 +113,7 @@ class QuestionActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "不正解です！", Toast.LENGTH_SHORT).show()
         }
-        startActivity<AnswerActivity>("exam_data" to examData)
+        answered()
     }
 
     //スキップ
@@ -200,7 +199,7 @@ class QuestionActivity : AppCompatActivity() {
                         }
                     }
                     examData.isCorrect_list.clear()
-                    startActivity<QuestionActivity>("exam_data" to this.examData)
+                    startActivity<QuestionActivity>("exam_data" to examData)
                     finish()
 
                 }
@@ -208,8 +207,7 @@ class QuestionActivity : AppCompatActivity() {
                     //タイトル画面に戻る処理
                     examData.question_list.clear() //問題リストの初期化
                     examData.answered_list.clear() //解答リストの初期化
-                    val intent = Intent(this, TitleActivity::class.java)
-                    startActivity(intent)
+                    startActivity<TitleActivity>()
                     finish()
                 }
                 .show()
@@ -220,8 +218,7 @@ class QuestionActivity : AppCompatActivity() {
                     //タイトル画面に戻る処理
                     examData.question_list.clear() //問題リストの初期化
                     examData.answered_list.clear() //解答リストの初期化
-                    val intent = Intent(this, TitleActivity::class.java)
-                    startActivity(intent)
+                    startActivity<TitleActivity>() //タイトル画面に戻る
                     finish()
                 }.show()
         }
@@ -265,7 +262,6 @@ class QuestionActivity : AppCompatActivity() {
                 }
                 .setNegativeButton("がんばる") { dialog, which ->
                     //何もしない
-
                 }.show()
         }
         return
@@ -279,13 +275,31 @@ class QuestionActivity : AppCompatActivity() {
         super.onBackPressed()
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        isTouched = false
-        AA_Next_BTN.setSafeClickListener { startActivity<QuestionActivity>("exam_data" to examData) }
-        AA_Return_Answer_BTN.setSafeClickListener { startActivity<AnswerActivity>("exam_data" to examData) }
-        AA_Return_Answer_BTN.visibility = View.VISIBLE
 
-        AA_Answers.visibility = View.INVISIBLE
+    fun answered() {
+        val mHandler = Handler()
+        //スレッドを生成
+        val thread = Thread(Runnable {
+            mHandler.post {
+                //UI関連の処理はThreadでは行えないのでHandlerを用いる
+                QA_Skip_BTN.setSafeClickListener {
+                    finish()
+                    startActivity<QuestionActivity>("exam_data" to examData)
+                }
+                QA_to_Answer_BTN.setSafeClickListener {
+                    startActivity<AnswerActivity>("exam_data" to examData)
+                }
+                QA_to_Answer_BTN.visibility = View.VISIBLE //解説へボタンを表示
+                QA_Answers.visibility = View.INVISIBLE //選択肢を非表示に
+                QA_Next_BTN.visibility = View.VISIBLE //次へボタンを表示
+                QA_Next_BTN.setOnClickListener {
+                    finish()
+                    startActivity<QuestionActivity>("exam_data" to examData)
+                } //クリックリスナーを設定
+            }
+            Thread.sleep(100)
+            isTouched = false
+        })
+        thread.start()
     }
 }
