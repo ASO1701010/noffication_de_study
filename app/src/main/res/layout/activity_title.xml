@@ -45,16 +45,17 @@
     <android.support.constraint.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:layout_constraintGuide_begin="217dp" android:id="@+id/guideline2"
-            app:layout_constraintGuide_percent="0.2"/>
+            android:layout_height="wrap_content" android:id="@+id/guideline2"
+            app:layout_constraintGuide_percent="0.2"
+    />
     <android.support.constraint.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:layout_constraintGuide_begin="290dp" android:id="@+id/guideline3"
+            android:layout_height="wrap_content" android:id="@+id/guideline3"
             app:layout_constraintGuide_percent="0.5"/>
     <android.support.constraint.Guideline
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:layout_constraintGuide_begin="504dp" android:id="@+id/guideline4"
+            android:layout_height="wrap_content" android:id="@+id/guideline4"
             app:layout_constraintGuide_percent="0.7"/>
 </android.support.constraint.ConstraintLayout>
