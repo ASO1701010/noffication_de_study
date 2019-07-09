@@ -9,6 +9,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/NoActionBar_NoMultiTup">
+
         <receiver android:name=".LocalNotificationReceiver"/>
         <receiver android:name=".LocalNotificationTwoQuestionScheduleService"/>
         <activity android:name=".TitleActivity">
