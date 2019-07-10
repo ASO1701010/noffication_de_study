@@ -284,8 +284,11 @@ class QuestionActivity : AppCompatActivity() {
                     //タイトル画面に戻る処理
                     examData.question_list.clear() //問題リストの初期化
                     examData.answered_list.clear() //解答リストの初期化
-                    startActivity<TitleActivity>() //タイトル画面に戻る
-                    finish()
+                    startActivity(
+                        Intent(
+                            this, MainActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    )
                 }.show()
         }
     }
