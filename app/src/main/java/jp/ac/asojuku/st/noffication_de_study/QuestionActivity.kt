@@ -39,9 +39,9 @@ class QuestionActivity : AppCompatActivity() {
         } else {
             printQuestion() //問題文の表示
 
-            when(examData.mac) {
+            when (examData.mac) {
                 //QuestionOptionActivityから
-                1-> {
+                1 -> {
                     QA_TwoAnswers.visibility = View.GONE
                     QA_Answers.visibility = View.VISIBLE
                     QA_Answer_0.setSafeClickListener { choiceAnswer(0) }
@@ -50,9 +50,13 @@ class QuestionActivity : AppCompatActivity() {
                     QA_Answer_3.setSafeClickListener { choiceAnswer(3) }
                     QA_End_BTN.setSafeClickListener { pushEndButton() }
                     QA_Skip_BTN.setSafeClickListener { skipQuestion() }
+                    QA_Next_BTN.setSafeClickListener {
+                        finish()
+                        startActivity<QuestionActivity>("exam_data" to examData)
+                    }
                 }
                 //FragmentQuestionから
-                2->{
+                2 -> {
                     QA_TwoAnswers.visibility = View.GONE
                     QA_Answers.visibility = View.VISIBLE
                     QA_Skip_BTN.visibility = View.GONE
@@ -61,10 +65,12 @@ class QuestionActivity : AppCompatActivity() {
                     QA_Answer_2.setSafeClickListener { choiceAnswer(2) }
                     QA_Answer_3.setSafeClickListener { choiceAnswer(3) }
                     QA_End_BTN.setSafeClickListener { finish() }
+                    QA_Next_BTN.setText("戻る")
+                    QA_Next_BTN.setSafeClickListener { finish() }
 
                 }
                 //4択通知から
-                3->{
+                3 -> {
                     QA_Answers.visibility = View.VISIBLE
                     QA_TwoAnswers.visibility = View.GONE
                     QA_Skip_BTN.visibility = View.GONE
@@ -73,17 +79,22 @@ class QuestionActivity : AppCompatActivity() {
                     QA_Answer_2.setSafeClickListener { choiceAnswer(2) }
                     QA_Answer_3.setSafeClickListener { choiceAnswer(3) }
                     QA_End_BTN.setSafeClickListener { finish() }
+                    QA_Next_BTN.setText("戻る")
+                    QA_Next_BTN.setSafeClickListener { finish() }
+
                 }
                 //◯×通知から
-                4->{
+                4 -> {
                     QA_Answers.visibility = View.GONE
                     QA_Skip_BTN.visibility = View.GONE
                     QA_TwoAnswers.visibility = View.VISIBLE
                     QA_maru_BTN.setSafeClickListener { choiceAnswer(0) }
                     QA_batu_BTN.setSafeClickListener { choiceAnswer(1) }
                     QA_End_BTN.setSafeClickListener { finish() }
+                    QA_Next_BTN.setText("戻る")
+                    QA_Next_BTN.setSafeClickListener { finish() }
                 }
-                else->{
+                else -> {
                     QA_Answers.visibility = View.GONE
                     QA_Skip_BTN.visibility = View.GONE
                     QA_TwoAnswers.visibility = View.GONE
@@ -134,7 +145,7 @@ class QuestionActivity : AppCompatActivity() {
             question_str = "問題文がありません"
         } else {
             question_str = question_arr[1]
-            if(question_arr[2] == "1") {
+            if (question_arr[2] == "1") {
                 val IOH = ImageOpenHelper(db)
                 val imageAddress = IOH.find_image(examData.question_current)
                 question_image.setImageDrawable(this.getDrawable(imageAddress!!))
@@ -161,9 +172,9 @@ class QuestionActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "不正解です！", Toast.LENGTH_SHORT).show()
         }
-        if(examData.mac==2) {
-            finish()
-        }
+//        if(examData.mac==2) {
+//            finish()
+//        }
         answered()
     }
 
@@ -259,8 +270,11 @@ class QuestionActivity : AppCompatActivity() {
                     //タイトル画面に戻る処理
                     examData.question_list.clear() //問題リストの初期化
                     examData.answered_list.clear() //解答リストの初期化
-                    startActivity<TitleActivity>()
-                    finish()
+                    startActivity(
+                        Intent(
+                            this, MainActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    )
                 }
                 .show()
         } else {
@@ -344,10 +358,6 @@ class QuestionActivity : AppCompatActivity() {
                 QA_to_Answer_BTN.visibility = View.VISIBLE //解説へボタンを表示
                 QA_Answers.visibility = View.INVISIBLE //選択肢を非表示に
                 QA_Next_BTN.visibility = View.VISIBLE //次へボタンを表示
-                QA_Next_BTN.setSafeClickListener {
-                    finish()
-                    startActivity<QuestionActivity>("exam_data" to examData)
-                } //クリックリスナーを設定
             }
             Thread.sleep(100)
             isTouched = false

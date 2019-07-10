@@ -1,6 +1,7 @@
 package jp.ac.asojuku.st.noffication_de_study
 
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_title.*
 import org.jetbrains.anko.startActivity
@@ -34,9 +35,13 @@ class TitleActivity : AppCompatActivity() {
 
     //Android端末側の戻るボタンを押した時の処理を上書き
     override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("終了しますか？")
+            .setPositiveButton("はい") { dialog, which ->
+                super.onBackPressed()
+            }.show()
         return //バックキーを押した時に反応しないようにする
-        //以下は必ず処理されない。この方法がどうなのかは微妙
-        super.onBackPressed()
+
     }
 
 }
