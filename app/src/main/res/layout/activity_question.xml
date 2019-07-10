@@ -46,7 +46,8 @@
             android:layout_marginBottom="24dp"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="8dp" android:layout_marginEnd="8dp">
+            android:layout_marginStart="8dp" android:layout_marginEnd="8dp" android:visibility="gone"
+            tools:visibility="visible">
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/QA_Answer_0"
@@ -85,12 +86,21 @@
             app:layout_constraintHorizontal_bias="0.0" app:layout_constraintVertical_bias="0.0"
             android:outlineProvider="paddedBounds" android:elevation="20dp" android:background="#F3F3F3"
             android:layout_marginTop="8dp">
-        <TextView
+        <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/QA_Question_Text"
-                tools:text="問題文がここに表示されます" android:textSize="14sp"
-                android:paddingTop="8dp" android:paddingStart="8dp"
-                android:paddingEnd="8dp" android:paddingBottom="8dp"/>
+                android:layout_height="wrap_content">
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/QA_Question_Text"
+                    tools:text="問題文がここに表示されます" android:textSize="14sp"
+                    android:paddingTop="8dp" android:paddingStart="8dp"
+                    android:paddingEnd="8dp" android:paddingBottom="8dp"/>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" tools:srcCompat="@tools:sample/avatars"
+                    android:id="@+id/question_image"/>
+        </LinearLayout>
     </ScrollView>
     <Button
             android:text="@string/QA_Next_BTN_Str"
@@ -112,4 +122,22 @@
             app:layout_constraintEnd_toEndOf="parent" android:textSize="30sp"
             style="@style/Widget.AppCompat.Button.Colored" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/QA_Answers"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_marginBottom="8dp"
+            app:layout_constraintStart_toStartOf="@+id/QA_to_Answer_BTN" android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/QA_Answers" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:visibility="gone" tools:visibility="visible"
+            android:id="@+id/QA_TwoAnswers">
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/QA_maru_BTN" android:layout_weight="1"
+                style="@style/Widget.AppCompat.Button.Colored" android:text="@string/QA_maru_BTN_Str"
+                android:textSize="24sp"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/QA_batu_BTN" android:layout_weight="1"
+                style="@style/Widget.AppCompat.Button.Colored" android:text="@string/QA_batu_BTN_Str"/>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

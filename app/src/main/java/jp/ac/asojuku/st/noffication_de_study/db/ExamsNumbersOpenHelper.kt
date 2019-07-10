@@ -10,10 +10,10 @@ class ExamsNumbersOpenHelper(var db: SQLiteDatabase) {
 
     fun find_exams_numbers(exams_id: Int): ArrayList<String>? {
 
-        val query = "SELECT * FROM " + tableName + " where exam_id = " + exams_id
+        val query = "SELECT * FROM $tableName where exam_id = $exams_id"
         val cursor = db.rawQuery(query, null)
 
-            var array = ArrayList<String>()
+        val array = ArrayList<String>()
         return try {
             cursor.moveToFirst()
             array.add(cursor.getString(0))
@@ -37,7 +37,7 @@ class ExamsNumbersOpenHelper(var db: SQLiteDatabase) {
         try {
             db.insertOrThrow(tableName, null, values)
         } catch (e: SQLiteConstraintException) {
-            db.update(tableName, values, "exam_id = " + q_id + " and exams_number = '" + a_num + "'", null)
+            db.update(tableName, values, "exam_id = $q_id and exams_number = '$a_num'", null)
         }
     }
 }

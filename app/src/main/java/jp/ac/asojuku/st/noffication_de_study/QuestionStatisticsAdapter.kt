@@ -39,13 +39,12 @@ class QuestionStatisticsAdapter(internal var context: Context) : BaseAdapter() {
 
     @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var convertView = convertView
-        convertView = layoutInflater!!.inflate(R.layout.statistics_question_list_item, parent, false)
+        val view = layoutInflater!!.inflate(R.layout.statistics_question_list_item, parent, false)
 
-        (convertView.findViewById<View>(R.id.title) as TextView).text = statisticsItem[position].getTitle()
-        (convertView.findViewById<View>(R.id.rate) as TextView).text = statisticsItem[position].getRate()
+        (view.findViewById<View>(R.id.title) as TextView).text = statisticsItem[position].getTitle()
+        (view.findViewById<View>(R.id.rate) as TextView).text = statisticsItem[position].getRate()
 
-        return convertView
+        return view
     }
 
 

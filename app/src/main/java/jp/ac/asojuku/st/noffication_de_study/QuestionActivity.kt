@@ -1,5 +1,7 @@
 package jp.ac.asojuku.st.noffication_de_study
 
+import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AlertDialog
@@ -12,6 +14,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import jp.ac.asojuku.st.noffication_de_study.db.ImageOpenHelper
 import org.jetbrains.anko.startActivity
 import org.json.JSONObject
 import java.util.*
@@ -36,14 +39,67 @@ class QuestionActivity : AppCompatActivity() {
         } else {
             printQuestion() //問題文の表示
 
-            //ボタンの設定
-            QA_Answer_0.setSafeClickListener { choiceAnswer(0) }
-            QA_Answer_1.setSafeClickListener { choiceAnswer(1) }
-            QA_Answer_2.setSafeClickListener { choiceAnswer(2) }
-            QA_Answer_3.setSafeClickListener { choiceAnswer(3) }
-            QA_End_BTN.setSafeClickListener { pushEndButton() }
-            QA_Skip_BTN.setSafeClickListener { skipQuestion() }
+            when (examData.mac) {
+                //QuestionOptionActivityから
+                1 -> {
+                    QA_TwoAnswers.visibility = View.GONE
+                    QA_Answers.visibility = View.VISIBLE
+                    QA_Answer_0.setSafeClickListener { choiceAnswer(0) }
+                    QA_Answer_1.setSafeClickListener { choiceAnswer(1) }
+                    QA_Answer_2.setSafeClickListener { choiceAnswer(2) }
+                    QA_Answer_3.setSafeClickListener { choiceAnswer(3) }
+                    QA_End_BTN.setSafeClickListener { pushEndButton() }
+                    QA_Skip_BTN.setSafeClickListener { skipQuestion() }
+                    QA_Next_BTN.setSafeClickListener {
+                        finish()
+                        startActivity<QuestionActivity>("exam_data" to examData)
+                    }
+                }
+                //FragmentQuestionから
+                2 -> {
+                    QA_TwoAnswers.visibility = View.GONE
+                    QA_Answers.visibility = View.VISIBLE
+                    QA_Skip_BTN.visibility = View.GONE
+                    QA_Answer_0.setSafeClickListener { choiceAnswer(0) }
+                    QA_Answer_1.setSafeClickListener { choiceAnswer(1) }
+                    QA_Answer_2.setSafeClickListener { choiceAnswer(2) }
+                    QA_Answer_3.setSafeClickListener { choiceAnswer(3) }
+                    QA_End_BTN.setSafeClickListener { finish() }
+                    QA_Next_BTN.setText("戻る")
+                    QA_Next_BTN.setSafeClickListener { finish() }
 
+                }
+                //4択通知から
+                3 -> {
+                    QA_Answers.visibility = View.VISIBLE
+                    QA_TwoAnswers.visibility = View.GONE
+                    QA_Skip_BTN.visibility = View.GONE
+                    QA_Answer_0.setSafeClickListener { choiceAnswer(0) }
+                    QA_Answer_1.setSafeClickListener { choiceAnswer(1) }
+                    QA_Answer_2.setSafeClickListener { choiceAnswer(2) }
+                    QA_Answer_3.setSafeClickListener { choiceAnswer(3) }
+                    QA_End_BTN.setSafeClickListener { finish() }
+                    QA_Next_BTN.setText("戻る")
+                    QA_Next_BTN.setSafeClickListener { finish() }
+
+                }
+                //◯×通知から
+                4 -> {
+                    QA_Answers.visibility = View.GONE
+                    QA_Skip_BTN.visibility = View.GONE
+                    QA_TwoAnswers.visibility = View.VISIBLE
+                    QA_maru_BTN.setSafeClickListener { choiceAnswer(0) }
+                    QA_batu_BTN.setSafeClickListener { choiceAnswer(1) }
+                    QA_End_BTN.setSafeClickListener { finish() }
+                    QA_Next_BTN.setText("戻る")
+                    QA_Next_BTN.setSafeClickListener { finish() }
+                }
+                else -> {
+                    QA_Answers.visibility = View.GONE
+                    QA_Skip_BTN.visibility = View.GONE
+                    QA_TwoAnswers.visibility = View.GONE
+                }
+            }
         }
 
     }
@@ -74,8 +130,6 @@ class QuestionActivity : AppCompatActivity() {
                 examData.question_next = 9999
             }
         }
-
-
     }
 
     //問題表示
@@ -90,6 +144,11 @@ class QuestionActivity : AppCompatActivity() {
             question_str = "問題文がありません"
         } else {
             question_str = question_arr[1]
+            if (question_arr[2] == "1") {
+                val IOH = ImageOpenHelper(db)
+                val imageAddress = IOH.find_image(examData.question_current)
+                question_image.setImageDrawable(this.getDrawable(imageAddress!!))
+            }
         }
 
         QA_Question_Text.setText(question_str)
@@ -106,13 +165,15 @@ class QuestionActivity : AppCompatActivity() {
         regAnswer(choice_number)
 
         //画面遷移
-//        val intent = Intent(this, AnswerActivity::class.java)
         //Toastを表示する処理
         if (examData.isCorrect_list.get(examData.isCorrect_list.size - 1)) {//正解のとき
             Toast.makeText(this, "正解です！", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, "不正解です！", Toast.LENGTH_SHORT).show()
         }
+//        if(examData.mac==2) {
+//            finish()
+//        }
         answered()
     }
 
@@ -207,8 +268,11 @@ class QuestionActivity : AppCompatActivity() {
                     //タイトル画面に戻る処理
                     examData.question_list.clear() //問題リストの初期化
                     examData.answered_list.clear() //解答リストの初期化
-                    startActivity<TitleActivity>()
-                    finish()
+                    startActivity(
+                        Intent(
+                            this, MainActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    )
                 }
                 .show()
         } else {
@@ -218,8 +282,11 @@ class QuestionActivity : AppCompatActivity() {
                     //タイトル画面に戻る処理
                     examData.question_list.clear() //問題リストの初期化
                     examData.answered_list.clear() //解答リストの初期化
-                    startActivity<TitleActivity>() //タイトル画面に戻る
-                    finish()
+                    startActivity(
+                        Intent(
+                            this, MainActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    )
                 }.show()
         }
     }
@@ -232,7 +299,6 @@ class QuestionActivity : AppCompatActivity() {
 //            "answer_choice" to exam_data.answered_list.get(exam_data.question_current),
 //            "answer_time" to test1).toString())
         ApiPostTask {
-            Log.d("tetes", it)
             if (JSONObject(it).getString("status") != "E00") {
                 Toast.makeText(this, "APIの通信に成功しました(｀・ω・´)", Toast.LENGTH_SHORT).show()
             } else {
@@ -292,10 +358,6 @@ class QuestionActivity : AppCompatActivity() {
                 QA_to_Answer_BTN.visibility = View.VISIBLE //解説へボタンを表示
                 QA_Answers.visibility = View.INVISIBLE //選択肢を非表示に
                 QA_Next_BTN.visibility = View.VISIBLE //次へボタンを表示
-                QA_Next_BTN.setOnClickListener {
-                    finish()
-                    startActivity<QuestionActivity>("exam_data" to examData)
-                } //クリックリスナーを設定
             }
             Thread.sleep(100)
             isTouched = false

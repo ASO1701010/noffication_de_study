@@ -6,14 +6,14 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 
 class QuestionsOpenHelper(var db: SQLiteDatabase) {
-    val tableName: String = "questions";
+    val tableName: String = "questions"
 
-    //問題idを渡して、
+    //問題idを渡して、出題に利用する情報を取得
     fun find_question(question_id: Int): ArrayList<String>? {
-        val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
+        val query = "SELECT * FROM $tableName where question_id = $question_id"
         val cursor = db.rawQuery(query, null)
 
-        var array = ArrayList<String>()
+        val array = ArrayList<String>()
         return try{
             cursor.moveToFirst()
             array.add(cursor.getString(0).toString())
@@ -28,43 +28,18 @@ class QuestionsOpenHelper(var db: SQLiteDatabase) {
         }
     }
 
+    //問題idを渡して、解説に必要な情報を取得
     fun find_comment(question_id: Int): ArrayList<String>? {
-        val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
+        val query = "SELECT * FROM $tableName where question_id = $question_id"
         val cursor = db.rawQuery(query, null)
 
-        var array = ArrayList<String>()
+        val array = ArrayList<String>()
         return try{
             cursor.moveToFirst()
             array.add(cursor.getString(0).toString())
             array.add(cursor.getString(3).toString())
 
             cursor.close()
-            array
-        } catch (e: CursorIndexOutOfBoundsException) {
-            cursor.close()
-            null
-        }
-    }
-
-    fun find_update_date(question_id: Int): ArrayList<ArrayList<Int>>? {
-        val query = "SELECT * FROM " + tableName + " where question_id = " + question_id
-        val cursor = db.rawQuery(query, null)
-
-        var array = ArrayList<ArrayList<Int>>()
-        return try {
-            cursor.moveToFirst()
-            var bufferlist: ArrayList<Int>
-            for (i in 0 until cursor.count) {
-                bufferlist = ArrayList()
-                bufferlist.add(cursor.getInt(0))
-                bufferlist.add(cursor.getInt(4))
-                array.add(bufferlist)
-                cursor.moveToNext();
-            }
-            cursor.close()
-            if (array.size == 0) {
-                null
-            }
             array
         } catch (e: CursorIndexOutOfBoundsException) {
             cursor.close()
@@ -84,7 +59,7 @@ class QuestionsOpenHelper(var db: SQLiteDatabase) {
         try {
             db.insertOrThrow(tableName, null, values)
         } catch (e: SQLiteConstraintException) {
-            db.update(tableName, values, "question_id = " + a, null)
+            db.update(tableName, values, "question_id = $a", null)
         }
     }
 }

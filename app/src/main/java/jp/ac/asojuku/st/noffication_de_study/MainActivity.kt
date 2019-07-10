@@ -1,11 +1,15 @@
 package jp.ac.asojuku.st.noffication_de_study
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.database.Cursor
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.widget.Toast
 import jp.ac.asojuku.st.noffication_de_study.db.*
 import org.jetbrains.anko.startActivity
@@ -16,21 +20,37 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        ApiGetTask {
-//            itの値チェック用ですが、itのデータが大きすぎて全ての表示ができません。
-//            jsonArrayのキー値を設定して、個別に確認してください。
-//            Log.d("test",JSONObject(it).getJSONObject("data").getJSONArray("questions_db").toString())
-            if (!it.isNullOrEmpty()) {
-                try {
-                    all_update(JSONObject(it))
-                } catch (e:java.lang.Exception) {
-                    Toast.makeText(this, "えらーはっせい", Toast.LENGTH_SHORT).show()
-                }
+        // 通知のバージョン差対応
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // 二択問題通知チャンネル
+            var notificationChannel =
+                NotificationChannel("channel_two_question", "二択問題", NotificationManager.IMPORTANCE_DEFAULT)
+            notificationChannel.lightColor = Color.BLUE
+            notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            notificationManager.createNotificationChannel(notificationChannel)
 
+            // 四択問題通知チャンネル
+            notificationChannel =
+                NotificationChannel("channel_four_question", "四択問題", NotificationManager.IMPORTANCE_DEFAULT)
+            notificationChannel.lightColor = Color.BLUE
+            notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            notificationManager.createNotificationChannel(notificationChannel)
+
+            // サービス通知チャンネル
+            notificationChannel =
+                NotificationChannel("channel_screen_question", "サービス", NotificationManager.IMPORTANCE_DEFAULT)
+            notificationChannel.lightColor = Color.BLUE
+            notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+
+        ApiGetTask {
+            if (!it.isNullOrEmpty()) {
+                all_update(JSONObject(it))
             } else {
                 Toast.makeText(this, "APIの通信に失敗しました(´･ω･`)", Toast.LENGTH_SHORT).show()
             }
-
             startActivity<TitleActivity>()
             finish()
         }.execute("db-update.php", hashMapOf("last_update_date" to find_last_update()).toString())
@@ -41,21 +61,20 @@ class MainActivity : AppCompatActivity() {
         val questions = SQLiteHelper(this)
         val db = questions.readableDatabase
         val query = "SELECT update_date FROM questions ORDER BY update_date desc limit 1"
-        var cursor:Cursor
+        var cursor: Cursor
 
         var result = "2019-05-06"
-        try {
+        return try {
             cursor = db.rawQuery(query, null)
             cursor.moveToFirst()
             result = cursor.getString(0).toString()
             cursor.close()
             db.close()
-        }catch (e:Exception){
+            result
+        } catch (e: Exception) {
             db.close()
-//            Log.d("error",e.toString())
-            return result
+            result
         }
-        return result
     }
 
     //    受け取った全ての値をDBに登録する。
@@ -65,21 +84,18 @@ class MainActivity : AppCompatActivity() {
 //            Log.d("TEST", json.toString())
             return false
         }
-        json = json.getJSONObject("data")
 
+        json = json.getJSONObject("data")
         val db = SQLiteHelper(this).writableDatabase
 
         val answers = AnswersOpenHelper(db)
         val answers_rate = AnswersRateOpenHelper(db)
-        val correct_answer = CorrectAnswerOpenHelper(db)
         val exams_numbers = ExamsNumbersOpenHelper(db)
         val exams_questions = ExamsQuestionsOpenHelper(db)
         val genres = GenresOpenHelper(db)
         val image = ImageOpenHelper(db)
         val questions = QuestionsOpenHelper(db)
         val questions_genres = QuestionsGenresOpenHelper(db)
-//        val user_answers = UserAnswersOpenHelper(ac)
-
 
         var jArray = json.getJSONArray("answer_db")
         if (jArray != {}) {
@@ -142,9 +158,9 @@ class MainActivity : AppCompatActivity() {
             for (i in 0 until jArray.length()) {
                 questions.add_record(
                     jArray.getJSONObject(i).getInt("question_id"),
-                    jArray.getJSONObject(i).getString("question"),
+                    unescapeHTLM(jArray.getJSONObject(i).getString("question")),
                     jArray.getJSONObject(i).getInt("is_have_image"),
-                    jArray.getJSONObject(i).getString("comment"),
+                    unescapeHTLM(jArray.getJSONObject(i).getString("comment")),
                     jArray.getJSONObject(i).getString("update_date"),
                     jArray.getJSONObject(i).getInt("question_flag")
                 )
@@ -159,15 +175,8 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
-//        jArray = json.getJSONArray("correct_answer_db")
-//        if (jArray != {}) {
-//            for (i in 0..jArray.length() - 1) {
-//                correct_answer.add_record(
-//                    jArray.getJSONObject(i).getInt("question_id"),
-//                    jArray.getJSONObject(i).getInt("correct_answer_number")
-//                )
-//            }
-//        }
+        image.setDefaultRecoad()
+
 //        テーブル内データ確認用
 //        Log.d("tete1",answers.find_answers(1).toString())
 //        Log.d("tete2",answers_rate.find_all_rate().toString())
@@ -179,25 +188,33 @@ class MainActivity : AppCompatActivity() {
 //        Log.d("tete8",questions.find_comment(1).toString())
 //        Log.d("tete9",questions_genres.find_question_genres(1).toString())
 //        Log.d("tete0",questions_genres.find_genre_questions(1).toString())
-//        Log.d("tete10",correct_answer.find_correct_answer(1).toString())
+//        Log.d("test",exams_questions.find_exam_number_from_question_id(1))
         db.close()
         return true
     }
 
-    //あとでオプション画面に移動します
     //端末に登録されているトークンをAPIサーバに送信し、ユーザーIDを受け取る
-    fun get_user_id(token: String):Boolean {
-        var result:Boolean = true
+    fun get_user_id(token: String): Boolean {
+        var result: Boolean = true
         ApiPostTask {
-            Log.d("tetes",it)
-            if(JSONObject(it).getString("status") != "E00"){
-                val e : SharedPreferences.Editor = getSharedPreferences("user_data", AppCompatActivity.MODE_PRIVATE).edit()
-                e.putString("user_id",JSONObject(it).getJSONObject("data").getString("user_id")).apply()
+            if (JSONObject(it).getString("status") != "E00") {
+                val e: SharedPreferences.Editor =
+                    getSharedPreferences("user_data", AppCompatActivity.MODE_PRIVATE).edit()
+                e.putString("user_id", JSONObject(it).getJSONObject("data").getString("user_id")).apply()
 
-            }else{
+            } else {
                 result = false
             }
         }.execute("add-user.php", hashMapOf("token" to token).toString())
         return result
+    }
+
+    // 文字列中のHTLM特殊文字を変換して、変換後の文字列を返す
+    fun unescapeHTLM(str: String): String {
+        var str2 = str.replace("&quot;".toRegex(), "\"")
+            .replace("&lt;".toRegex(), "<")
+            .replace("&gt;".toRegex(), ">")
+            .replace("&amp;".toRegex(), "&")
+        return str2
     }
 }

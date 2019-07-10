@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -39,8 +40,6 @@ class OptionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_option)
 
-
-        //通知のテストデータ
         spEditor = getSharedPreferences("user_data", Context.MODE_PRIVATE).edit()
 
         val adapter = ArrayAdapter(applicationContext, android.R.layout.simple_spinner_item, noticeIntervalItems)
@@ -54,6 +53,10 @@ class OptionActivity : AppCompatActivity() {
         OA_Noffication_Time_Between1.text = spGetter.getString("NDS_Start", "09:00")
         OA_Noffication_Time_Between2.text = spGetter.getString("NDS_End", "21:00")
         OA_Noffication_Interval.setSelection(noticeIntervalItems.indexOf(spGetter.getString("NDS_Interval", "5")))
+        when (spGetter.getString("way_radio_select", "four")) {
+            "four" -> way_radio_group.check(R.id.way_four_radio_button)
+            "two" -> way_radio_group.check(R.id.way_two_radio_button)
+        }
 
         // Google SignIn
         mAuth = FirebaseAuth.getInstance()
@@ -74,15 +77,32 @@ class OptionActivity : AppCompatActivity() {
         // 出題モード
         OA_NDS_Mode_BTN.setSafeClickListener {
             spEditor.putBoolean("NDS_check", OA_NDS_Mode_BTN.isChecked).apply()
-            // registerNotice()
-            val service = LocalNotificationTwoQuestionScheduleService()
+            val service = LocalNotificationScheduleService()
             service.registerNotice(this)
         }
 
         // 画面点灯モード
         OA_SDS_Mode_BTN.setSafeClickListener {
             spEditor.putBoolean("SDS_check", OA_SDS_Mode_BTN.isChecked).apply()
-            // 画面点灯モードを実装予定
+
+            val service = Intent(this, LocalNotificationForegroundService::class.java)
+            if (OA_SDS_Mode_BTN.isChecked) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(service)
+                } else {
+                    startService(service)
+                }
+            } else {
+                stopService(service)
+            }
+        }
+
+        // 通知の問題の出題方法
+        way_radio_group.setOnCheckedChangeListener { _, id ->
+            when (id) {
+                R.id.way_four_radio_button -> spEditor.putString("way_radio_select", "four").apply()
+                R.id.way_two_radio_button -> spEditor.putString("way_radio_select", "two").apply()
+            }
         }
 
         // 出題開始時間の指定
@@ -205,17 +225,5 @@ class OptionActivity : AppCompatActivity() {
         }
     }
     // Google SignIn <-
-
-    // 通知登録
-    /*
-    private fun registerNotice() {
-        if (spGetter.getBoolean("NDS_check", false)) {
-            val service = LocalNotificationTwoQuestionScheduleService()
-            service.registerNotice(this)
-        } else {
-            // Cancel
-        }
-    }
-    */
 
 }
